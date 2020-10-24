@@ -1,7 +1,9 @@
+import React from 'react';
+
 function App() {
   return (
     <div className="App">
-      goldilocks
+      <h1>goldilocks</h1>
     </div>
   );
 }
