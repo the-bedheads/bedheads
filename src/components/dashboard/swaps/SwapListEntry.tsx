@@ -1,9 +1,9 @@
 import React from 'react';
 
 const SwapListEntry = () => (
-  <div>
+  <React.Fragment>
     Individual Swap Goes Here
-  </div>
+  </React.Fragment>
 );
 
 export default SwapListEntry;

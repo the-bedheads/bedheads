@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Signup = () => (
-  <div>
+  <React.Fragment>
     Signup Page/Modal
-  </div>
+  </React.Fragment>
 );
 
 export default Signup;

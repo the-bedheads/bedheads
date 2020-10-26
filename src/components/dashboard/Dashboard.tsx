@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Dashboard = () => (
-  <div>
+  <React.Fragment>
     Main Dashboard Page
-  </div>
+  </React.Fragment>
 );
 
 export default Dashboard;

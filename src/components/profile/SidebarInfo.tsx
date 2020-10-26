@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Sidebar = () => (
-  <div>
+  <React.Fragment>
     Profile Sidebar Goes Here
-  </div>
+  </React.Fragment>
 );
 
 export default Sidebar;

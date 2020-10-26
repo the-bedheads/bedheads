@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ResultsList = () => (
-  <div>
+  <React.Fragment>
     Results List
-  </div>
+  </React.Fragment>
 );
 
 export default ResultsList;

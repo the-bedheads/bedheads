@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Profile = () => (
-  <div>
+  <React.Fragment>
     General Profile Page
-  </div>
+  </React.Fragment>
 );
 
 export default Profile;

@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Navbar = () => (
-  <div>
+  <React.Fragment>
     Navbar
-  </div>
+  </React.Fragment>
 );
 
 export default Navbar;

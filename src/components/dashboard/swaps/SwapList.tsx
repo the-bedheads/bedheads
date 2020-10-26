@@ -1,9 +1,9 @@
 import React from 'react';
 
 const SwapList = () => (
-  <div>
+  <React.Fragment>
     All swaps go here (confirmed, pending, and past (to review) will be in separate chunks)
-  </div>
+  </React.Fragment>
 );
 
 export default SwapList;

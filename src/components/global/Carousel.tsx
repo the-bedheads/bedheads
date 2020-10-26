@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Carousel = () => (
-  <div>
+  <React.Fragment>
     Photo Carousel
-  </div>
+  </React.Fragment>
 );
 
 export default Carousel;

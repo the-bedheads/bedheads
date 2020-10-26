@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ProfileInfo = () => (
-  <div>
+  <React.Fragment>
     Profile Description and Room Carousel Go Here
-  </div>
+  </React.Fragment>
 );
 
 export default ProfileInfo;
