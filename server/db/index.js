@@ -35,11 +35,21 @@ const Listing = ListingModel(db, Sequelize);
 const Invite = InviteModel(db, Sequelize);
 const Availability = AvailabilityModel(db, Sequelize);
 
-// User.sync();
+const models = {
+  User,
+  Survey,
+  Request,
+  ListingPhotos,
+  Listing,
+  Invite,
+  Availability,
+};
 
-// db.sync()
-//   .then(() => console.info('database & tables created'))
-//   .catch((err) => console.error('err in sync', err));
+Object.keys(models).forEach((model) => {
+  if (models[model].associate) {
+    models[model].associate(models);
+  }
+});
 
 db.sync({ force: true })
   .then(() => console.log('✅🎃✅ Connected to database'))
@@ -50,3 +60,4 @@ db.sync({ force: true })
 //   .catch(() => console.log('❌☠️❌ Database connection failed'));
 
 module.exports.db = db;
+module.exports = models;

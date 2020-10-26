@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    user_id: DataTypes.INTEGER,
     q1Response: DataTypes.STRING,
     q2Response: DataTypes.STRING,
     q3Response: DataTypes.STRING,
@@ -17,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     q9Response: DataTypes.STRING,
     q10Response: DataTypes.STRING,
   });
-
+  Survey.associate = (models) => {
+    Survey.belongsTo(models.User, {
+      foreignKey: 'user_id',
+    });
+  };
   return Survey;
 };

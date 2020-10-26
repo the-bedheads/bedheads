@@ -5,12 +5,19 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    listing_id: DataTypes.INTEGER,
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
     accepted: DataTypes.BOOLEAN,
-    guest_id: DataTypes.INTEGER,
   });
+
+  Availability.associate = (models) => {
+    Availability.belongsTo(models.Listing, {
+      foreignKey: 'listing_id',
+    });
+    Availability.belongsTo(models.User, {
+      foreignKey: 'guest_id',
+    });
+  };
 
   return Availability;
 };

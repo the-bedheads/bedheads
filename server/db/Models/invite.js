@@ -6,9 +6,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     verificationCode: DataTypes.STRING,
-    sender_id: DataTypes.INTEGER,
     newUserEmail: DataTypes.STRING,
   });
+
+  Invite.associate = (models) => {
+    Invite.belongsTo(models.User, {
+      foreignKey: 'sender_id',
+    });
+  };
 
   return Invite;
 };

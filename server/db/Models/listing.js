@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    user_id: DataTypes.INTEGER,
     listingAddress: DataTypes.STRING,
     listingTitle: DataTypes.STRING,
     listingDescription: DataTypes.STRING,
@@ -16,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     internet: DataTypes.BOOLEAN,
     privateBath: DataTypes.BOOLEAN,
   });
+
+  Listing.associate = (models) => {
+    Listing.belongsTo(models.User, {
+      foreignKey: 'user_id',
+    });
+  };
 
   return Listing;
 };

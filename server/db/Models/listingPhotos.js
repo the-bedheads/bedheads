@@ -7,8 +7,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     listing_id: DataTypes.INTEGER,
     url: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
   });
+
+  ListingPhotos.associate = (models) => {
+    ListingPhotos.belongsTo(models.User, {
+      foreignKey: 'user_id',
+    });
+  };
 
   return ListingPhotos;
 };

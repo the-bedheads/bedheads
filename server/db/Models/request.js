@@ -5,9 +5,16 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    requester_id: DataTypes.INTEGER,
-    availability_id: DataTypes.INTEGER,
   });
+
+  Request.associate = (models) => {
+    Request.belongsTo(models.User, {
+      foreignKey: 'requester_id',
+    });
+    Request.belongsTo(models.Availability, {
+      foreignKey: 'availability_id',
+    });
+  };
 
   return Request;
 };
