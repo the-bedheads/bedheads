@@ -1,9 +1,9 @@
 import React from 'react';
 
 const SearchBar = () => (
-  <div>
+  <React.Fragment>
     Search Bar
-  </div>
+  </React.Fragment>
 );
 
 export default SearchBar;

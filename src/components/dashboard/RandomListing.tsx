@@ -1,9 +1,9 @@
 import React from 'react';
 
 const RandomListing = () => (
-  <div>
+  <React.Fragment>
     Random Listing
-  </div>
+  </React.Fragment>
 );
 
 export default RandomListing;

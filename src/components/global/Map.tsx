@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Map = () => (
-  <div>
+  <React.Fragment>
     Map
-  </div>
+  </React.Fragment>
 );
 
 export default Map;

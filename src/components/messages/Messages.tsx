@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Messages = () => (
-  <div>
+  <React.Fragment>
     General Messages Page
-  </div>
+  </React.Fragment>
 );
 
 export default Messages;

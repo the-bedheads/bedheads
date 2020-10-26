@@ -1,9 +1,9 @@
 import React from 'react';
 
 const HostInfo = () => (
-  <div>
+  <React.Fragment>
     Host Info Box
-  </div>
+  </React.Fragment>
 );
 
 export default HostInfo;

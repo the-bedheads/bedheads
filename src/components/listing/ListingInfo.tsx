@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ListingInfo = () => (
-  <div>
+  <React.Fragment>
     Listing Info
-  </div>
+  </React.Fragment>
 );
 
 export default ListingInfo;

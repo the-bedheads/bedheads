@@ -1,9 +1,9 @@
 import React from 'react';
 
 const ThreadList = () => (
-  <div>
+  <React.Fragment>
     ThreadList
-  </div>
+  </React.Fragment>
 );
 
 export default ThreadList;

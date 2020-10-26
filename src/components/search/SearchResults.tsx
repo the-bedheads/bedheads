@@ -1,9 +1,9 @@
 import React from 'react';
 
 const SearchResults = () => (
-  <div>
+  <React.Fragment>
     Results Landing Page
-  </div>
+  </React.Fragment>
 );
 
 export default SearchResults;

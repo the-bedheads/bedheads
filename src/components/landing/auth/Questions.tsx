@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Questions = () => (
-  <div>
+  <React.Fragment>
     Questions Page/Modal
-  </div>
+  </React.Fragment>
 );
 
 export default Questions;

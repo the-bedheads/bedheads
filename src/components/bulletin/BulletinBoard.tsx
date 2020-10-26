@@ -1,9 +1,9 @@
 import React from 'react';
 
 const BulletinBoard = () => (
-  <div>
+  <React.Fragment>
     Bulletin Board Page
-  </div>
+  </React.Fragment>
 );
 
 export default BulletinBoard;

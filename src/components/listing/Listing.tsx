@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Listing = () => (
-  <div>
+  <React.Fragment>
     Singular Listing
-  </div>
+  </React.Fragment>
 );
 
 export default Listing;

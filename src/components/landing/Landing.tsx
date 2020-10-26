@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Landing = () => (
-  <div>
+  <React.Fragment>
     Landing Page
-  </div>
+  </React.Fragment>
 );
 
 export default Landing;

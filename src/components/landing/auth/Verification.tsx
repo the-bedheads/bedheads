@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Verification = () => (
-  <div>
+  <React.Fragment>
     Verification Page/Modal
-  </div>
+  </React.Fragment>
 );
 
 export default Verification;

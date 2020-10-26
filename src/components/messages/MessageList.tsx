@@ -1,9 +1,9 @@
 import React from 'react';
 
 const MessageList = () => (
-  <div>
+  <React.Fragment>
     Message List
-  </div>
+  </React.Fragment>
 );
 
 export default MessageList;

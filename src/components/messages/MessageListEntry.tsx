@@ -1,9 +1,9 @@
 import React from 'react';
 
 const MessageListEntry = () => (
-  <div>
+  <React.Fragment>
     Single chat
-  </div>
+  </React.Fragment>
 );
 
 export default MessageListEntry;

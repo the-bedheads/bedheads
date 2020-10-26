@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Post = () => (
-  <div>
+  <React.Fragment>
     Bulletin Post Goes Here
-  </div>
+  </React.Fragment>
 );
 
 export default Post;

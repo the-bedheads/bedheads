@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Calendar = () => (
-  <div>
+  <React.Fragment>
     Availability Calendar
-  </div>
+  </React.Fragment>
 );
 
 export default Calendar;
