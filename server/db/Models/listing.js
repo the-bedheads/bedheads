@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     listingAddress: DataTypes.STRING,
     listingTitle: DataTypes.STRING,
-    listingDescription: DataTypes.STRING,
+    listingDescription: DataTypes.STRING(1234),
     pets: DataTypes.BOOLEAN,
     ada: DataTypes.BOOLEAN,
     smoking: DataTypes.BOOLEAN,
