@@ -1,12 +1,10 @@
 import React from 'react';
-import Landing from './components/landing/Landing';
+import Navbar from './components/global/Navbar';
 
-function App() {
-  return (
-    <div className="App">
-      <Landing />
-    </div>
-  );
-}
+const App: React.FunctionComponent = (): JSX.Element => (
+  <div className="App">
+    <Navbar />
+  </div>
+);
 
 export default App;
