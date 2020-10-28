@@ -24,6 +24,17 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { User } = require("./db/index.js");
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+const { User } = require("./db/index.js");
+const { default: e } = require("express");
 
 app.use("/listing", listingRouter);
 app.use("/user", userRouter);
@@ -68,26 +79,25 @@ app.post("/register", async (req, res) => {
     hashedPassword = await bcrypt.hash(password, 10);
     console.log("hashedBrown: ", hashedPassword);
     // Validation passed
+    let check = [];
     db.query(`SELECT * FROM users2`)
       .then((data) => {
-        const results = data[0].map((user) => {
-          console.log(user.email);
-
-          if (email === user.email) {
-            return email;
-          } else {
-            return user.email;
+        for (let i = 0; i < data[0].length; i++) {
+          let existingEmail = data[0][i].email;
+          // console.log(existingEmail)
+          if (email === existingEmail) {
+            check.push(email);
           }
-        });
-        console.log(results);
-        if (results.length > 0) {
-          res.send("This email is already registered.");
-        } else {
+        }
+        console.log(check);
+        if (check.length < 1) {
           db.query(
             `INSERT INTO users2 (name, email, password)
-          VALUES ('${name}', '${email}', '${password}');`
+          VALUES ('${name}', '${email}', '${hashedPassword}');`
           );
           res.send("New user registered!");
+        } else {
+          res.send("Email address is already registered!");
         }
       })
       .catch((err) => {
