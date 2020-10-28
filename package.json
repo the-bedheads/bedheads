@@ -30,7 +30,8 @@
     "build": "react-scripts build",
     "lint": "eslint . --ext .ts,.tsx --fix",
     "test": "echo \"no test built\"",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "populate-db": "node server/test/seedDB.js"
   },
   "eslintConfig": {
     "extends": [

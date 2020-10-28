@@ -51,7 +51,7 @@ Object.keys(models).forEach((model) => {
   }
 });
 
-db.sync({ force: true })
+db.sync()
   .then(() => console.log('✅🎃✅ Connected to database'))
   .catch(() => console.log('❌☠️❌ Database connection failed'));
 
