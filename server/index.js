@@ -52,6 +52,7 @@ app.use(cookieParser());
 
 //////////////////////////// ROUTES ////////////////////////////
 app.use("/auth", require("./routes/jwtAuth"));
+app.use("/dashboard", require("./routes/dashboard"));
 // app.post("/users/register", async (req, res) => {
 //   let { name, email, password } = req.body;
 
@@ -106,15 +107,6 @@ app.get("/users/register", (req, res) => {
 app.get("/users/login", (req, res) => {
   res.send("success");
 });
-
-// app.get('/users/dashboard', (req, res) => {
-//   res.send(req.user);
-// });
-
-// app.get('/users/logout', (req, res) => {
-//   req.logout();
-//   res.send('You have successfully logged out.')
-// })
 
 //////////////////////////// CONFIRM DATABASE CONNECTION ////////////////////////////
 app.listen(PORT, () => {
