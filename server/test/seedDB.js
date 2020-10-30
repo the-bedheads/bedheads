@@ -2,6 +2,7 @@ require('dotenv').config();
 const userData = require('./sampleData/users');
 const listingData = require('./sampleData/listings');
 const availabilityData = require('./sampleData/availabilities');
+const requestData = require('./sampleData/requests');
 
 const {
   User,
@@ -34,8 +35,18 @@ const seed = () => {
         console.log('❌☠️❌ LISTINGS NOT ADDED');
       }
     })
+    .then(() => {
+      Availability.bulkCreate(availabilityData)
+      .then(results => console.log(`✅🎃✅ ${results.length} availabilities successfully added to DB`))
+      .then(() => {
+        Request.bulkCreate(requestData)
+        .then(results => console.log(`✅🎃✅ ${results.length} requests successfully added to DB`))
+        .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
+    })
   })
   .catch(err => console.error('Database falied to give results. Error:', err));
-}
+};
 
 seed();
