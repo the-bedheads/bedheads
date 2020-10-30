@@ -13,13 +13,11 @@ const {
 const listingRouter = Router();
 
 listingRouter
-// Find all listings
 .get('/', (req, res) => {
   Listing.findAll()
     .then((listings) => res.send(listings))
     .catch((err) => res.status(500).send(err));
 })
-// Find a listing from a user's ID
 .get('/user/:userId', (req, res) => {
   const { userId } = req.params;
   Listing.findOne({
