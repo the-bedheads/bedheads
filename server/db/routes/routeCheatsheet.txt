@@ -1,0 +1,13 @@
+**** User Routes ****
+GET: '/user' --> gets all users
+GET: '/user/email/:address' --> gets a specific user with the provided internet address
+
+**** Availability Routes ****
+GET: '/availability' --> gets all availabilities
+GET: '/availability/others/currentUserListing/:listingId' --> gets all availabilites that do not belong to provided user and are not confirmed swaps
+GET: '/availability/confirmedSwaps/:listingId' --> gets all confirmedSwaps for user based on provided userId
+
+
+**** Listing Routes ****
+GET: '/listing' --> gets all listings
+GET: '/listing/user/:userId' --> gets specific listing for provided user
