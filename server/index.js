@@ -25,6 +25,7 @@ const DIR = path.join(__dirname, "../build");
 const html_file = path.join(DIR, "index.html");
 app.use(express.static(DIR));
 app.engine("html", require("ejs").renderFile);
+
 app.set("view engine", "html");
 
 /// ///////////////////////// ROUTES ////////////////////////////
