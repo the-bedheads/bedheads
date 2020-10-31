@@ -26,7 +26,6 @@ listingRouter
       },
     })
       .then((listing) => {
-        console.log(listing);
         res.send(listing);
       })
       .catch((err) => res.status(500).send(err));
