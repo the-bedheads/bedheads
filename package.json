@@ -34,6 +34,7 @@
     "react-map-gl": "^5.2.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-toastify": "^6.0.9",
     "sequelize": "^6.3.5",
     "toastify": "^2.0.1",
     "ts-node": "^9.0.0",
@@ -53,6 +54,9 @@
     "tslint-fix": "tslint --fix -p tsconfig.json"
   },
   "eslintConfig": {
+    "rules": {
+      "react/prop-types": 0
+    },
     "extends": [
       "react-app",
       "react-app/jest",
