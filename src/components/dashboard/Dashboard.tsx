@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface UserInfo {
@@ -42,20 +42,24 @@ const Dashboard = () => {
   const [randomListings, setRandomListings] = useState([]);
   const [swapCount, setSwapCount] = useState(0);
 
-  axios.get(`/user/email/${userEmail}`)
-    .then(({ data }) => {
-      const info: UserInfo = data;
-      setUserName(info.firstName);
-      setUserId(info.id);
-    })
-    .then(() => {
-      axios.get(`/listing/user/${userId}`)
-        .then(({ data }) => {
-          console.log(data);
-        })
-        .catch(() => console.log('no listing found for that user'));
-    })
-    .catch((err) => console.error(err));
+  useEffect(() => {
+    axios.get(`/user/email/${userEmail}`)
+      .then(({ data }) => {
+        const info: UserInfo = data;
+        console.log(info, 'info');
+        setUserName(info.firstName);
+        setUserId(info.id);
+        return info.id;
+      })
+      .then((id) => {
+        axios.get(`/listing/user/${id}`)
+          .then(({ data }) => {
+            console.log(data, 'data');
+          })
+          .catch(() => console.log('no listing found for that user'));
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <>
