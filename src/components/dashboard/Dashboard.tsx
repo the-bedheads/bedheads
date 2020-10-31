@@ -1,52 +1,25 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, SyntheticEvent } from 'react';
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> (add) divs for different info sections on dashboard
 import axios from 'axios';
 import { createGenerateClassName } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../global/Navbar';
 
-interface UserInfo {
-  createdAt: string;
-  dob: string;
-  email: string;
-  first_name: string;
-  guestRating: number;
-  hostRating: number;
-  id: number;
-  inviteCount: number;
-  last_name: string;
-  password: string;
-  profilePhoto: string;
-  pronouns: string;
-  swapCount: number;
-  updatedAt: string;
-}
-
-interface ListingInfo {
-  ada: boolean;
-  createdAt: string;
-  id: number;
-  internet: boolean;
-  listingAddress: string;
-  listingDescription: string;
-  listingTitle: string;
-  pets: boolean;
-  privateBath: boolean;
-  roommates: boolean;
-  smoking: boolean;
-  updatedAt: string;
-  user_id: number;
-}
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const userEmail = 'khellstorm@gmail.com';
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState(0);
-  const [userListingId, setUserListingId] = useState(0);
-  const [randomListings, setRandomListings] = useState([]);
+  const userId = 1;
+  const listingId = 1;
+  const userName = 'Kyle';
+  const [randomListings, setRandomListings] = useState<any>([]);
+  const [shownListing, setShownListing] = useState<any>([]);
   const [swapCount, setSwapCount] = useState(0);
 
   const getProfile = async () => {
@@ -74,39 +47,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     }
   };
 
-  axios.get(`/user/email/${userEmail}`)
-    .then(({ data }) => {
-      const info: UserInfo = data;
-      // setUserName(info.first_name);
-      setUserId(info.id);
-    })
-    // .then(() => {
-    //   axios.get(`/listing/user/${userId}`)
-    //     .then(({ data }) => {
-    //       console.log(data);
-    //     })
-    //     .catch(() => console.log('no listing found for that user'));
-    // })
-    .catch((err) => console.error(err));
-
   useEffect(() => {
-    // axios.get(`/user/email/${userEmail}`)
-    //   .then(({ data }) => {
-    //     const info: UserInfo = data;
-    //     console.log(info, 'info');
-    //     setUserName(info.first_name);
-    //     setUserId(info.id);
-    //     return info.id;
-    //   })
-    // .then((id) => {
-    //   axios.get(`/listing/user/${id}`)
-    //     .then(({ data }) => {
-    //       console.log(data, 'data');
-    //     })
-    //     .catch(() => console.log('no listing found for that user'));
-    // })
-    // .catch((err) => console.error(err));
-
     getProfile();
   }, []);
 
@@ -118,7 +59,15 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
         {userName}
         !!
       </h4>
-      <div className="user-notifications" />
+      <div id="user-notifications">
+        User notifications go here
+      </div>
+      <div id="random-listing">
+        Wanna get away?
+        {'There is a listing you might like from some <random_location>'}
+        {' '}
+        {'from <start_date> until <end_date>'}
+      </div>
       <button
         className="btn btn-success btn-block"
         type="submit"
