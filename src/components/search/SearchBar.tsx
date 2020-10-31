@@ -1,6 +1,7 @@
 import React, { SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 
 type Search = {
   locationQuery: string;
@@ -16,6 +17,7 @@ const SearchBar = (props: any) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <label htmlFor="my-input">location to search</label> */}
+        <SearchIcon />
         <Input
           name="locationQuery"
           inputRef={register}
