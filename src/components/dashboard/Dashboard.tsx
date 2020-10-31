@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useState, useEffect, SyntheticEvent } from 'react';
-=======
-import React, { useState, useEffect } from 'react';
->>>>>>> (add) divs for different info sections on dashboard
 import axios from 'axios';
 import { createGenerateClassName } from '@material-ui/core';
 import { toast } from 'react-toastify';
