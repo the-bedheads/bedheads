@@ -39,6 +39,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-toastify": "^6.0.9",
+    "reactstrap": "^8.7.0",
     "sequelize": "^6.3.5",
     "toastify": "^2.0.1",
     "ts-node": "^9.0.0",

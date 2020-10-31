@@ -22,18 +22,18 @@ const App: React.FC = (): JSX.Element => {
   return (
     <Router>
       <div className="App">
-        {/* <Navbar /> */}
+        <Navbar />
         <Switch>
+          {/* <Route
+            exact
+            path="/"
+            component={Dashboard}
+          /> */}
           <Route
             exact
             path="/"
-            component={Landing}
-          />
-          <Route
-            exact
-            path="/login"
             render={() => (!isAuthenticated ? (
-              <Login />) : (
+              <Login handleLogin={[isAuthenticated, setIsAuthenticated]} />) : (
                 <Redirect to="/dashboard" />
             ))}
           />
