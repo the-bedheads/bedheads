@@ -14,6 +14,7 @@ import Search from './components/search/Search';
 import Dashboard from './components/dashboard/Dashboard';
 import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
+import Profile from './components/profile/Profile';
 
 const App: React.FC = (): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,7 +35,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (!isAuthenticated ? (
               <Login />) : (
                 <Redirect to="/dashboard" />
-              ))}
+            ))}
           />
           <Route
             exact
@@ -42,7 +43,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (!isAuthenticated ? (
               <SignUp />) : (
                 <Redirect to="/login" />
-              ))}
+            ))}
           />
           <Route
             exact
@@ -50,7 +51,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (isAuthenticated ? (
               <Dashboard />) : (
                 <Redirect to="/login" />
-              ))}
+            ))}
           />
           <Route
             exact
