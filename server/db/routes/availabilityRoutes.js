@@ -3,6 +3,14 @@ const { Op } = require("sequelize");
 const { moment } = require("moment");
 
 const { Availability, Request, Listing } = require("../index");
+const { Router } = require('express');
+const { Op } = require('sequelize');
+
+const {
+  Request,
+  Listing,
+  Availability,
+} = require('../index');
 
 const availabilityRouter = Router();
 
