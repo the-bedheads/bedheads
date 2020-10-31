@@ -1,13 +1,7 @@
 const Sequelize = require('sequelize');
 require('dotenv').config();
 
-const {
-  DATABASE,
-  USER_NAME,
-  USER_PASSWORD,
-  HOST,
-  DB_PORT,
-} = process.env;
+const { DATABASE, USER_NAME, USER_PASSWORD, HOST, DB_PORT } = process.env;
 
 const db = new Sequelize({
   dialect: 'postgres',
@@ -59,5 +53,9 @@ db.sync()
 //   .then(() => console.log('✅🎃✅ Connected to database'))
 //   .catch(() => console.log('❌☠️❌ Database connection failed'));
 
-module.exports.db = db;
-module.exports = models;
+// module.exports.db = db;
+// module.exports = models;
+
+module.exports = {
+  db, models, User
+}
