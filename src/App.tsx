@@ -34,7 +34,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (!isAuthenticated ? (
               <Login />) : (
                 <Redirect to="/dashboard" />
-              ))}
+            ))}
           />
           <Route
             exact
@@ -42,7 +42,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (!isAuthenticated ? (
               <SignUp />) : (
                 <Redirect to="/login" />
-              ))}
+            ))}
           />
           <Route
             exact
@@ -50,7 +50,7 @@ const App: React.FC = (): JSX.Element => {
             render={() => (isAuthenticated ? (
               <Dashboard />) : (
                 <Redirect to="/login" />
-              ))}
+            ))}
           />
           <Route
             exact

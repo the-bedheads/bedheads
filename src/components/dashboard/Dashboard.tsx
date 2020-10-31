@@ -5,12 +5,12 @@ interface UserInfo {
   createdAt: string;
   dob: string;
   email: string;
-  firstName: string;
+  first_name: string;
   guestRating: number;
   hostRating: number;
   id: number;
   inviteCount: number;
-  lastName: string;
+  last_name: string;
   password: string;
   profilePhoto: string;
   pronouns: string;
@@ -45,7 +45,7 @@ const Dashboard = () => {
   axios.get(`/user/email/${userEmail}`)
     .then(({ data }) => {
       const info: UserInfo = data;
-      setUserName(info.firstName);
+      setUserName(info.first_name);
       setUserId(info.id);
     })
     .then(() => {
