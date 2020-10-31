@@ -63,7 +63,6 @@ app.use('/listingPhotos', listingPhotosRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);
-<<<<<<< HEAD
 });
 
 const server = http.createServer(app);
@@ -75,8 +74,6 @@ io.on('connection', (socket) => {
     socket.join(room);
     console.info(`someone joined room ${room}`);
   });
-=======
->>>>>>> (add) route for dashboard info
 });
 
 server.listen(PORT, () => {
