@@ -5,12 +5,12 @@ interface UserInfo {
   createdAt: string;
   dob: string;
   email: string;
-  firstName: string;
+  first_name: string;
   guestRating: number;
   hostRating: number;
   id: number;
   inviteCount: number;
-  lastName: string;
+  last_name: string;
   password: string;
   profilePhoto: string;
   pronouns: string;
@@ -42,12 +42,27 @@ const Dashboard = () => {
   const [randomListings, setRandomListings] = useState([]);
   const [swapCount, setSwapCount] = useState(0);
 
+  axios.get(`/user/email/${userEmail}`)
+    .then(({ data }) => {
+      const info: UserInfo = data;
+      setUserName(info.first_name);
+      setUserId(info.id);
+    })
+    .then(() => {
+      axios.get(`/listing/user/${userId}`)
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch(() => console.log('no listing found for that user'));
+    })
+    .catch((err) => console.error(err));
+
   useEffect(() => {
     axios.get(`/user/email/${userEmail}`)
       .then(({ data }) => {
         const info: UserInfo = data;
         console.log(info, 'info');
-        setUserName(info.firstName);
+        setUserName(info.first_name);
         setUserId(info.id);
         return info.id;
       })
