@@ -28,6 +28,7 @@ const Navbar: React.FC = (): JSX.Element => {
           <Button component={Link} to="/search" color="inherit">SEARCH</Button>
           <Button component={Link} to="/dashboard" color="inherit">DASHBOARD</Button>
           <Button component={Link} to="/messages" color="inherit">MESSAGES</Button>
+          <Button component={Link} to="/profile" color="inherit">PROFILE</Button>
         </Toolbar>
       </AppBar>
     </div>

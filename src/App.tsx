@@ -14,6 +14,7 @@ import Search from './components/search/Search';
 import Dashboard from './components/dashboard/Dashboard';
 import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
+import Profile from './components/profile/Profile';
 
 const App: React.FC = (): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
