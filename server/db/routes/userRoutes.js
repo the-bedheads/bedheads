@@ -1,14 +1,5 @@
 const { Router } = require('express');
-
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
+const { User } = require('../index');
 
 const userRouter = Router();
 
