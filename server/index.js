@@ -24,6 +24,7 @@ const DIR = path.join(__dirname, "../build");
 const html_file = path.join(DIR, "index.html");
 app.use(express.static(DIR));
 app.engine("html", require("ejs").renderFile);
+
 app.set("view engine", "html");
 
 /// ///////////////////////// ROUTES ////////////////////////////
@@ -31,12 +32,14 @@ app.use(express.static(path.join(__dirname, "../build")));
 
 app.use("/auth", require("./routes/jwtAuth"));
 app.use("/dashboard", require("./routes/dashboard"));
+
 app.use("/listing", listingRouter);
 app.use("/user", userRouter);
 app.use("/availability", availabilityRouter);
 app.use("/dashboardInfo", dashboardRouter);
 app.use("/request", requestRouter);
 app.use("/map", mapRouter);
+
 app.get("/*", (req, res) => {
   res.render(html_file);
 });
