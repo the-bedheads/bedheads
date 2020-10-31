@@ -6,6 +6,7 @@ require('./db/index.js');
 const { listingRouter } = require('./db/routes/listingRoutes');
 const { userRouter } = require('./db/routes/userRoutes');
 const { availabilityRouter } = require('./db/routes/availabilityRoutes');
+const { mapRouter } = require('./api/Map');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +14,7 @@ const app = express();
 app.use('/listing', listingRouter);
 app.use('/user', userRouter);
 app.use('/availability', availabilityRouter);
+app.use('/map', mapRouter);
 
 app.use(express.static(path.join(__dirname, '../build')));
 app.use(bodyParser.json());
