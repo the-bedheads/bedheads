@@ -17,36 +17,28 @@ import { DateRangePicker } from 'react-dates';
 // }
 
 const DatePicker = () => {
-  const [dateRange, setDateRange] = useState({
-    startDate: null,
-    endDate: null,
-  });
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(null);
 
-  const onDatesChange = () => {
-    console.log('ok');
+  const onDateChange = (dates: any) => {
+    setStartDate(dates.startDate);
+    setEndDate(dates.endDate);
   };
 
-  // const onDatesChange = ({ startDate, endDate }) => {
-  //   setDateRange({
-  //     startDate,
-  //     endDate,
-  //   });
-  // };
-
-  const onFocusChange = () => {
-    console.log('hey');
+  const onFocusChange = (input: any) => {
+    setFocusedInput(input);
   };
 
   return (
     <div className="date-picker">
       <DateRangePicker
-        startDate={dateRange.startDate}
-        endDate={dateRange.endDate}
-        focusedInput={focusedInput}
+        startDate={startDate}
+        endDate={endDate}
         startDateId="yes"
         endDateId="no"
-        onDatesChange={onDatesChange}
+        onDatesChange={onDateChange}
+        focusedInput={focusedInput}
         onFocusChange={onFocusChange}
       />
     </div>
