@@ -1,26 +1,15 @@
 const { Router } = require('express');
 const { Op } = require('sequelize');
 const { moment } = require('moment');
-const { default: availabilities } = require('../../test/sampleData/availabilities');
 
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
+const { Availability } = require('../index');
 
 const availabilityRouter = Router();
 
 availabilityRouter
   .get('/', (req, res) => {
     Availability.findAll()
-      .then((availabilities) => {
-        res.send(availabilities);
-      })
+      .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
 // get availabilites user has currently planned/set
@@ -34,9 +23,7 @@ availabilityRouter
         ],
       },
     })
-      .then((availabilities) => {
-        res.send(availabilities);
-      })
+      .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
   .get('/others/currentUserListing/:listingId', (req, res) => {
@@ -45,9 +32,11 @@ availabilityRouter
       where: {
         [Op.and]: [
           { accepted: false },
-          { listing_id: {
-            [Op.not]: listingId,
-          }},
+          {
+            listing_id: {
+              [Op.not]: listingId,
+            },
+          },
         ],
       },
     })
