@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const DIR = path.join(__dirname, '../build');
-const html_file = path.join(DIR, 'index.html');
+const htmlFile = path.join(DIR, 'index.html');
 app.use(express.static(DIR));
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
@@ -46,7 +46,7 @@ app.use('/map', mapRouter);
 app.use('/image', imageRouter);
 
 app.get('/*', (req, res) => {
-  res.render(html_file);
+  res.render(htmlFile);
 });
 
 app.listen(PORT, () => {
