@@ -12,7 +12,6 @@ availabilityRouter
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-// get availabilites user has currently planned/set
   .get('/currentAvailabilities/:listingId', (req, res) => {
     const { listingId } = req.params;
     Availability.findAll({
