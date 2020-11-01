@@ -42,6 +42,20 @@ availabilityRouter
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
+  .get('/mineIdOnly/:hostId', (req, res) => {
+    const { hostId } = req.params;
+    Availability.findAll({
+      attributes: ['id'],
+      where: {
+        [Op.and]: [
+          { accepted: false },
+          { host_id: hostId },
+        ],
+      },
+    })
+      .then((availabilities) => res.send(availabilities.map(a => a.id)))
+      .catch((err) => res.status(500).send(err));
+  })
   .get('/countSwaps/:userId', (req, res) => {
     const { userId } = req.params;
     Availability.findAndCountAll({
@@ -53,7 +67,7 @@ availabilityRouter
       },
     })
       .then((swaps) => res.send(swaps))
-      .catch((err) => console.log(err));
+      .catch((err) => res.status(500).send(err));
   });
 
 // Set availability
