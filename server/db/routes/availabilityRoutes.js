@@ -20,17 +20,20 @@ availabilityRouter
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-  .get("/currentAvailabilities/:hostId", (req, res) => {
+  .get('/currentAvailabilities/:hostId', (req, res) => {
     const { hostId } = req.params;
     Availability.findAll({
       where: {
-        [Op.and]: [{ accepted: false }, { host_id: hostId }],
+        [Op.and]: [
+          { accepted: false },
+          { host_id: hostId },
+        ],
       },
     })
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-  .get("/others/currentUser/:hostId", (req, res) => {
+  .get('/others/currentUser/:hostId', (req, res) => {
     const { hostId } = req.params;
     Availability.findAll({
       where: {
