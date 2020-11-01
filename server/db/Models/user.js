@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       hostRating: DataTypes.FLOAT,
       inviteCount: DataTypes.INTEGER,
     },
-    { timestamps: false }
+    { timestamps: false },
   );
 
   return User;

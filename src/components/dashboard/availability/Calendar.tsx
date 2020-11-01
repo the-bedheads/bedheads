@@ -1,57 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import moment from 'moment';
 
-const UserCalendar: React.FC = (): JSX.Element => {
-  const [sampleEvents, setSampleEvents] = useState([
-    {
-      title: 'Availability',
-      start: '2020-10-04',
-      end: '2020-10-06',
-      backgroundColor: 'green',
-    },
-    {
-      title: 'Request',
-      start: '2020-10-10',
-      end: '2020-10-12',
-      backgroundColor: 'blue',
-    },
-    {
-      title: 'Confirmed',
-      start: '2020-10-17',
-      end: '2020-10-20',
-      backgroundColor: 'purple',
-    },
-  ]);
+// have to get availability from above and pass it down or else it will render twice
+type UserType = {
+  start: string,
+  end: string,
+  title: string,
+  display: string,
+};
+
+interface CalProps {
+  userA: Array<UserType>,
+}
+const UserCalendar: React.FC<CalProps> = ({ userA }): JSX.Element => {
+  const [userId, setUserId] = useState(1);
+  const [listingId, setListingId] = useState(1);
+  const [avbs, setAvbs] = useState([]);
+
+  useEffect(() => {
+    axios.get(`availability/allAvailabilities/${listingId}`)
+      .then(({ data }) => {
+        console.log(data);
+        setAvbs(data);
+      });
+  }, [listingId]);
 
   // select function
   const onSelect = (info: DateSelectArg) => {
+    // use to edit events on calendar
     const test = info.view.calendar;
     // on select, create event with title "availability"
     const availability = {
       title: 'Availability',
       start: info.startStr,
       end: info.endStr,
-      backgroundColor: 'green',
       overlap: false,
+      display: 'background',
+      userId,
     };
-    test.addEvent(availability);
-    console.log(test.getEvents().filter((event) => event.title === 'Availability'));
+    // logic to prevent duplicate availabilities
+    let flag = true;
+    test.getEvents()
+      .filter((event) => event.title === 'Availability')
+      .forEach((e) => {
+        const firstTest = moment(info.startStr).isBetween(e.start, e.end);
+        const secondTest = moment(info.endStr).isBetween(e.start, e.end);
+        const thirdTest = moment(info.startStr).isSame(e.start);
+        const fourthTest = moment(e.start).isBetween(info.startStr, info.endStr);
+        const fifthTest = moment(e.end).isBetween(info.startStr, info.endStr);
+        const sixthTest = moment(info.endStr).isSame(e.end);
+        if (firstTest || secondTest || thirdTest || fourthTest || fifthTest) {
+          flag = false;
+        }
+        // if selection matches a currently displayed event
+        if (thirdTest && sixthTest) {
+          // if stored in database, delete it from DB
+          axios.delete('availability', { params: { startDate: info.startStr, endDate: info.endStr, listingId } });
+          // delete event
+          e.remove();
+        }
+      });
+    if (flag) {
+      test.addEvent(availability);
+      axios.post('/availability/setAvailability', { availability });
+    }
+    // send axios request to server that updates availability
   };
-  // send axios request to server that updates availability
 
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"
-      events={sampleEvents}
+      events={avbs}
       selectable
-      eventStartEditable
-      eventResizableFromStart
       eventOverlap={false}
-      eventDurationEditable
       select={(info) => onSelect(info)}
+      eventBackgroundColor="green"
     />
   );
 };
