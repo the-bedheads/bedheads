@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import Landing from './components/landing/Landing';
 import Login from './components/landing/auth/Login';
 import SignUp from './components/landing/auth/Signup';
+import UserCalendar from './components/dashboard/availability/Calendar';
 
 ReactDOM.render(
   <React.StrictMode>

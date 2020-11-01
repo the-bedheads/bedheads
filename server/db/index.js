@@ -57,5 +57,5 @@ db.sync()
 // module.exports = models;
 
 module.exports = {
-  db, models, User
-}
+  db, models, User, Listing, Availability, Request,
+};
