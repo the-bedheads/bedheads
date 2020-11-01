@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import {
   Grid, Container, Box, Button, makeStyles, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogContentText,
-  TextField, DialogActions,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import EditBio from './EditBio';
 
 type UserType = {
   image: string,
@@ -65,7 +64,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
+const UserProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [bio, setBio] = useState(user.userBio);
@@ -80,7 +79,6 @@ const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => 
       // save changes to DB
       // update field on screen
       setBio(tempBio);
-      console.log(i);
     }
     setOpen(false);
   };
@@ -90,7 +88,6 @@ const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => 
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    console.log(e.target.value);
     setTempBio(e.target.value);
   };
 
@@ -110,38 +107,23 @@ const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => 
               variant="contained"
               color="primary"
             >
-              Availability
+              Update your listing
             </Button>
           </Box>
         </Grid>
         <Grid item xs={12}>
           <Container className={classes.infoStyle}>
             {bio}
-            <IconButton className={classes.editStyle}>
-              <EditIcon className={classes.overlayStyle} onClick={handleOpen} />
+            <IconButton className={classes.editStyle} onClick={handleOpen}>
+              <EditIcon className={classes.overlayStyle} />
             </IconButton>
-            <Dialog open={open} onClose={handleClickOff} fullWidth maxWidth="md" aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">Edit your Bio</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  multiline
-                  rows={3}
-                  variant="outlined"
-                  defaultValue={bio}
-                  fullWidth
-                  onChange={(e) => handleTextChange(e)}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={(i) => handleClose(i, false)} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={(i) => handleClose(i, true)} color="primary">
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <EditBio
+              handleClose={handleClose}
+              handleClickOff={handleClickOff}
+              handleTextChange={handleTextChange}
+              bio={bio}
+              open={open}
+            />
           </Container>
         </Grid>
       </Container>
@@ -149,4 +131,4 @@ const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => 
   );
 };
 
-export default ProfileInfo;
+export default UserProfileInfo;

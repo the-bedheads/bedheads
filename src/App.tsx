@@ -15,7 +15,7 @@ import Search from './components/search/Search';
 import Dashboard from './components/dashboard/Dashboard';
 import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
-import Profile from './components/profile/Profile';
+import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
 
 toast.configure();
@@ -92,6 +92,16 @@ const App: React.FC = (): JSX.Element => {
           strict
           path="/messages"
           component={Messages}
+        />
+        <Route
+          exact
+          path="/profile"
+          component={UserProfile}
+        />
+        <Route
+          exact
+          path="/calendar"
+          component={UserCalendar}
         />
       </Switch>
     </BrowserRouter>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import axios from 'axios';
-import ProfileInfo from './UserProfileInfo';
-import SidebarInfo from './SidebarInfo';
+import UserProfileInfo from './UserProfileInfo';
+import UserSidebarInfo from './UserSidebarInfo';
 
 const useStyles = makeStyles({
   main: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile = () => {
+const UserProfile = () => {
   const classes = useStyles();
   const [user, setUser] = useState({
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
@@ -25,13 +25,13 @@ const Profile = () => {
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
       <Grid item xs={3}>
-        <SidebarInfo user={user} />
+        <UserSidebarInfo user={user} />
       </Grid>
       <Grid item xs={9}>
-        <ProfileInfo user={user} />
+        <UserProfileInfo user={user} />
       </Grid>
     </Grid>
   );
 };
 
-export default Profile;
+export default UserProfile;
