@@ -7,13 +7,6 @@ import Login from './components/landing/auth/Login';
 import SignUp from './components/landing/auth/Signup';
 import UserCalendar from './components/dashboard/availability/Calendar';
 
-const userA = [{
-  start: '2020-12-06',
-  end: '2020-12-09',
-  title: 'Availability',
-  display: 'background',
-}];
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
