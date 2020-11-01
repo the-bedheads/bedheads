@@ -1,4 +1,4 @@
-import React, { Fragment, SyntheticEvent, useState } from 'react';
+import React, { useEffect, SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 // Declare the type of data that will be handled in onSubmit function
@@ -11,22 +11,21 @@ interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
-const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setIsAuthenticated] }) => {
+const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const { errors } = useForm<LoginExistingUser>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const loginUser = () => {
-    setIsAuthenticated(true);
+    setAuth(true);
   };
 
   const logoutUser = () => {
-    setIsAuthenticated(false);
+    setAuth(false);
   };
 
   const onLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log('1');
     try {
       const body = {
         email, password,
@@ -38,12 +37,12 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setIsAuthen
         },
         body: JSON.stringify(body),
       });
-      console.log('2');
+
       const parseRes = await response.json();
-      console.log(parseRes.token);
+      console.log(parseRes.jwtToken);
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
-        loginUser();
+        setAuth(true);
         console.log('Logged in? ', isAuthenticated);
         toast.success('Logged in successfully!');
       }
@@ -51,6 +50,12 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setIsAuthen
       console.error(err.message);
     }
   };
+
+  const checkAuthState = () => isAuthenticated;
+
+  // useEffect(() => {
+  //   checkAuthState();
+  // }, []);
 
   return (
     <>

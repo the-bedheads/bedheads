@@ -49,13 +49,13 @@ const Dashboard = () => {
       setUserName(info.first_name);
       setUserId(info.id);
     })
-    .then(() => {
-      axios.get(`/listing/user/${userId}`)
-        .then(({ data }) => {
-          console.log(data);
-        })
-        .catch(() => console.log('no listing found for that user'));
-    })
+    // .then(() => {
+    //   axios.get(`/listing/user/${userId}`)
+    //     .then(({ data }) => {
+    //       console.log(data);
+    //     })
+    //     .catch(() => console.log('no listing found for that user'));
+    // })
     .catch((err) => console.error(err));
 
   useEffect(() => {
@@ -67,13 +67,13 @@ const Dashboard = () => {
         setUserId(info.id);
         return info.id;
       })
-      .then((id) => {
-        axios.get(`/listing/user/${id}`)
-          .then(({ data }) => {
-            console.log(data, 'data');
-          })
-          .catch(() => console.log('no listing found for that user'));
-      })
+      // .then((id) => {
+      //   axios.get(`/listing/user/${id}`)
+      //     .then(({ data }) => {
+      //       console.log(data, 'data');
+      //     })
+      //     .catch(() => console.log('no listing found for that user'));
+      // })
       .catch((err) => console.error(err));
   }, []);
 

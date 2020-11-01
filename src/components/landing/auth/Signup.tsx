@@ -13,13 +13,16 @@ type RegisterNewUser = {
   password: string;
 };
 
-const SignUp = () => {
+interface AuthProps {
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const { errors } = useForm<RegisterNewUser>();
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isAuthenticated, setAuth] = useState<boolean>(true);
 
   const onSubmitForm = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -45,6 +48,7 @@ const SignUp = () => {
         console.log(parseRes.jwtToken);
         localStorage.setItem('token', parseRes.jwtToken);
         setAuth(true);
+        console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');
       } else {
         console.log('no token');
@@ -61,7 +65,7 @@ const SignUp = () => {
       <div className="container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <form>
+          <form onSubmit={onSubmitForm}>
             <div className="form-group align-center my-5">
               <label htmlFor="first-name">
                 First Name
@@ -134,7 +138,6 @@ const SignUp = () => {
               <button
                 className="btn btn-success btn-block"
                 type="submit"
-                onClick={onSubmitForm}
               >
                 Register
               </button>

@@ -3,17 +3,17 @@ const { db, User } = require("../db/index.js");
 const bcrypt = require("bcryptjs");
 const validEmail = require("../utils/validEmail");
 const generateToken = require("../utils/jsonWebToken");
-const authorization = require("../utils/authorize");
+const authorize = require("../utils/authorize");
 
 // Signup/Register
 router.post("/register", async (req, res) => {
   //1. Destructure the req.body (name, email, password)
   // Change back to camel case
-  const { firstName, lastName, email, password } = req.body;
+  const { first_name, last_name, email, password } = req.body;
   try {
     //2. Check if user exists
     console.log(req.body);
-    console.log("Entered variables", firstName, lastName, email, password);
+    console.log("Entered variables", first_name, last_name, email, password);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -26,12 +26,18 @@ router.post("/register", async (req, res) => {
 
       // Insert user into database
       // Change back to camel case
-      const newUser = await db.query(`INSERT INTO users (first_name, last_name, email, password) 
-            VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
-      console.log(newUser.id);
-      const jwtToken = generateToken(newUser);
+      await db.query(`INSERT INTO users (first_name, last_name, email, password) 
+      VALUES ('${first_name}', '${last_name}', '${email}', '${hashedPassword}');`);
 
-      res.status(200).send("User successfully added!");
+      const user = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+      console.log("USER ID   ", user.id);
+      const jwtToken = generateToken(user.id);
+      console.log("NUT LMAO", jwtToken);
+      return res.json({ jwtToken });
     } else {
       // 2.b. If user already exists, throw error
       res.status(401).send("Already registered");
@@ -71,7 +77,7 @@ router.post("/login", validEmail, async (req, res) => {
   }
 });
 
-router.get("/is-verified", authorization, async (req, res) => {
+router.post("/verify", authorize, (req, res) => {
   try {
     res.json(true);
   } catch (err) {
@@ -80,8 +86,8 @@ router.get("/is-verified", authorization, async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  res.json({ message: "👽" });
-});
+// router.get("/", (req, res) => {
+//   res.json({ message: "👽" });
+// });
 
 module.exports = router;

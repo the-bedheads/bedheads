@@ -14,10 +14,10 @@ module.exports = (req, res, next) => {
 
   // Otherwise, verify the session
   try {
-    // user id => (user:{id: user.id})
     const verify = jwt.verify(token, webTokenSecret);
+    console.log("req.user", req.user);
     req.user = verify.user;
-    res.send("User verified with token!");
+    console.log("is verified");
     next();
   } catch (err) {
     res.status(401).json({ msg: "Invalid web token" });

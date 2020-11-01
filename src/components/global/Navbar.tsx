@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import {
   makeStyles, Typography,
   AppBar, Toolbar, Button,
@@ -15,8 +15,19 @@ const useStyles = makeStyles({
   },
 });
 
-const Navbar: React.FC = (): JSX.Element => {
+interface AuthProps {
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }): JSX.Element => {
   const classes = useStyles();
+
+  const logoutUser = (event: SyntheticEvent) => {
+    event.preventDefault();
+    localStorage.removeItem('token');
+    setAuth(false);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -29,6 +40,7 @@ const Navbar: React.FC = (): JSX.Element => {
           <Button component={Link} to="/dashboard" color="inherit">DASHBOARD</Button>
           <Button component={Link} to="/messages" color="inherit">MESSAGES</Button>
           <Button component={Link} to="/profile" color="inherit">PROFILE</Button>
+          <Button onClick={logoutUser} color="inherit">LOGOUT</Button>
         </Toolbar>
       </AppBar>
     </div>
