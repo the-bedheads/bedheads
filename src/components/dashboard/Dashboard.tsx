@@ -17,6 +17,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownListing, setShownListing] = useState<any>([]);
   const [swapCount, setSwapCount] = useState(0);
+  const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
   const getProfile = async () => {
     try {
@@ -43,8 +44,28 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     }
   };
 
+  // useEffect(() => {
+  //   getProfile();
+  const getDashboardInfo = () => {
+    axios.get('/dashboardInfo', {
+      params: {
+        userId,
+        listingId,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+        setSwapCount(data.confirmedSwapCount);
+        setPendingRequestCount(data.pendingRequests.count);
+        setRandomListings(data.openAvailabilities);
+        console.log('swapCount:', swapCount);
+        console.log('request count:', pendingRequestCount);
+        console.log('random listings:', randomListings);
+      });
+  // };
+
   useEffect(() => {
-    getProfile();
+    getDashboardInfo();
   }, []);
 
   return (
@@ -59,7 +80,14 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
         User notifications go here
       </div>
       <div id="random-listing">
-        Wanna get away?
+        <p>Wanna get away?</p>
+        <p>
+          There are
+          {' '}
+          {randomListings.length}
+          {' '}
+          open places. Here is one of them:
+        </p>
         {'There is a listing you might like from some <random_location>'}
         {' '}
         {'from <start_date> until <end_date>'}
