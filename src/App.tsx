@@ -95,6 +95,7 @@ const App: React.FC = (): JSX.Element => {
         />
       </Switch>
     </BrowserRouter>
+
   );
 };
 
