@@ -15,9 +15,9 @@ module.exports = (req, res, next) => {
   // Otherwise, verify the session
   try {
     const verify = jwt.verify(token, webTokenSecret);
-    console.log("req.user", req.user);
+    console.log("req.user", req.user); // { id: 17 }
     req.user = verify.user;
-    console.log("is verified");
+    console.log("is verified", verify.user);
     next();
   } catch (err) {
     res.status(401).json({ msg: "Invalid web token" });

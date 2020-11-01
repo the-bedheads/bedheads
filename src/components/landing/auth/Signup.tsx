@@ -7,8 +7,8 @@ import user from '../../../../server/db/Models/user';
 
 // Declare the type of data that will be handled in onSubmit function
 type RegisterNewUser = {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 };
@@ -51,7 +51,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
         console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');
       } else {
-        console.log('no token');
         setAuth(false);
         toast.error(parseRes);
       }
@@ -77,7 +76,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                {errors.firstName && <div className="error">Enter Your First Name</div>}
+                {errors.first_name && <div className="error">Enter Your First Name</div>}
               </label>
             </div>
             <div className="form-group align-center">
@@ -91,7 +90,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
-                {errors.lastName && <div className="error">Enter Your Last Name</div>}
+                {errors.last_name && <div className="error">Enter Your Last Name</div>}
               </label>
             </div>
             <div className="form-group align-center">
@@ -142,7 +141,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                 Register
               </button>
               <br />
-              <a href="/login">Already registered? Login here.</a>
+              <a href="/">Already registered? Login here.</a>
             </div>
           </form>
         </div>

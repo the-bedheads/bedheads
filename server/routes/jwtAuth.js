@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
       return res.json({ jwtToken });
     } else {
       // 2.b. If user already exists, throw error
-      res.status(401).send("Already registered");
+      return res.status(401).json("Already registered");
     }
 
     // 3. Generate JWT

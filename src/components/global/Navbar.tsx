@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import {
   makeStyles, Typography,
   AppBar, Toolbar, Button,
@@ -21,6 +21,7 @@ interface AuthProps {
 
 const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }): JSX.Element => {
   const classes = useStyles();
+  const [isUserAuthenticated, setIsAuthenticated] = useState(false);
 
   const logoutUser = (event: SyntheticEvent) => {
     event.preventDefault();

@@ -47,15 +47,10 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
         toast.success('Logged in successfully!');
       }
     } catch (err) {
+      toast.error('Invalid credentials entered!');
       console.error(err.message);
     }
   };
-
-  const checkAuthState = () => isAuthenticated;
-
-  // useEffect(() => {
-  //   checkAuthState();
-  // }, []);
 
   return (
     <>
