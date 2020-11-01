@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useState, useEffect, SyntheticEvent } from 'react';
-=======
-import React, { useState, useEffect } from 'react';
->>>>>>> (add) divs for different info sections on dashboard
 import axios from 'axios';
 import { createGenerateClassName } from '@material-ui/core';
 import { toast } from 'react-toastify';
@@ -56,7 +52,8 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       Dashboard Page (Where the user arrives after logging in)
       <h4>
         Hello,
-        {userName}!!
+        {userName}
+        !!
       </h4>
       <div id="user-notifications">
         User notifications go here

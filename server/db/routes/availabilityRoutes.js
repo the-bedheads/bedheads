@@ -12,28 +12,28 @@ availabilityRouter
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-  .get('/currentAvailabilities/:listingId', (req, res) => {
-    const { listingId } = req.params;
+  .get('/currentAvailabilities/:hostId', (req, res) => {
+    const { hostId } = req.params;
     Availability.findAll({
       where: {
         [Op.and]: [
           { accepted: false },
-          { listing_id: listingId },
+          { host_id: hostId },
         ],
       },
     })
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-  .get('/others/currentUserListing/:listingId', (req, res) => {
-    const { listingId } = req.params;
+  .get('/others/currentUser/:hostId', (req, res) => {
+    const { hostId } = req.params;
     Availability.findAll({
       where: {
         [Op.and]: [
           { accepted: false },
           {
-            listing_id: {
-              [Op.not]: listingId,
+            host_id: {
+              [Op.not]: hostId,
             },
           },
         ],
@@ -41,6 +41,19 @@ availabilityRouter
     })
       .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
+  })
+  .get('/countSwaps/:userId', (req, res) => {
+    const { userId } = req.params;
+    Availability.findAndCountAll({
+      where: {
+        [Op.and]: [
+          { accepted: true },
+          { host_id: userId },
+        ],
+      },
+    })
+      .then((swaps) => res.send(swaps))
+      .catch((err) => console.log(err));
   });
 
 // Set availability
