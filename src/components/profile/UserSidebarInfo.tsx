@@ -8,6 +8,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import EditProfilePic from './EditProfilePic';
+import EditUserInfo from './EditUserInfo';
 
 type UserType = {
   image: string,
@@ -39,8 +40,8 @@ const useStyles = makeStyles({
     borderStyle: 'solid',
     justifyContent: 'center',
     width: '50%',
-    paddingTop: '5px',
-    paddingBottom: '5px',
+    marginTop: '5px',
+    marginBottom: '5px',
   },
   textStyle: {
     textAlign: 'center',
@@ -76,12 +77,21 @@ const useStyles = makeStyles({
 const UserSidebarInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [picOpen, setPicOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
   const [pic, setPic] = useState(user.image);
+  const [name, setName] = useState(user.name);
+  const [pronouns, setPronouns] = useState(user.pronouns);
+  const [location, setLocation] = useState(user.location);
   const [tempPic, setTempPic] = useState(pic);
+  const [tempName, setTempName] = useState(user.name);
+  const [tempPronouns, setTempPronouns] = useState(user.pronouns);
+  const [tempLocation, setTempLocation] = useState(user.location);
 
   const handleOpen = (type: string) => {
     if (type === 'pic') {
       setPicOpen(true);
+    } else {
+      setInfoOpen(true);
     }
   };
 
@@ -97,17 +107,45 @@ const UserSidebarInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element
         setPic(tempPic);
       }
       setPicOpen(false);
+    } else {
+      if (check) {
+        if (name !== tempName) {
+          setName(tempName);
+        }
+        if (pronouns !== tempPronouns) {
+          setPronouns(tempPronouns);
+        }
+        if (location !== tempLocation) {
+          setLocation(tempLocation);
+        }
+        // save changes to DB
+        // update field on screen
+      }
+      setInfoOpen(false);
     }
   };
 
   const handleClickOff = (type: string) => {
     if (type === 'pic') {
       setPicOpen(false);
+    } else {
+      setInfoOpen(false);
     }
   };
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setTempPic(e.target.value);
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    type: string,
+  ) => {
+    if (type === 'pic') {
+      setTempPic(e.target.value);
+    } else if (type === 'name') {
+      setTempName(e.target.value);
+    } else if (type === 'pronouns') {
+      setTempPronouns(e.target.value);
+    } else if (type === 'location') {
+      setTempLocation(e.target.value);
+    }
   };
 
   return (
@@ -129,32 +167,31 @@ const UserSidebarInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element
           picOpen={picOpen}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} className={classes.picOverlayStyle}>
         <Container className={classes.infoStyle}>
           <Box className={classes.textStyle}>
-            {user.name}
+            {name}
           </Box>
           <Box className={classes.textStyle}>
-            {user.pronouns}
+            {pronouns}
           </Box>
           <Box className={classes.textStyle}>
-            {user.location}
+            {location}
           </Box>
+          <IconButton className={classes.editStyle} onClick={() => handleOpen('info')}>
+            <EditIcon className={classes.overlayStyle} />
+          </IconButton>
+          <EditUserInfo
+            handleClose={handleClose}
+            handleClickOff={handleClickOff}
+            handleTextChange={handleTextChange}
+            name={name}
+            pronouns={pronouns}
+            location={location}
+            infoOpen={infoOpen}
+            picOpen={picOpen}
+          />
         </Container>
-      </Grid>
-      <Grid item xs={12}>
-        <Box className={classes.buttonStyle}>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/messages"
-          >
-            Message
-            {' '}
-            {user.name}
-          </Button>
-        </Box>
       </Grid>
       {/* <Grid item xs={12}>
         spotify

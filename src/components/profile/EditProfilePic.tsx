@@ -10,7 +10,10 @@ interface BioProps {
     type: string,
   ) => void,
   handleClickOff: (type: string) => void,
-  handleTextChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void,
+  handleTextChange: (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    type: string
+  ) => void,
   pic: string,
   picOpen: boolean,
 }
