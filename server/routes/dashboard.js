@@ -12,6 +12,7 @@ router.post("/dashboard", authorize, async (req, res) => {
         id: id,
       },
     });
+    console.log(user);
     res.send(user.first_name);
   } catch (err) {
     console.error(err.message);

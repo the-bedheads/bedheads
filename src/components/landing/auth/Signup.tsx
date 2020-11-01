@@ -19,7 +19,7 @@ const SignUp = () => {
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isAuthenticated, setAuth] = useState<boolean>(false);
+  const [isAuthenticated, setAuth] = useState<boolean>(true);
 
   const onSubmitForm = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -118,8 +118,8 @@ const SignUp = () => {
                 {errors.password && <div className="error">Enter Your Password</div>}
               </label>
             </div>
-            <div className="field">
-              {/* <label htmlFor="verification-code">
+            {/* <div className="field"> */}
+            {/* <label htmlFor="verification-code">
             Enter Verification Code
             <input
               type="text"
@@ -129,7 +129,7 @@ const SignUp = () => {
             />
             {errors.name && <div className="error">Enter a valid verfication code</div>}
           </label> */}
-            </div>
+            {/* </div> */}
             <div className="form-group align-center">
               <button
                 className="btn btn-success btn-block"

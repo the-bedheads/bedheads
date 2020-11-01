@@ -1,53 +1,104 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { toast } from 'react-toastify';
 // Declare the type of data that will be handled in onSubmit function
 type LoginExistingUser = {
   email: string;
   password: string;
 };
 
-const Login = () => {
+interface AuthProps {
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setIsAuthenticated] }) => {
   const { errors } = useForm<LoginExistingUser>();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const loginUser = () => {
+    setIsAuthenticated(true);
+  };
+
+  const logoutUser = () => {
+    setIsAuthenticated(false);
+  };
+
+  const onLogin = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    console.log('1');
+    try {
+      const body = {
+        email, password,
+      };
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      console.log('2');
+      const parseRes = await response.json();
+      console.log(parseRes.token);
+      if (parseRes.jwtToken) {
+        localStorage.setItem('token', parseRes.jwtToken);
+        loginUser();
+        console.log('Logged in? ', isAuthenticated);
+        toast.success('Logged in successfully!');
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   return (
     <>
-      <h1 className="text-center my-5">Login</h1>
-      <form action="/login" method="POST">
-        <div className="field">
-          <label htmlFor="email">
-            Email
-            <input
-              className="form-control my-3"
-              type="text"
-              id="email"
-              name="email"
-              placeholder="Email address"
-            />
-            {errors.email && <div className="error"> Enter A Valid Email </div>}
-          </label>
+      <div className="container">
+        <h1 className="text-center my-5">Login</h1>
+        <div className="row justify-content-center">
+          <form onSubmit={onLogin}>
+            <div className="form-group">
+              <label htmlFor="email">
+                Email
+                <input
+                  className="form-control my-3"
+                  type="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && <div className="error"> Enter A Valid Email </div>}
+              </label>
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">
+                Enter Password
+                <input
+                  className="form-control my-3"
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Create Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && <div className="error">Enter A Valid Password </div>}
+              </label>
+            </div>
+            <div className="button">
+              <button
+                className="btn btn-success btn-block"
+                type="submit"
+              >
+                Start Swapping
+              </button>
+              <a href="/register">Have a verification code? Sign Up Here</a>
+            </div>
+          </form>
         </div>
-        <div className="password">
-          <label htmlFor="password">
-            Enter Password
-            <input
-              className="form-control my-3"
-              type="text"
-              id="password"
-              name="password"
-              placeholder="Create Password"
-            />
-            {errors.password && <div className="error">Enter A Valid Password </div>}
-          </label>
-        </div>
-        <button
-          className="btn btn-success btn-block"
-          type="submit"
-        >
-          Start Swapping
-        </button>
-        <a href="/register">Have a verification code? Sign Up Here</a>
-      </form>
+      </div>
     </>
   );
 };

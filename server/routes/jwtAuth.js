@@ -7,10 +7,10 @@ const authorization = require("../utils/authorize");
 
 // Signup/Register
 router.post("/register", async (req, res) => {
+  //1. Destructure the req.body (name, email, password)
+  // Change back to camel case
+  const { firstName, lastName, email, password } = req.body;
   try {
-    //1. Destructure the req.body (name, email, password)
-    // Change back to camel case
-    const { firstName, lastName, email, password } = req.body;
     //2. Check if user exists
     console.log(req.body);
     console.log("Entered variables", firstName, lastName, email, password);
@@ -19,15 +19,18 @@ router.post("/register", async (req, res) => {
         email: email,
       },
     });
-    if (existingUser === null) {
+    if (existingUser === null && email.length && password.length >= 6) {
       //2.a. If not, bcrypt user's password
       const hashedPassword = await bcrypt.hash(password, 10);
       console.log(hashedPassword);
 
       // Insert user into database
       // Change back to camel case
-      await db.query(`INSERT INTO users (first_name, last_name, email, password) 
+      const newUser = await db.query(`INSERT INTO users (first_name, last_name, email, password) 
             VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
+      console.log(newUser.id);
+      const jwtToken = generateToken(newUser);
+
       res.status(200).send("User successfully added!");
     } else {
       // 2.b. If user already exists, throw error
@@ -55,11 +58,12 @@ router.post("/login", validEmail, async (req, res) => {
       return res.status(401).send("Invalid credentials, line 53");
     }
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log(validPassword);
+    console.log("password is valid?", validPassword);
     if (!validPassword) {
       return res.status(401).send("Invalid Password, line 58");
     }
     const jwtToken = generateToken(user.id);
+    console.log({ jwtToken });
     return res.send({ jwtToken });
   } catch (err) {
     console.error(err.message);
@@ -79,4 +83,5 @@ router.get("/is-verified", authorization, async (req, res) => {
 router.get("/", (req, res) => {
   res.json({ message: "👽" });
 });
+
 module.exports = router;
