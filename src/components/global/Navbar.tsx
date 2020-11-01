@@ -25,6 +25,7 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const classes = useStyles();
   const [isUserAuthenticated, setIsAuthenticated] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +39,14 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
     event.preventDefault();
     localStorage.removeItem('token');
     setAuth(false);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (

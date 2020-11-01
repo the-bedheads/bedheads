@@ -100,7 +100,7 @@ const App: React.FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <Login handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/dashboard" />
-          ))}
+            ))}
         />
         <Route
           exact
@@ -109,7 +109,7 @@ const App: React.FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-          ))}
+            ))}
         />
         <Route
           exact
@@ -118,7 +118,7 @@ const App: React.FC = (): JSX.Element => {
           render={() => (isAuthenticated ? (
             <Dashboard handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-          ))}
+            ))}
         />
         <Route
           exact
