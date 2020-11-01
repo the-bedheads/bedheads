@@ -26,7 +26,7 @@ requestRouter
       },
     })
       .then((requests) => res.send(requests))
-      .catch((err) => console.log(err));
+      .catch((err) => res.status(500).send(err));
   })
   .get('/count/byAvailabilityId/:availabilityId', (req, res) => {
     const { availabilityId } = req.params;
@@ -36,9 +36,18 @@ requestRouter
       },
     })
       .then((count) => res.send(count))
-      .catch((err) => console.log(err));
-  });
-
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/countByArray', (req, res) => {
+    const { arr } = req.query;
+    Request.findAndCountAll({
+      where: {
+        availability_id: arr,
+      },
+    })
+      .then((count) => res.send(count))
+      .catch((err) => res.status(500).send(err));
+  })
 module.exports = {
   requestRouter,
 };
