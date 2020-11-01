@@ -61,8 +61,18 @@ const App: React.FC = (): JSX.Element => {
           />
           <Route
             exact
+            path="/profile"
+            component={Profile}
+          />
+          <Route
+            exact
             path="/messages"
             component={Messages}
+          />
+          <Route
+            exact
+            path="/calendar"
+            component={UserCalendar}
           />
         </Switch>
       </div>

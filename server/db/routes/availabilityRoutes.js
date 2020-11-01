@@ -19,7 +19,6 @@ availabilityRouter
   .get('/', (req, res) => {
     Availability.findAll()
       .then((availabilities) => {
-        console.log(availabilities);
         res.send(availabilities);
       })
       .catch((err) => res.status(500).send(err));
@@ -73,7 +72,10 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
     startDate: start,
     endDate: end,
   })
-    .then((newListing) => console.log(newListing))
+    .then(() => {
+      console.log('Availability created');
+      res.status(201).send('complete');
+    })
     .catch((err) => console.log(err));
 });
 
@@ -105,7 +107,7 @@ availabilityRouter
             id: item.dataValues.id,
           });
         });
-        res.send(final);
+        res.status(200).send(final);
       })
       .catch((err) => res.status(500).send(err));
   });
@@ -114,7 +116,6 @@ availabilityRouter
 availabilityRouter
   .delete('/', (req, res) => {
     const { startDate, endDate, listingId } = req.query;
-    console.log(startDate, endDate, listingId);
     Availability.findOne({
       where: {
         listing_id: listingId,
@@ -123,8 +124,9 @@ availabilityRouter
       },
     })
       .then((avlb) => {
-        console.log(avlb);
         avlb.destroy();
+        console.log('Availability deleted');
+        res.status(201).send('complete');
       })
       .catch((err) => res.status(500).send(err));
   });
