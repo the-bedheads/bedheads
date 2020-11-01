@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const axios = require('axios');
 const { Op } = require('sequelize');
+const fetch = require("node-fetch");
 
 const {
   User,
