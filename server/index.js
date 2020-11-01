@@ -1,16 +1,16 @@
-require('dotenv').config();
-require('./db/index.js');
+require("dotenv").config();
+require("./db/index.js");
 
 const PORT = process.env.PORT || 3000;
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const { listingRouter } = require('./db/routes/listingRoutes');
-const { userRouter } = require('./db/routes/userRoutes');
-const { availabilityRouter } = require('./db/routes/availabilityRoutes');
-const { mapRouter } = require('./api/Map');
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const { listingRouter } = require("./db/routes/listingRoutes");
+const { userRouter } = require("./db/routes/userRoutes");
+const { availabilityRouter } = require("./db/routes/availabilityRoutes");
+const { mapRouter } = require("./api/Map");
 
 /// ///////////////////////// MIDDLEWARE ////////////////////////////
 
@@ -18,19 +18,32 @@ const app = express();
 app.use(express.json()); // req.body
 app.use(cors());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+const DIR = path.join(__dirname, "../build");
+const html_file = path.join(DIR, "index.html");
+app.use(express.static(DIR));
+app.engine("html", require("ejs").renderFile);
+app.set("view engine", "html");
 
 /// ///////////////////////// ROUTES ////////////////////////////
 
-app.use('/auth', require('./routes/jwtAuth'));
-app.use('/dashboard', require('./routes/dashboard'));
+app.use("/auth", require("./routes/jwtAuth"));
+app.use("/dashboard", require("./routes/dashboard"));
 
-app.use('/listing', listingRouter);
-app.use('/user', userRouter);
-app.use('/availability', availabilityRouter);
-app.use('/map', mapRouter);
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, "../build")));
 
-/// ///////////////////////// CONFIRM DATABASE CONNECTION ////////////////////////////
+app.use("/auth", require("./routes/jwtAuth"));
+app.use("/dashboard", require("./routes/dashboard"));
+app.use("/listing", listingRouter);
+app.use("/user", userRouter);
+app.use("/availability", availabilityRouter);
+app.use("/map", mapRouter);
+
+app.get("/*", (req, res) => {
+  res.render(html_file);
+});
+//////////////////////////// CONFIRM DATABASE CONNECTION ////////////////////////////
 app.listen(PORT, () => {
   console.log(`Listening on port :${PORT}!`);
 });

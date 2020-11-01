@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import {
   makeStyles, Typography, AppBar, Toolbar, Button, MenuItem, Menu, IconButton, Avatar,
 } from '@material-ui/core';
@@ -17,9 +17,14 @@ const useStyles = makeStyles({
   },
 });
 
-const Navbar: React.FC = (): JSX.Element => {
+interface AuthProps {
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+                
+const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const classes = useStyles();
+  const [isUserAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +33,12 @@ const Navbar: React.FC = (): JSX.Element => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
+   const logoutUser = (event: SyntheticEvent) => {
+    event.preventDefault();
+    localStorage.removeItem('token');
+    setAuth(false);
+   };
 
   return (
     <div className={classes.root}>
@@ -37,6 +48,7 @@ const Navbar: React.FC = (): JSX.Element => {
             🛏
           </Typography>
           <Button component={Link} to="/" color="inherit">HOME</Button>
+        
           <Button component={Link} to="/search" color="inherit" className={classes.title}>SEARCH</Button>
           <IconButton
             aria-controls="customized-menu"
