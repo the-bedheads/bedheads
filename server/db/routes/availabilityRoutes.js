@@ -1,57 +1,72 @@
 const { Router } = require('express');
 const { Op } = require('sequelize');
 const { moment } = require('moment');
-const { default: availabilities } = require('../../test/sampleData/availabilities');
 
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
+const { Availability } = require('../index');
 
 const availabilityRouter = Router();
 
 availabilityRouter
   .get('/', (req, res) => {
     Availability.findAll()
-      .then((availabilities) => {
-        res.send(availabilities);
-      })
+      .then((availabilities) => res.send(availabilities))
       .catch((err) => res.status(500).send(err));
   })
-// get availabilites user has currently planned/set
-  .get('/currentAvailabilities/:listingId', (req, res) => {
-    const { listingId } = req.params;
+  .get('/currentAvailabilities/:hostId', (req, res) => {
+    const { hostId } = req.params;
     Availability.findAll({
       where: {
         [Op.and]: [
           { accepted: false },
-          { listing_id: listingId },
-        ],
-      },
-    })
-      .then((availabilities) => {
-        res.send(availabilities);
-      })
-      .catch((err) => res.status(500).send(err));
-  })
-  .get('/others/currentUserListing/:listingId', (req, res) => {
-    const { listingId } = req.params;
-    Availability.findAll({
-      where: {
-        [Op.and]: [
-          { accepted: false },
-          { listing_id: {
-            [Op.not]: listingId,
-          }},
+          { host_id: hostId },
         ],
       },
     })
       .then((availabilities) => res.send(availabilities))
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/others/currentUser/:hostId', (req, res) => {
+    const { hostId } = req.params;
+    Availability.findAll({
+      where: {
+        [Op.and]: [
+          { accepted: false },
+          {
+            host_id: {
+              [Op.not]: hostId,
+            },
+          },
+        ],
+      },
+    })
+      .then((availabilities) => res.send(availabilities))
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/mineIdOnly/:hostId', (req, res) => {
+    const { hostId } = req.params;
+    Availability.findAll({
+      attributes: ['id'],
+      where: {
+        [Op.and]: [
+          { accepted: false },
+          { host_id: hostId },
+        ],
+      },
+    })
+      .then((availabilities) => res.send(availabilities.map(a => a.id)))
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/countSwaps/:userId', (req, res) => {
+    const { userId } = req.params;
+    Availability.findAndCountAll({
+      where: {
+        [Op.and]: [
+          { accepted: true },
+          { host_id: userId },
+        ],
+      },
+    })
+      .then((swaps) => res.send(swaps))
       .catch((err) => res.status(500).send(err));
   });
 

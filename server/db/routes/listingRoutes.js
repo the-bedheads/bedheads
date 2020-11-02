@@ -26,9 +26,18 @@ listingRouter
       },
     })
       .then((listing) => {
-        console.log(listing);
         res.send(listing);
       })
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/byId/:listingId', (req, res) => {
+    const { listingId } = req.params;
+    Listing.findOne({
+      where: {
+        id: listingId,
+      },
+    })
+      .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
   });
 

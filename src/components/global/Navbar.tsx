@@ -48,7 +48,6 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             🛏
           </Typography>
           <Button component={Link} to="/" color="inherit">HOME</Button>
-
           <Button component={Link} to="/search" color="inherit" className={classes.title}>SEARCH</Button>
           <IconButton
             aria-controls="customized-menu"

@@ -5,63 +5,33 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../global/Navbar';
 
-interface UserInfo {
-  createdAt: string;
-  dob: string;
-  email: string;
-  first_name: string;
-  guestRating: number;
-  hostRating: number;
-  id: number;
-  inviteCount: number;
-  last_name: string;
-  password: string;
-  profilePhoto: string;
-  pronouns: string;
-  swapCount: number;
-  updatedAt: string;
-}
-
-interface ListingInfo {
-  ada: boolean;
-  createdAt: string;
-  id: number;
-  internet: boolean;
-  listingAddress: string;
-  listingDescription: string;
-  listingTitle: string;
-  pets: boolean;
-  privateBath: boolean;
-  roommates: boolean;
-  smoking: boolean;
-  updatedAt: string;
-  user_id: number;
-}
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const userEmail = 'khellstorm@gmail.com';
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState(0);
-  const [userListingId, setUserListingId] = useState(0);
-  const [randomListings, setRandomListings] = useState([]);
+  const userId = 1;
+  const listingId = 1;
+  const userName = 'Kyle';
+  const [randomListings, setRandomListings] = useState<any>([]);
+  const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
+  const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
-  const getProfile = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/dashboard/', {
-        method: 'POST',
-        headers: { jwt_token: localStorage.token },
-      });
+  // const getProfile = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:3000/dashboard/', {
+  //       method: 'POST',
+  //       headers: { jwt_token: localStorage.token },
+  //     });
 
-      const parseData = await response.json();
-      setUserName(parseData.first_name);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+  //     const parseData = await response.json();
+  //     setUserName(parseData.first_name);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
 
   const logout = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -74,49 +44,83 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     }
   };
 
-  axios.get(`/user/email/${userEmail}`)
-    .then(({ data }) => {
-      const info: UserInfo = data;
-      // setUserName(info.first_name);
-      setUserId(info.id);
+  const getRandomAvlb = () => {
+    const len = randomListings.length;
+    return Math.floor(Math.random() * len);
+  };
+
+  const getNewListing = () => {
+    setShownIndex(getRandomAvlb());
+  };
+
+  const getDashboardInfo = () => {
+    axios.get('/dashboardInfo', {
+      params: {
+        userId,
+        listingId,
+      },
     })
-    .then(() => {
-      axios.get(`/listing/user/${userId}`)
-        .then(({ data }) => {
-          // console.log(data);
-        })
-        .catch(() => console.log('no listing found for that user'));
-    })
-    .catch((err) => console.error(err));
+      .then((results) => {
+        const { data } = results;
+        setSwapCount(data.confirmedSwapCount);
+        setPendingRequestCount(data.pendingRequests.count);
+        setRandomListings(data.openAvailabilities);
+        setShownIndex(getRandomAvlb());
+      });
+  };
 
   useEffect(() => {
-    axios.get(`/user/email/${userEmail}`)
-      .then(({ data }) => {
-        const info: UserInfo = data;
-        // console.log(info, 'info');
-        setUserName(info.first_name);
-        setUserId(info.id);
-        return info.id;
-      })
-      .then((id) => {
-        axios.get(`/listing/user/${id}`)
-          .then(({ data }) => {
-            // console.log(data, 'data');
-          })
-          .catch(() => console.log('no listing found for that user'));
-      })
-      .catch((err) => console.error(err));
+    getDashboardInfo();
   }, []);
 
   return (
     <>
-      Dashboard Page (Where the user arrives after logging in)
       <h4>
         Hello,
+        {' '}
         {userName}
         !!
       </h4>
-      <div className="user-notifications" />
+      <div id="user-notifications">
+        <p>
+          You have
+          {' '}
+          {swapCount}
+          {' '}
+          upcoming trips.
+        </p>
+        <p>
+          You have
+          {' '}
+          {pendingRequestCount}
+          {' '}
+          requests to swap rooms
+        </p>
+      </div>
+      <div id="random-listing">
+        <p>Need a weekend getaway?</p>
+        {
+        randomListings.length > 0
+          && (
+          <div>
+            <p>
+              {randomListings[shownIndex].hostName}
+              {' '}
+              has a room open in
+              {' '}
+              {randomListings[shownIndex].city}
+            </p>
+            <p>
+              {randomListings[shownIndex].startDate}
+              {' to '}
+              {randomListings[shownIndex].endDate}
+            </p>
+          </div>
+          )
+        }
+        <button type="submit">View Listing!</button>
+        <button type="submit" onClick={getNewListing}>Show me another!</button>
+      </div>
       <button
         className="btn btn-success btn-block"
         type="submit"

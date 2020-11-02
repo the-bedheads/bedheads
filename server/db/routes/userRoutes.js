@@ -1,14 +1,5 @@
 const { Router } = require('express');
-
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
+const { User } = require('../index');
 
 const userRouter = Router();
 
@@ -23,6 +14,16 @@ userRouter
     User.findOne({
       where: {
         email: address,
+      },
+    })
+      .then((user) => res.send(user))
+      .catch((err) => res.status(500).send(err));
+  })
+  .get('/byId/:id', (req, res) => {
+    const { id } = req.params;
+    User.findOne({
+      where: {
+        id,
       },
     })
       .then((user) => res.send(user))
