@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import {
   Grid, Container, Box, Button, makeStyles,
 } from '@material-ui/core';
@@ -31,11 +31,17 @@ const useStyles = makeStyles({
   infoStyle: {
     border: 1,
     borderRadius: 2,
+    position: 'relative',
     borderStyle: 'solid',
     justifyContent: 'center',
     width: '50%',
     marginTop: '5px',
     marginBottom: '5px',
+    '&:hover': {
+      '& $overlayStyle': {
+        opacity: '1',
+      },
+    },
   },
   imgStyle: {
     height: '30%',
@@ -46,6 +52,8 @@ const useStyles = makeStyles({
 
 const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
+  const [bio] = useState(user.userBio);
+
   return (
     <>
       <Container className={classes.main}>
@@ -68,7 +76,7 @@ const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => 
         </Grid>
         <Grid item xs={12}>
           <Container className={classes.infoStyle}>
-            {user.userBio}
+            {bio}
           </Container>
         </Grid>
       </Container>

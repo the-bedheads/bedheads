@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container } from '@material-ui/core';
 import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -7,27 +8,41 @@ import moment from 'moment';
 
 // have to get availability from above and pass it down or else it will render twice
 type UserType = {
-  start: string,
-  end: string,
-  title: string,
-  display: string,
+  dob: string,
+  email: string,
+  first_name: string,
+  guestRating: number,
+  hostRating: number,
+  id: number,
+  inviteCount: number,
+  last_name: string,
+  password: string,
+  profilePhoto: string,
+  pronouns: string,
+  swapCount: number,
+  userBio: string,
 };
 
 interface CalProps {
-  userA: Array<UserType>,
+  user: UserType,
 }
-const UserCalendar: React.FC<CalProps> = ({ userA }): JSX.Element => {
+const UserCalendar: React.FC<CalProps> = ({ user }): JSX.Element => {
   const [userId, setUserId] = useState(1);
   const [listingId, setListingId] = useState(1);
   const [avbs, setAvbs] = useState([]);
 
+  const getListingId = () => axios.get(`listing/user/${user.id}`)
+    .then(({ data }) => setListingId(data.id));
+
+  const getAvailabilities = () => axios.get(`availability/allAvailabilities/${listingId}`)
+    .then(({ data }) => {
+      setAvbs(data);
+    });
+
   useEffect(() => {
-    axios.get(`availability/allAvailabilities/${listingId}`)
-      .then(({ data }) => {
-        console.log(data);
-        setAvbs(data);
-      });
-  }, [listingId]);
+    getListingId()
+      .then(() => getAvailabilities());
+  }, [userId]);
 
   // select function
   const onSelect = (info: DateSelectArg) => {
@@ -39,7 +54,7 @@ const UserCalendar: React.FC<CalProps> = ({ userA }): JSX.Element => {
       start: info.startStr,
       end: info.endStr,
       overlap: false,
-      display: 'background',
+      backgroundColor: 'green',
       userId,
     };
     // logic to prevent duplicate availabilities
@@ -72,15 +87,17 @@ const UserCalendar: React.FC<CalProps> = ({ userA }): JSX.Element => {
   };
 
   return (
-    <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      events={avbs}
-      selectable
-      eventOverlap={false}
-      select={(info) => onSelect(info)}
-      eventBackgroundColor="green"
-    />
+    <Container>
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={avbs}
+        selectable
+        eventOverlap={false}
+        select={(info) => onSelect(info)}
+        eventBackgroundColor="green"
+      />
+    </Container>
   );
 };
 
