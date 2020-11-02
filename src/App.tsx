@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SignUp from './components/landing/auth/Signup';
 import Login from './components/landing/auth/Login';
 import Search from './components/search/Search';
+import Listing from './components/listing/Listing';
 import Dashboard from './components/dashboard/Dashboard';
 import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
@@ -21,7 +22,7 @@ import UserCalendar from './components/dashboard/availability/Calendar';
 toast.configure();
 
 const App: React.FC = (): JSX.Element => {
-  const [isAuthenticated, setAuth] = useState(false);
+  const [isAuthenticated, setAuth] = useState(true);
   const checkAuth = async () => {
     try {
       const response = await fetch('http://localhost:3000/auth/verify', {
@@ -89,9 +90,24 @@ const App: React.FC = (): JSX.Element => {
         />
         <Route
           exact
+          path="/listing/:id"
+          component={Listing}
+        />
+        <Route
+          exact
+          path="/profile"
+          component={Profile}
+        />
+        <Route
+          exact
           strict
           path="/messages"
           component={Messages}
+        />
+        <Route
+          exact
+          path="/calendar"
+          component={UserCalendar}
         />
       </Switch>
     </BrowserRouter>

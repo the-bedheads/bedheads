@@ -115,7 +115,8 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       Dashboard Page (Where the user arrives after logging in)
       <h4>
         Hello,
-        {userName}!!
+        {userName}
+        !!
       </h4>
       <div className="user-notifications" />
       <button
