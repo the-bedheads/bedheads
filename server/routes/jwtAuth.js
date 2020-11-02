@@ -9,11 +9,11 @@ const authorize = require("../utils/authorize");
 router.post("/register", async (req, res) => {
   //1. Destructure the req.body (name, email, password)
   // Change back to camel case
-  const { firstName, lastName, email, password } = req.body;
+  const { first_name, last_name, email, password } = req.body;
   try {
     //2. Check if user exists
     console.log(req.body);
-    console.log("Entered variables", firstName, lastName, email, password);
+    console.log("Entered variables", first_name, last_name, email, password);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
       // Insert user into database
       // Change back to camel case
       await db.query(`INSERT INTO users (first_name, last_name, email, password) 
-      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
+      VALUES ('${first_name}', '${last_name}', '${email}', '${hashedPassword}');`);
 
       const user = await User.findOne({
         where: {

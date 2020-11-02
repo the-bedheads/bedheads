@@ -19,10 +19,9 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
-
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState(1);
   const [userListingId, setUserListingId] = useState(0);
 
   // const checkAuth = async () => {
@@ -139,8 +138,8 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
               <p>
                 {randomListings[shownIndex].hostName}
                 {' '}
-              has a room open in
-              {' '}
+                has a room open in
+                {' '}
                 {randomListings[shownIndex].city}
               </p>
               <p>
