@@ -42,7 +42,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
       console.log(parseRes.jwtToken);
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
-        setAuth(true);
+        loginUser();
         console.log('Logged in? ', isAuthenticated);
         toast.success('Logged in successfully!');
       }
