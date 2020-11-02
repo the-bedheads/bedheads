@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '@material-ui/core/Button';
+import { Button, Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const HostInfo = (props: any) => {
   const { hostId } = props;
@@ -9,20 +10,32 @@ const HostInfo = (props: any) => {
     lastName: '',
     pronouns: '',
     hostRating: '',
+    id: 0,
+    profilePhoto: '',
+    userBio: '',
   });
 
   const getHost = () => {
     axios.get(`/user/${hostId}`)
-      .then((hostInfo) => {
+      .then(({ data }) => {
         const {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          first_name, last_name, pronouns, hostRating,
-        } = hostInfo.data;
-        setHostData({
-          firstName: first_name,
-          lastName: last_name,
+          firstName,
+          lastName,
           pronouns,
           hostRating,
+          id,
+          profilePhoto,
+          userBio,
+        } = data;
+        console.log(data, 'data');
+        setHostData({
+          firstName,
+          lastName,
+          pronouns,
+          hostRating,
+          id,
+          profilePhoto,
+          userBio,
         });
       })
       .catch((err) => err);
@@ -35,8 +48,21 @@ const HostInfo = (props: any) => {
   return (
     <div className="host-info">
       <h3>host info</h3>
-      <img src="https://i.ibb.co/ZMtTcsm/bettythedog.jpg" alt="dog portrait" width="150" />
-      <br />
+      <Button
+        component={Link}
+        to={
+          {
+            pathname: '/hostProfile',
+            state: { hostData },
+          }
+        }
+      >
+        <img
+          src="https://i.ibb.co/ZMtTcsm/bettythedog.jpg"
+          alt="dog portrait"
+          width="150"
+        />
+      </Button>
       {hostData.firstName}
       {' '}
       {hostData.lastName}

@@ -144,8 +144,8 @@ const App: React.FC = (): JSX.Element => {
         />
         <Route
           exact
-          path="/otherProfile"
-          component={() => <Profile />}
+          path="/hostProfile"
+          component={Profile}
         />
         <Route
           exact
