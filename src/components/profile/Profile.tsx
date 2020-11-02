@@ -14,7 +14,6 @@ const useStyles = makeStyles({
 const Profile: FunctionComponent = (props: any): JSX.Element => {
   const { location } = props;
   const [hostData] = useState(location.state.hostData);
-  console.log(location.state.hostData);
   const classes = useStyles();
 
   return (

@@ -27,7 +27,6 @@ const HostInfo = (props: any) => {
           profilePhoto,
           userBio,
         } = data;
-        console.log(data, 'data');
         setHostData({
           firstName,
           lastName,
