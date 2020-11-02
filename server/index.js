@@ -37,6 +37,9 @@ app.use("/availability", availabilityRouter);
 app.use("/dashboardInfo", dashboardRouter);
 app.use("/request", requestRouter);
 app.use("/map", mapRouter);
+app.get("/*", (req, res) => {
+  res.render(html_file);
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port :${PORT}!`);
