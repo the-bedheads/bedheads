@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SignUp from './components/landing/auth/Signup';
 import Login from './components/landing/auth/Login';
 import Search from './components/search/Search';
+import Listing from './components/listing/Listing';
 import Dashboard from './components/dashboard/Dashboard';
 import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
@@ -124,6 +125,11 @@ const App: React.FC = (): JSX.Element => {
           strict
           path="/search"
           component={Search}
+        />
+        <Route
+          exact
+          path="/listing/:id"
+          component={Listing}
         />
         <Route
           exact

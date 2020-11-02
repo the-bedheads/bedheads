@@ -16,10 +16,11 @@ import { DateRangePicker } from 'react-dates';
 //   onFocusChange(): void,
 // }
 
-const DatePicker = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+const DatePicker = (props: any) => {
   const [focusedInput, setFocusedInput] = useState(null);
+  const {
+    startDate, setStartDate, endDate, setEndDate,
+  } = props;
 
   const onDateChange = (dates: any) => {
     setStartDate(dates.startDate);

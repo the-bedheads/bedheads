@@ -29,6 +29,18 @@ userRouter
       .catch((err) => res.status(500).send(err));
   });
 
+// retrieve user info when accessing their listing
+userRouter.get('/:userId', (req, res) => {
+  const { userId } = req.params;
+  User.findOne({
+    where: {
+      id: userId,
+    },
+  })
+    .then((userInfo) => res.send(userInfo))
+    .catch((err) => err);
+});
+
 // get single user
 userRouter
   .get('/oneUser/:userId', (req, res) => {

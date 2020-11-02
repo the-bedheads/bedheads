@@ -17,8 +17,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const ResultsList = () => {
-  const [listings, setListings] = useState([]);
+const ResultsList = (props: any) => {
+  // const [listings, setListings] = useState([]);
+  const { listings, setListings } = props;
   const classes = useStyles();
 
   const getListings = () => {
@@ -37,10 +38,14 @@ const ResultsList = () => {
 
   return (
     <List className={classes.root}>
-      {listings.map((listing) => {
-        const { id, listingTitle, listingAddress } = listing;
+      {listings.map((listing: {
+        id: any; user_id: any; listingTitle: any; listingAddress: any; }) => {
+        const {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          id, user_id, listingTitle, listingAddress,
+        } = listing;
         return (
-          <ResultsListEntry key={id} title={listingTitle} address={listingAddress} />
+          <ResultsListEntry key={id} user={user_id} title={listingTitle} address={listingAddress} />
         );
       })}
     </List>
