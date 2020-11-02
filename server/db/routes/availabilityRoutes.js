@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 const moment = require('moment');
 const { Router } = require('express');
 const { Op } = require('sequelize');
+=======
+const { Router } = require("express");
+const { Op } = require("sequelize");
+const { moment } = require("moment");
+
+>>>>>>> (update) pre-rebase
 const { Availability, Request, Listing } = require('../index');
 
 const availabilityRouter = Router();
