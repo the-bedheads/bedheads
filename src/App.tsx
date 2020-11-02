@@ -133,11 +133,6 @@ const App: React.FC = (): JSX.Element => {
         />
         <Route
           exact
-          path="/profile"
-          component={Profile}
-        />
-        <Route
-          exact
           strict
           path="/messages"
           component={Messages}
