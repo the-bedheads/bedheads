@@ -9,11 +9,11 @@ const authorize = require("../utils/authorize");
 router.post("/register", async (req, res) => {
   //1. Destructure the req.body (name, email, password)
   // Change back to camel case
-  const { first_name, last_name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   try {
     //2. Check if user exists
     console.log(req.body);
-    console.log("Entered variables", first_name, last_name, email, password);
+    console.log("Entered variables", firstName, lastName, email, password);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
       // Insert user into database
       // Change back to camel case
       await db.query(`INSERT INTO users (first_name, last_name, email, password) 
-      VALUES ('${first_name}', '${last_name}', '${email}', '${hashedPassword}');`);
+      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
 
       const user = await User.findOne({
         where: {
@@ -53,7 +53,7 @@ router.post("/register", async (req, res) => {
 // Verify (login) registered user
 router.post("/login", validEmail, async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  // console.log(email, password);
   try {
     const user = await User.findOne({
       where: {
@@ -70,7 +70,7 @@ router.post("/login", validEmail, async (req, res) => {
     }
     const jwtToken = generateToken(user.id);
     console.log({ jwtToken });
-    return res.send({ jwtToken });
+    return res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Error logging in line 64 jwtAuth.js");

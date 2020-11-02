@@ -45,6 +45,9 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
         loginUser();
         console.log('Logged in? ', isAuthenticated);
         toast.success('Logged in successfully!');
+      } else {
+        setAuth(false);
+        toast.error(parseRes);
       }
     } catch (err) {
       toast.error('Invalid credentials entered!');

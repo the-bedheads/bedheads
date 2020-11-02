@@ -25,19 +25,39 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   const [userId, setUserId] = useState(0);
   const [userListingId, setUserListingId] = useState(0);
 
+  // const checkAuth = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:3000/auth/verify', {
+  //       method: 'POST',
+  //       headers: { jwt_token: localStorage.token },
+  //     });
+
+  //     const parseRes = await response.json();
+
+  //     console.log('web token?', parseRes);
+  //     if (parseRes === true) {
+  //       setAuth(true);
+  //     }
+  //     setAuth(false);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
+
   const getProfile = async () => {
     try {
-      const response = await fetch('http://localhost:3000/dashboard', {
+      const res = await fetch('http://localhost:3000/dashboard', {
         method: 'POST',
         headers: { jwt_token: localStorage.token },
       });
       console.log('getprof1');
-      const parseData = await response.json();
+      const parseData = await res.json();
       console.log(parseData);
       setAuth(true);
       setUserEmail(parseData.email);
-      setUserName(parseData.first_name);
+      setUserName('Kris');
       console.log('STATE after LOGIN:  ', isAuthenticated);
+      console.log(userName, userEmail);
       console.log('final getprof');
     } catch (err) {
       console.error(err.message);
@@ -82,6 +102,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
 
   useEffect(() => {
     getDashboardInfo();
+    // checkAuth();
     getProfile();
   }, []);
 

@@ -3,12 +3,12 @@ const authorize = require("../utils/authorize");
 const { db, User } = require("../db/index");
 
 router.post("/", authorize, async (req, res) => {
-  const { first_name } = req.body;
+  const { email } = req.body;
   try {
-    console.log(req.body);
+    console.log("reqbodyindashroute", req.body);
     const user = await User.findAll({
       where: {
-        first_name: first_name,
+        email: email,
       },
     });
 

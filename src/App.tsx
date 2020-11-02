@@ -56,6 +56,7 @@ const initUser = {
 const App: React.FC = (): JSX.Element => {
   const [isAuthenticated, setAuth] = useState(false);
   const [testUser, setTestUser] = useState(initUser);
+
   const checkAuth = async () => {
     try {
       const response = await fetch('http://localhost:3000/auth/verify', {
@@ -68,8 +69,9 @@ const App: React.FC = (): JSX.Element => {
       console.log('web token?', parseRes);
       if (parseRes === true) {
         setAuth(true);
+      } else {
+        setAuth(false);
       }
-      setAuth(false);
     } catch (err) {
       console.error(err.message);
     }
@@ -88,11 +90,6 @@ const App: React.FC = (): JSX.Element => {
     <BrowserRouter>
       <Navbar handleLogin={[isAuthenticated, setAuth]} />
       <Switch>
-        {/* <Route
-            exact
-            path="/"
-            component={Dashboard}
-          /> */}
         <Route
           exact
           strict
@@ -109,8 +106,9 @@ const App: React.FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-            ))}
-        />
+            ))} />
+        {/* // <Redirect to="/dashboard" /> */}
+
         <Route
           exact
           strict
@@ -118,8 +116,9 @@ const App: React.FC = (): JSX.Element => {
           render={() => (isAuthenticated ? (
             <Dashboard handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-            ))}
-        />
+            ))} />
+        {/* //     <Login handleLogin={[isAuthenticated, setAuth]} />
+           */}
         <Route
           exact
           strict
