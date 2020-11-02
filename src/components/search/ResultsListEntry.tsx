@@ -21,12 +21,12 @@ import { Link } from 'react-router-dom';
 // });
 
 const ResultsListEntry = (props: any) => {
-  const { key, title, address } = props;
+  const { user, title, address } = props;
 
   return (
     <ListItem
       component={Link}
-      to="/search"
+      to={`/listing/${user}`}
     >
       <ListItemText
         primary={title}

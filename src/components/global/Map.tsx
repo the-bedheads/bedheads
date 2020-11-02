@@ -11,12 +11,11 @@ const Map = (props: any) => {
     bearing: 0,
     pitch: 0,
   });
-  const { locationQuery } = props;
+  const { locationQuery, listings } = props;
 
   const geocodeQuery = (query: string) => {
-    axios.get(`/api/geocode/${query}`)
+    axios.get(`/map/api/geocode/${query}`)
       .then((response) => {
-        console.log('RESPONSE', response.data.features[0].center);
         setViewport({
           latitude: response.data.features[0].center[1],
           longitude: response.data.features[0].center[0],
@@ -40,7 +39,7 @@ const Map = (props: any) => {
         longitude={viewport.longitude}
         zoom={viewport.zoom}
         width="500px"
-        height="700px"
+        height="500px"
         mapStyle="mapbox://styles/mapbox/streets-v11"
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         onViewportChange={(nextViewport: React.SetStateAction<
