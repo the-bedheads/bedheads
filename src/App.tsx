@@ -19,6 +19,8 @@ import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
 import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
+import Profile from './components/profile/Profile';
+
 
 toast.configure();
 
@@ -140,6 +142,11 @@ const App: React.FC = (): JSX.Element => {
           exact
           path="/profile"
           component={() => <UserProfile user={testUser} />}
+        />
+        <Route
+          exact
+          path="/otherProfile"
+          component={() => <Profile />}
         />
         <Route
           exact
