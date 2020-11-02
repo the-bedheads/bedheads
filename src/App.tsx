@@ -69,8 +69,6 @@ const App: React.FC = (): JSX.Element => {
       console.log('web token?', parseRes);
       if (parseRes === true) {
         setAuth(true);
-      } else {
-        setAuth(false);
       }
     } catch (err) {
       console.error(err.message);
@@ -105,7 +103,7 @@ const App: React.FC = (): JSX.Element => {
           path="/register"
           render={() => (!isAuthenticated ? (
             <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
-              <Redirect to="/" />
+              <Redirect to="/dashboard" />
           ))}
         />
         {/* // <Redirect to="/dashboard" /> */}

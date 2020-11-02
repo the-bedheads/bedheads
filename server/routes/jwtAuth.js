@@ -37,10 +37,10 @@ router.post("/register", async (req, res) => {
       console.log("USER ID   ", user.id);
       const jwtToken = generateToken(user.id);
       console.log("NUT LMAO", jwtToken);
-      return res.json({ jwtToken });
+      res.json({ jwtToken });
     } else {
       // 2.b. If user already exists, throw error
-      return res.status(401).json("Already registered");
+      res.status(401).json("Already registered");
     }
 
     // 3. Generate JWT
@@ -52,25 +52,25 @@ router.post("/register", async (req, res) => {
 
 // Verify (login) registered user
 router.post("/login", validEmail, async (req, res) => {
-  const { email, password } = req.body;
   // console.log(email, password);
   try {
+    const { email, password } = req.body;
     const user = await User.findOne({
       where: {
         email: email,
       },
     });
     if (user === null) {
-      return res.status(401).send("Invalid credentials, line 53");
+      return res.status(401).json("Invalid credentials, line 53");
     }
     const validPassword = await bcrypt.compare(password, user.password);
     console.log("password is valid?", validPassword);
     if (!validPassword) {
-      return res.status(401).send("Invalid Password, line 58");
+      return res.status(401).json("Invalid Password, line 58");
     }
     const jwtToken = generateToken(user.id);
     console.log({ jwtToken });
-    return res.json({ jwtToken });
+    res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Error logging in line 64 jwtAuth.js");

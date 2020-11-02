@@ -44,18 +44,18 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       const parseRes = await response.json();
       console.log('ln 41');
       console.log(parseRes);
-      // if (parseRes.jwtToken) {
-      //   console.log(parseRes.jwtToken);
-      //   localStorage.setItem('token', parseRes.jwtToken);
-      //   setAuth(true);
-      //   console.log('authed?', isAuthenticated);
-      //   toast.success('Registered successfullly!');
-      // } else {
-      //   setAuth(false);
-      //   toast.error(parseRes);
-      // }
-      setAuth(true);
-      toast.success('Registered successfully!');
+      if (parseRes.jwtToken) {
+        console.log(parseRes.jwtToken);
+        localStorage.setItem('token', parseRes.jwtToken);
+        setAuth(true);
+        console.log('authed?', isAuthenticated);
+        toast.success('Registered successfullly!');
+      } else {
+        setAuth(false);
+        toast.error(parseRes);
+      }
+      // setAuth(true);
+      // toast.success('Registered successfully!');
     } catch (err) {
       console.error(err.message);
     }
