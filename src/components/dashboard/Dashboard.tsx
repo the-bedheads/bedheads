@@ -10,28 +10,58 @@ interface AuthProps {
 }
 
 const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
-  const userEmail = 'khellstorm@gmail.com';
-  const userId = 1;
+  // const userEmail = 'khellstorm@gmail.com';
+  // const userId = 1;
   const listingId = 1;
-  const userName = 'Kyle';
+  // const userName = 'Kyle';
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
-  // const getProfile = async () => {
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState(1);
+  const [userListingId, setUserListingId] = useState(0);
+
+  // const checkAuth = async () => {
   //   try {
-  //     const response = await fetch('http://localhost:3000/dashboard/', {
+  //     const response = await fetch('http://localhost:3000/auth/verify', {
   //       method: 'POST',
   //       headers: { jwt_token: localStorage.token },
   //     });
 
-  //     const parseData = await response.json();
-  //     setUserName(parseData.first_name);
+  //     const parseRes = await response.json();
+
+  //     console.log('web token?', parseRes);
+  //     if (parseRes === true) {
+  //       setAuth(true);
+  //     }
+  //     setAuth(false);
   //   } catch (err) {
   //     console.error(err.message);
   //   }
   // };
+
+  const getProfile = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/dashboard', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      });
+      console.log('getprof1');
+      const parseData = await res.json();
+      console.log(parseData);
+      setAuth(true);
+      setUserEmail(parseData.email);
+      setUserName('Kris');
+      console.log('STATE after LOGIN:  ', isAuthenticated);
+      console.log(userName, userEmail);
+      console.log('final getprof');
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const logout = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -71,6 +101,8 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
 
   useEffect(() => {
     getDashboardInfo();
+    // checkAuth();
+    getProfile();
   }, []);
 
   return (
@@ -100,22 +132,22 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       <div id="random-listing">
         <p>Need a weekend getaway?</p>
         {
-        randomListings.length > 0
+          randomListings.length > 0
           && (
-          <div>
-            <p>
-              {randomListings[shownIndex].hostName}
-              {' '}
-              has a room open in
-              {' '}
-              {randomListings[shownIndex].city}
-            </p>
-            <p>
-              {randomListings[shownIndex].startDate}
-              {' to '}
-              {randomListings[shownIndex].endDate}
-            </p>
-          </div>
+            <div>
+              <p>
+                {randomListings[shownIndex].hostName}
+                {' '}
+                has a room open in
+                {' '}
+                {randomListings[shownIndex].city}
+              </p>
+              <p>
+                {randomListings[shownIndex].startDate}
+                {' to '}
+                {randomListings[shownIndex].endDate}
+              </p>
+            </div>
           )
         }
         <button type="submit">View Listing!</button>

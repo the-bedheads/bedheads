@@ -53,7 +53,7 @@ router.post("/register", async (req, res) => {
 // Verify (login) registered user
 router.post("/login", validEmail, async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  // console.log(email, password);
   try {
     const user = await User.findOne({
       where: {
@@ -70,7 +70,7 @@ router.post("/login", validEmail, async (req, res) => {
     }
     const jwtToken = generateToken(user.id);
     console.log({ jwtToken });
-    return res.send({ jwtToken });
+    return res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Error logging in line 64 jwtAuth.js");
