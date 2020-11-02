@@ -15,23 +15,23 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   const listingId = 1;
   const userName = 'Kyle';
   const [randomListings, setRandomListings] = useState<any>([]);
-  const [shownListing, setShownListing] = useState<any>([]);
+  const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
 
-  const getProfile = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/dashboard/', {
-        method: 'POST',
-        headers: { jwt_token: localStorage.token },
-      });
+  // const getProfile = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:3000/dashboard/', {
+  //       method: 'POST',
+  //       headers: { jwt_token: localStorage.token },
+  //     });
 
-      const parseData = await response.json();
-      setUserName(parseData.first_name);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+  //     const parseData = await response.json();
+  //     setUserName(parseData.first_name);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // };
 
   const logout = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -44,8 +44,15 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     }
   };
 
-  // useEffect(() => {
-  //   getProfile();
+  const getRandomAvlb = () => {
+    const len = randomListings.length;
+    return Math.floor(Math.random() * len);
+  };
+
+  const getNewListing = () => {
+    setShownIndex(getRandomAvlb());
+  };
+
   const getDashboardInfo = () => {
     axios.get('/dashboardInfo', {
       params: {
@@ -58,11 +65,9 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
         setSwapCount(data.confirmedSwapCount);
         setPendingRequestCount(data.pendingRequests.count);
         setRandomListings(data.openAvailabilities);
-        console.log('swapCount:', swapCount);
-        console.log('request count:', pendingRequestCount);
-        console.log('random listings:', randomListings);
+        setShownIndex(getRandomAvlb());
       });
-  // };
+  };
 
   useEffect(() => {
     getDashboardInfo();
@@ -73,24 +78,49 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       Dashboard Page (Where the user arrives after logging in)
       <h4>
         Hello,
+        {' '}
         {userName}
         !!
       </h4>
       <div id="user-notifications">
-        User notifications go here
+        <p>
+          You have
+          {' '}
+          {swapCount}
+          {' '}
+          upcoming trips.
+        </p>
+        <p>
+          You have
+          {' '}
+          {pendingRequestCount}
+          {' '}
+          requests to swap rooms
+        </p>
       </div>
       <div id="random-listing">
-        <p>Wanna get away?</p>
-        <p>
-          There are
-          {' '}
-          {randomListings.length}
-          {' '}
-          open places. Here is one of them:
-        </p>
-        {'There is a listing you might like from some <random_location>'}
-        {' '}
-        {'from <start_date> until <end_date>'}
+        <p>Need a weekend getaway?</p>
+        {
+        randomListings.length > 0
+          && (
+          <div>
+            <p>
+              {randomListings[shownIndex].hostName}
+              {' '}
+              has a room open in
+              {' '}
+              {randomListings[shownIndex].city}
+            </p>
+            <p>
+              {randomListings[shownIndex].startDate}
+              {' to '}
+              {randomListings[shownIndex].endDate}
+            </p>
+          </div>
+          )
+        }
+        <button type="submit">View Listing!</button>
+        <button type="submit" onClick={getNewListing}>Show me another!</button>
       </div>
       <button
         className="btn btn-success btn-block"
