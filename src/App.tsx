@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   BrowserRouter,
   Switch,
@@ -20,8 +21,40 @@ import UserCalendar from './components/dashboard/availability/Calendar';
 
 toast.configure();
 
+type UserType = {
+  dob: string,
+  email: string,
+  first_name: string,
+  guestRating: number,
+  hostRating: number,
+  id: number,
+  inviteCount: number,
+  last_name: string,
+  password: string,
+  profilePhoto: string,
+  pronouns: string,
+  swapCount: number,
+  userBio: string,
+};
+
+const initUser = {
+  dob: '1',
+  email: '1',
+  first_name: '1',
+  guestRating: 1,
+  hostRating: 1,
+  id: 1,
+  inviteCount: 1,
+  last_name: '1',
+  password: '1',
+  profilePhoto: '1',
+  pronouns: '1',
+  swapCount: 1,
+  userBio: '1',
+};
 const App: React.FC = (): JSX.Element => {
   const [isAuthenticated, setAuth] = useState(false);
+  const [testUser, setTestUser] = useState(initUser);
   const checkAuth = async () => {
     try {
       const response = await fetch('http://localhost:3000/auth/verify', {
@@ -43,6 +76,11 @@ const App: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     checkAuth();
+    axios.get('user/')
+      .then(({ data }) => {
+        const idk = data.filter((user: UserType) => user.id === 1);
+        setTestUser(idk[0]);
+      });
   }, []);
 
   return (
@@ -96,12 +134,12 @@ const App: React.FC = (): JSX.Element => {
         <Route
           exact
           path="/profile"
-          component={UserProfile}
+          component={() => <UserProfile user={testUser} />}
         />
         <Route
           exact
           path="/calendar"
-          component={UserCalendar}
+          component={() => <UserCalendar user={testUser} />}
         />
       </Switch>
     </BrowserRouter>

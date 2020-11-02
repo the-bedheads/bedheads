@@ -11,11 +11,18 @@ import EditProfilePic from './EditProfilePic';
 import EditUserInfo from './EditUserInfo';
 
 type UserType = {
-  image: string,
-  name: string,
+  dob: string,
+  email: string,
+  first_name: string,
+  guestRating: number,
+  hostRating: number,
+  id: number,
+  inviteCount: number,
+  last_name: string,
+  password: string,
+  profilePhoto: string,
   pronouns: string,
-  location: string,
-  listingPhoto: string,
+  swapCount: number,
   userBio: string,
 };
 interface SidebarProps {
@@ -78,14 +85,14 @@ const UserSidebarInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element
   const classes = useStyles();
   const [picOpen, setPicOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
-  const [pic, setPic] = useState(user.image);
-  const [name, setName] = useState(user.name);
+  const [pic, setPic] = useState(user.profilePhoto);
+  const [name, setName] = useState(user.first_name);
   const [pronouns, setPronouns] = useState(user.pronouns);
-  const [location, setLocation] = useState(user.location);
+  const [location, setLocation] = useState('New Orleans, LA');
   const [tempPic, setTempPic] = useState(pic);
-  const [tempName, setTempName] = useState(user.name);
+  const [tempName, setTempName] = useState(user.first_name);
   const [tempPronouns, setTempPronouns] = useState(user.pronouns);
-  const [tempLocation, setTempLocation] = useState(user.location);
+  const [tempLocation, setTempLocation] = useState('New Orleans, LA');
 
   const handleOpen = (type: string) => {
     if (type === 'pic') {

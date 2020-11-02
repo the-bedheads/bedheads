@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import axios from 'axios';
-import ProfileInfo from './UserProfileInfo';
+import ProfileInfo from './ProfileInfo';
 import SidebarInfo from './SidebarInfo';
 
 const useStyles = makeStyles({

@@ -95,7 +95,7 @@ availabilityRouter
               start: item.dataValues.startDate,
               end: item.dataValues.endDate,
               title: 'Availability',
-              display: 'background',
+              backgroundColor: 'green',
               id: item.dataValues.id,
             });
           }
@@ -107,6 +107,50 @@ availabilityRouter
             id: item.dataValues.id,
           });
         });
+        const getRequests = async () => Promise.all(availabilities.map((item) => Request.findAll({
+          where: {
+            availability_id: item.dataValues.id,
+          },
+        })
+          .then((data) => data)));
+        const requests = await getRequests()
+          .then((data) => data.filter((item) => item.length))
+          .then((filteredData) => filteredData);
+        const testArr = [];
+        requests
+          .forEach((requestGroup) => {
+            const nestedObj = {
+              availability_id: null,
+              requester_ids: [],
+            };
+            requestGroup
+              .forEach((request) => {
+                nestedObj.availability_id = request.dataValues.availability_id;
+                nestedObj.requester_ids.push(request.dataValues.requester_id);
+              });
+            testArr.push(nestedObj);
+          });
+        const arrJoin = async () => Promise.all(testArr.map((request) => Availability.findOne({
+          where: {
+            id: request.availability_id,
+          },
+        })
+          .then((availability) => {
+            const reqLength = request.requester_ids.length;
+            const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
+            const idkAnymore = {
+              availability_id: request.availability_id,
+              requester_ids: request.requester_ids,
+              title,
+              backgroundColor: 'blue',
+              start: availability.dataValues.startDate,
+              end: availability.dataValues.endDate,
+            };
+            return idkAnymore;
+          })));
+        const wut = await arrJoin().then((data) => data);
+        wut.forEach((request) => final.push(request));
+        console.log(wut);
         res.status(200).send(final);
       })
       .catch((err) => res.status(500).send(err));

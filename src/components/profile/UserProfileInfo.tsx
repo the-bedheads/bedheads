@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Grid, Container, Box, Button, makeStyles, IconButton,
 } from '@material-ui/core';
@@ -6,11 +7,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import EditBio from './EditBio';
 
 type UserType = {
-  image: string,
-  name: string,
+  dob: string,
+  email: string,
+  first_name: string,
+  guestRating: number,
+  hostRating: number,
+  id: number,
+  inviteCount: number,
+  last_name: string,
+  password: string,
+  profilePhoto: string,
   pronouns: string,
-  location: string,
-  listingPhoto: string,
+  swapCount: number,
   userBio: string,
 };
 interface SidebarProps {
@@ -64,11 +72,18 @@ const useStyles = makeStyles({
   },
 });
 
+// eslint-disable-next-line max-len
 const UserProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [bio, setBio] = useState(user.userBio);
   const [tempBio, setTempBio] = useState(bio);
+  const [listingPhoto] = useState('https://images.unsplash.com/photo-1520619831939-20749195c50f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=651&q=80');
+
+  useEffect(() => {
+    axios.get(`user/oneUser/${user.id}`)
+      .then(({ data }) => setBio(data.userBio));
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -77,6 +92,7 @@ const UserProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element
   const handleClose = (i: React.MouseEvent<HTMLButtonElement, MouseEvent>, check: boolean) => {
     if (check) {
       // save changes to DB
+      axios.patch(`user/bio/${user.id}`, { params: { newBio: tempBio } });
       // update field on screen
       setBio(tempBio);
     }
@@ -96,7 +112,7 @@ const UserProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element
       <Container className={classes.main}>
         <Grid container justify="center" item xs={12}>
           <img
-            src={user.listingPhoto}
+            src={listingPhoto}
             alt="nobodys home"
             className={classes.imgStyle}
           />

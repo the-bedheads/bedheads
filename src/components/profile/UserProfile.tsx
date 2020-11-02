@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Box, makeStyles } from '@material-ui/core';
-import axios from 'axios';
+import React, { FunctionComponent } from 'react';
+import { Grid, makeStyles } from '@material-ui/core';
 import UserProfileInfo from './UserProfileInfo';
 import UserSidebarInfo from './UserSidebarInfo';
 
@@ -10,17 +9,28 @@ const useStyles = makeStyles({
     marginBottom: '10px',
   },
 });
+type UserType = {
+  dob: string,
+  email: string,
+  first_name: string,
+  guestRating: number,
+  hostRating: number,
+  id: number,
+  inviteCount: number,
+  last_name: string,
+  password: string,
+  profilePhoto: string,
+  pronouns: string,
+  swapCount: number,
+  userBio: string,
+};
 
-const UserProfile = () => {
+interface UserProfileProps {
+  user: UserType,
+}
+
+const UserProfile: FunctionComponent<UserProfileProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
-  const [user, setUser] = useState({
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
-    name: 'Stacy',
-    pronouns: 'she/them',
-    location: 'Cleveland, Ohio',
-    listingPhoto: 'https://images.unsplash.com/photo-1520619831939-20749195c50f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=651&q=80',
-    userBio: 'Hi, im stacy. I like stuff and things and honestly, im just trying to make this long enough to see how text wrapping is going to work. Am I done yet?',
-  });
 
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
