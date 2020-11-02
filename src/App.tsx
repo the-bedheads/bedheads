@@ -21,7 +21,6 @@ import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
 
-
 toast.configure();
 
 type UserType = {
@@ -56,7 +55,7 @@ const initUser = {
   userBio: '1',
 };
 const App: React.FC = (): JSX.Element => {
-  const [isAuthenticated, setAuth] = useState(false);
+  const [isAuthenticated, setAuth] = useState(true);
   const [testUser, setTestUser] = useState(initUser);
 
   const checkAuth = async () => {
