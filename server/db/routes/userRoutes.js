@@ -18,6 +18,16 @@ userRouter
     })
       .then((user) => res.send(user))
       .catch((err) => res.status(500).send(err));
+  })
+  .get('/byId/:id', (req, res) => {
+    const { id } = req.params;
+    User.findOne({
+      where: {
+        id,
+      },
+    })
+      .then((user) => res.send(user))
+      .catch((err) => res.status(500).send(err));
   });
 
 // get single user
