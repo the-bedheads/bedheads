@@ -7,16 +7,18 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 
-type UserType = {
-  image: string,
-  name: string,
+type HostDataType = {
+  firstName: string,
+  hostRating: number,
+  lastName: string,
   pronouns: string,
-  location: string,
-  listingPhoto: string,
+  id: number,
+  profilePhoto: string,
   userBio: string,
 };
-interface SidebarProps {
-  user: UserType,
+
+interface ProfileProps {
+  host: HostDataType,
 }
 
 const useStyles = makeStyles({
@@ -51,13 +53,13 @@ const useStyles = makeStyles({
   },
 });
 
-const Sidebar: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
+const Sidebar: FunctionComponent<ProfileProps> = ({ host }): JSX.Element => {
   const classes = useStyles();
   return (
     <Container className={classes.main}>
       <Grid item xs={12}>
         <img
-          src={user.image}
+          src={host.profilePhoto}
           alt="ya dun goofed"
           className={classes.imgStyle}
         />
@@ -65,13 +67,13 @@ const Sidebar: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
       <Grid item xs={12}>
         <Container className={classes.infoStyle}>
           <Box className={classes.textStyle}>
-            {user.name}
+            {host.firstName}
           </Box>
           <Box className={classes.textStyle}>
-            {user.pronouns}
+            {host.pronouns}
           </Box>
           <Box className={classes.textStyle}>
-            {user.location}
+            New Orleans, LA
           </Box>
         </Container>
       </Grid>
@@ -85,7 +87,7 @@ const Sidebar: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
           >
             Message
             {' '}
-            {user.name}
+            {host.firstName}
           </Button>
         </Box>
       </Grid>

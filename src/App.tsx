@@ -19,6 +19,7 @@ import Messages from './components/messages/Messages';
 import Navbar from './components/global/Navbar';
 import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
+import Profile from './components/profile/Profile';
 
 toast.configure();
 
@@ -54,7 +55,7 @@ const initUser = {
   userBio: '1',
 };
 const App: React.FC = (): JSX.Element => {
-  const [isAuthenticated, setAuth] = useState(false);
+  const [isAuthenticated, setAuth] = useState(true);
   const [testUser, setTestUser] = useState(initUser);
 
   const checkAuth = async () => {
@@ -140,6 +141,11 @@ const App: React.FC = (): JSX.Element => {
           exact
           path="/profile"
           component={() => <UserProfile user={testUser} />}
+        />
+        <Route
+          exact
+          path="/hostProfile"
+          component={Profile}
         />
         <Route
           exact

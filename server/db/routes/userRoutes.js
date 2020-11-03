@@ -38,7 +38,37 @@ userRouter.get('/:userId', (req, res) => {
       id: userId,
     },
   })
-    .then((userInfo) => res.send(userInfo))
+    .then(({ dataValues }) => {
+      const {
+        id,
+        pronouns,
+        dob,
+        email,
+        password,
+        profilePhoto,
+        swapCount,
+        guestRating,
+        hostRating,
+        inviteCount,
+        userBio,
+      } = dataValues;
+      const result = {
+        id,
+        pronouns,
+        dob,
+        email,
+        password,
+        profilePhoto,
+        swapCount,
+        guestRating,
+        hostRating,
+        inviteCount,
+        userBio,
+        firstName: dataValues.first_name,
+        lastName: dataValues.last_name,
+      };
+      res.send(result);
+    })
     .catch((err) => err);
 });
 

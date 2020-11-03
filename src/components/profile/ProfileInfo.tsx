@@ -3,16 +3,18 @@ import {
   Grid, Container, Box, Button, makeStyles,
 } from '@material-ui/core';
 
-type UserType = {
-  image: string,
-  name: string,
+type HostDataType = {
+  firstName: string,
+  hostRating: number,
+  lastName: string,
   pronouns: string,
-  location: string,
-  listingPhoto: string,
+  id: number,
+  profilePhoto: string,
   userBio: string,
 };
-interface SidebarProps {
-  user: UserType,
+
+interface ProfileProps {
+  host: HostDataType,
 }
 
 const useStyles = makeStyles({
@@ -50,16 +52,16 @@ const useStyles = makeStyles({
   },
 });
 
-const ProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
+const ProfileInfo: FunctionComponent<ProfileProps> = ({ host }): JSX.Element => {
   const classes = useStyles();
-  const [bio] = useState(user.userBio);
+  const [bio] = useState(host.userBio);
 
   return (
     <>
       <Container className={classes.main}>
         <Grid container justify="center" item xs={12}>
           <img
-            src={user.listingPhoto}
+            src="https://images.unsplash.com/photo-1520619831939-20749195c50f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=651&q=80"
             alt="nobodys home"
             className={classes.imgStyle}
           />
