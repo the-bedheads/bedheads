@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import moment, { isMoment } from 'moment';
 
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
@@ -29,6 +30,10 @@ const Search: React.FC = () => {
   const [listings, setListings] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [dateRange, setDateRange] = useState({
+    start: moment().format('YYYY-MM-DD'),
+    end: moment().add(7, 'days').format('YYYY-MM-DD'),
+  });
 
   return (
     <div className={classes.root}>
@@ -42,12 +47,14 @@ const Search: React.FC = () => {
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate}
+            setDateRange={setDateRange}
           />
         </Grid>
         <Grid item xs={6}>
           <ResultsList
             startDate={startDate}
             endDate={endDate}
+            dateRange={dateRange}
             listings={listings}
             setListings={setListings}
           />

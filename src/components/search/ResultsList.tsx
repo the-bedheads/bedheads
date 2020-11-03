@@ -19,11 +19,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 const ResultsList = (props: any) => {
   // const [listings, setListings] = useState([]);
-  const { listings, setListings } = props;
+  const { listings, setListings, dateRange } = props;
   const classes = useStyles();
 
   const getListings = () => {
-    axios.get('/listing')
+    const { start, end } = dateRange;
+    axios.get('/listing/avail/:start/:end')
       .then((results) => {
         const savedListings = results.data;
         setListings(savedListings);
@@ -34,7 +35,7 @@ const ResultsList = (props: any) => {
   useEffect(() => {
     // run a func
     getListings();
-  }, []);
+  }, [dateRange.start]);
 
   return (
     <List className={classes.root}>

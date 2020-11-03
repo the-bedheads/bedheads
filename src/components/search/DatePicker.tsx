@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
-import moment from 'moment';
+import moment, { isMoment } from 'moment';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -19,12 +19,20 @@ import { DateRangePicker } from 'react-dates';
 const DatePicker = (props: any) => {
   const [focusedInput, setFocusedInput] = useState(null);
   const {
-    startDate, setStartDate, endDate, setEndDate,
+    startDate, setStartDate, endDate, setEndDate, setDateRange,
   } = props;
 
   const onDateChange = (dates: any) => {
-    setStartDate(dates.startDate);
-    setEndDate(dates.endDate);
+    const start = dates.startDate;
+    const end = dates.endDate;
+    setStartDate(start);
+    setEndDate(end);
+    if (start && end) {
+      setDateRange({
+        start: start.format('YYYY-MM-DD'),
+        end: end.format('YYYY-MM-DD'),
+      });
+    }
   };
 
   const onFocusChange = (input: any) => {
