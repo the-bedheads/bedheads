@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const Messages = () => (
+const Messages: FC = (): JSX.Element => (
   <>
     COMING SOON!
     <br />

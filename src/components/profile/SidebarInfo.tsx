@@ -2,10 +2,7 @@ import React, { FunctionComponent } from 'react';
 import {
   Grid, Container, Box, makeStyles, Button,
 } from '@material-ui/core';
-import {
-  Link,
-  BrowserRouter as Router,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type HostDataType = {
   firstName: string,

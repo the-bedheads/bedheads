@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const BulletinBoard = () => (
+const BulletinBoard: FC = (): JSX.Element => (
   <>
     Bulletin Board Page
   </>

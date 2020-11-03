@@ -95,21 +95,27 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
   })
     .then(async (availabilities) => {
       const final = await availabilities.map((item) => {
+        const { id, startDate, endDate } = item.dataValues;
         if (!item.dataValues.accepted) {
           return {
-            start: item.dataValues.startDate,
-            end: item.dataValues.endDate,
-            title: 'Availability',
-            backgroundColor: 'green',
-            id: item.dataValues.id,
+            start: startDate,
+            end: endDate,
+            title: "Availability",
+            backgroundColor: "green",
+            id,
+            listingId: item.dataValues.listing_id,
+            type: 'avb',
           };
         }
         return {
-          start: item.dataValues.startDate,
-          end: item.dataValues.endDate,
-          title: 'Swap Confirmed',
-          backgroundColor: 'purple',
-          id: item.dataValues.id,
+          start: startDate,
+          end: endDate,
+          title: "Swap Confirmed",
+          backgroundColor: "purple",
+          id,
+          listingId: item.dataValues.listing_id,
+          guestId: item.dataValues.guest_id,
+          type: 'swap',
         };
       });
       const getRequests = async () => Promise.all(
@@ -134,28 +140,30 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
         });
         testArr.push(nestedObj);
       });
-      const arrJoin = async () => Promise.all(
-        testArr.map((request) => Availability.findOne({
-          where: {
-            id: request.availability_id,
-          },
-        }).then((availability) => {
-          const reqLength = request.requester_ids.length;
-          const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
-          const idkAnymore = {
-            availability_id: request.availability_id,
-            requester_ids: request.requester_ids,
-            title,
-            backgroundColor: 'blue',
-            start: availability.dataValues.startDate,
-            end: availability.dataValues.endDate,
-          };
-          return idkAnymore;
-        })),
-      );
+      const arrJoin = async () =>
+        Promise.all(
+          testArr.map((request) =>
+            Availability.findOne({
+              where: {
+                id: request.availability_id,
+              },
+            }).then((availability) => {
+              const reqLength = request.requester_ids.length;
+              const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
+              const idkAnymore = {
+                availability_id: request.availability_id,
+                requester_ids: request.requester_ids,
+                title,
+                backgroundColor: 'blue',
+                start: availability.dataValues.startDate,
+                end: availability.dataValues.endDate,
+                type: 'req',
+              };
+              return idkAnymore;
+            })),
+        );
       const wut = await arrJoin().then((data) => data);
       wut.forEach((request) => final.push(request));
-      console.log(wut);
       res.status(200).send(final);
     })
     .catch((err) => res.status(500).send(err));

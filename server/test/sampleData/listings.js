@@ -12,7 +12,7 @@ module.exports = [
     smoking: false,
     roommates: false,
     internet: true,
-    privateBath: true
+    privateBath: true,
   },
   {
     user_id: 2,
@@ -27,7 +27,7 @@ module.exports = [
     smoking: false,
     roommates: true,
     internet: true,
-    privateBath: false
+    privateBath: false,
   },
   {
     user_id: 3,
@@ -42,7 +42,7 @@ module.exports = [
     smoking: true,
     roommates: false,
     internet: true,
-    privateBath: true
+    privateBath: true,
   },
   {
     user_id: 4,
@@ -57,7 +57,7 @@ module.exports = [
     smoking: false,
     roommates: false,
     internet: false,
-    privateBath: true
+    privateBath: true,
   },
   {
     user_id: 5,
@@ -72,6 +72,6 @@ module.exports = [
     smoking: false,
     roommates: true,
     internet: true,
-    privateBath: false
-  }
+    privateBath: false,
+  },
 ];

@@ -1,6 +1,6 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
-import { Grid, Box, makeStyles } from '@material-ui/core';
-import axios from 'axios';
+import React, { useState, FunctionComponent } from 'react';
+import { Grid, makeStyles } from '@material-ui/core';
+import { ProfileProps } from 'goldilocksTypes';
 import ProfileInfo from './ProfileInfo';
 import SidebarInfo from './SidebarInfo';
 
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile: FunctionComponent = (props: any): JSX.Element => {
+const Profile: FunctionComponent<ProfileProps> = (props): JSX.Element => {
   const { location } = props;
   const [hostData] = useState(location.state.hostData);
   const classes = useStyles();

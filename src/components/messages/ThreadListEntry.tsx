@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const ThreadListEntry = () => (
+const ThreadListEntry: FC = (): JSX.Element => (
   <>
     Singular Thread
   </>

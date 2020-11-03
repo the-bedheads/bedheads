@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions,
 } from '@material-ui/core';
@@ -30,7 +30,6 @@ const EditUserInfo: FunctionComponent<BioProps> = (Props: BioProps): JSX.Element
     pronouns,
     location,
     infoOpen,
-    picOpen,
   } = Props;
 
   return (

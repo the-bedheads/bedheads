@@ -5,29 +5,10 @@ import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
+import { UserProps } from 'goldilocksTypes';
 
-// have to get availability from above and pass it down or else it will render twice
-type UserType = {
-  dob: string,
-  email: string,
-  first_name: string,
-  guestRating: number,
-  hostRating: number,
-  id: number,
-  inviteCount: number,
-  last_name: string,
-  password: string,
-  profilePhoto: string,
-  pronouns: string,
-  swapCount: number,
-  userBio: string,
-};
-
-interface CalProps {
-  user: UserType,
-}
-const UserCalendar: React.FC<CalProps> = ({ user }): JSX.Element => {
-  const [userId, setUserId] = useState(1);
+const UserCalendar: React.FC<UserProps> = ({ user }): JSX.Element => {
+  const [userId] = useState(user.id);
   const [listingId, setListingId] = useState(1);
   const [avbs, setAvbs] = useState([]);
 

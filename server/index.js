@@ -13,6 +13,7 @@ const { mapRouter } = require("./api/Map");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { requestRouter } = require("./db/routes/requestRoutes.js");
+const { listingPhotosRouter } = require("./db/routes/listingPhotosRoutes.js");
 
 const app = express();
 app.use(express.json());
@@ -37,6 +38,7 @@ app.use("/availability", availabilityRouter);
 app.use("/dashboardInfo", dashboardRouter);
 app.use("/request", requestRouter);
 app.use("/map", mapRouter);
+app.use("/listingPhotos", listingPhotosRouter);
 app.get("/*", (req, res) => {
   res.render(html_file);
 });

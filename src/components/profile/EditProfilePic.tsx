@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
-  Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions,
+  Button, Dialog, DialogTitle, DialogActions,
 } from '@material-ui/core';
 
 interface BioProps {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import axios from 'axios';
 import {
   BrowserRouter,
@@ -6,6 +6,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { UserType } from 'goldilocksTypes';
 
 // Components
 import { toast } from 'react-toastify';
@@ -20,41 +21,26 @@ import Navbar from './components/global/Navbar';
 import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
+import Swaps from './components/dashboard/swaps/Swaps';
 
 toast.configure();
-
-type UserType = {
-  dob: string,
-  email: string,
-  first_name: string,
-  guestRating: number,
-  hostRating: number,
-  id: number,
-  inviteCount: number,
-  last_name: string,
-  password: string,
-  profilePhoto: string,
-  pronouns: string,
-  swapCount: number,
-  userBio: string,
-};
 
 const initUser = {
   dob: '1',
   email: '1',
-  first_name: '1',
+  firstName: '1',
   guestRating: 1,
   hostRating: 1,
   id: 1,
   inviteCount: 1,
-  last_name: '1',
+  lastName: '1',
   password: '1',
   profilePhoto: '1',
   pronouns: '1',
   swapCount: 1,
   userBio: '1',
 };
-const App: React.FC = (): JSX.Element => {
+const App: FC = (): JSX.Element => {
   const [isAuthenticated, setAuth] = useState(true);
   const [testUser, setTestUser] = useState(initUser);
 
@@ -80,8 +66,8 @@ const App: React.FC = (): JSX.Element => {
     checkAuth();
     axios.get('user/')
       .then(({ data }) => {
-        const idk = data.filter((user: UserType) => user.id === 1);
-        setTestUser(idk[0]);
+        const userList = data.filter((user: UserType) => user.id === 1);
+        setTestUser(userList[0]);
       });
   }, []);
 
@@ -151,6 +137,11 @@ const App: React.FC = (): JSX.Element => {
           exact
           path="/calendar"
           component={() => <UserCalendar user={testUser} />}
+        />
+        <Route
+          exact
+          path="/swaps"
+          component={() => <Swaps user={testUser} />}
         />
       </Switch>
     </BrowserRouter>
