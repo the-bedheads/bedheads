@@ -6,7 +6,39 @@ const userRouter = Router();
 userRouter
   .get('/', (req, res) => {
     User.findAll()
-      .then((users) => res.send(users))
+      .then((users) => {
+        const result = users.map((user) => {
+          const {
+            id,
+            pronouns,
+            dob,
+            email,
+            password,
+            profilePhoto,
+            swapCount,
+            guestRating,
+            hostRating,
+            inviteCount,
+            userBio,
+          } = user.dataValues;
+          return {
+            id,
+            pronouns,
+            dob,
+            email,
+            password,
+            profilePhoto,
+            swapCount,
+            guestRating,
+            hostRating,
+            inviteCount,
+            userBio,
+            firstName: user.dataValues.first_name,
+            lastName: user.dataValues.last_name,
+          };
+        });
+        res.send(result);
+      })
       .catch((err) => res.status(500).send(err));
   })
   .get('/email/:address', (req, res) => {

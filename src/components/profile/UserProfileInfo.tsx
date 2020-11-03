@@ -4,26 +4,8 @@ import {
   Grid, Container, Box, Button, makeStyles, IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import { UserProps } from 'goldilocksTypes';
 import EditBio from './EditBio';
-
-type UserType = {
-  dob: string,
-  email: string,
-  first_name: string,
-  guestRating: number,
-  hostRating: number,
-  id: number,
-  inviteCount: number,
-  last_name: string,
-  password: string,
-  profilePhoto: string,
-  pronouns: string,
-  swapCount: number,
-  userBio: string,
-};
-interface SidebarProps {
-  user: UserType,
-}
 
 const useStyles = makeStyles({
   main: {
@@ -73,7 +55,7 @@ const useStyles = makeStyles({
 });
 
 // eslint-disable-next-line max-len
-const UserProfileInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
+const UserProfileInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [bio, setBio] = useState(user.userBio);

@@ -1,33 +1,11 @@
 import React, { FunctionComponent, useState } from 'react';
 import {
-  Grid, Container, Box, makeStyles, Button, IconButton,
+  Grid, Container, Box, makeStyles, IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import {
-  Link,
-  BrowserRouter as Router,
-} from 'react-router-dom';
+import { UserProps } from 'goldilocksTypes';
 import EditProfilePic from './EditProfilePic';
 import EditUserInfo from './EditUserInfo';
-
-type UserType = {
-  dob: string,
-  email: string,
-  first_name: string,
-  guestRating: number,
-  hostRating: number,
-  id: number,
-  inviteCount: number,
-  last_name: string,
-  password: string,
-  profilePhoto: string,
-  pronouns: string,
-  swapCount: number,
-  userBio: string,
-};
-interface SidebarProps {
-  user: UserType,
-}
 
 const useStyles = makeStyles({
   main: {
@@ -81,16 +59,16 @@ const useStyles = makeStyles({
   },
 });
 
-const UserSidebarInfo: FunctionComponent<SidebarProps> = ({ user }): JSX.Element => {
+const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [picOpen, setPicOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [pic, setPic] = useState(user.profilePhoto);
-  const [name, setName] = useState(user.first_name);
+  const [name, setName] = useState(user.firstName);
   const [pronouns, setPronouns] = useState(user.pronouns);
   const [location, setLocation] = useState('New Orleans, LA');
   const [tempPic, setTempPic] = useState(pic);
-  const [tempName, setTempName] = useState(user.first_name);
+  const [tempName, setTempName] = useState(user.firstName);
   const [tempPronouns, setTempPronouns] = useState(user.pronouns);
   const [tempLocation, setTempLocation] = useState('New Orleans, LA');
 

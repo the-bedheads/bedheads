@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
+import { UserProps } from 'goldilocksTypes';
 import UserProfileInfo from './UserProfileInfo';
 import UserSidebarInfo from './UserSidebarInfo';
 
@@ -9,27 +10,8 @@ const useStyles = makeStyles({
     marginBottom: '10px',
   },
 });
-type UserType = {
-  dob: string,
-  email: string,
-  first_name: string,
-  guestRating: number,
-  hostRating: number,
-  id: number,
-  inviteCount: number,
-  last_name: string,
-  password: string,
-  profilePhoto: string,
-  pronouns: string,
-  swapCount: number,
-  userBio: string,
-};
 
-interface UserProfileProps {
-  user: UserType,
-}
-
-const UserProfile: FunctionComponent<UserProfileProps> = ({ user }): JSX.Element => {
+const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
 
   return (

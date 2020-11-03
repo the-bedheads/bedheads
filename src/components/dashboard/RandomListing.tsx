@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const RandomListing = () => (
+const RandomListing: FC = (): JSX.Element => (
   <>
     Random Listing
   </>

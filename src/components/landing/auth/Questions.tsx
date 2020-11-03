@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const Questions = () => (
+const Questions: FC = (): JSX.Element => (
   <>
     Questions Page/Modal
   </>

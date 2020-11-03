@@ -3,6 +3,7 @@ const userData = require('./sampleData/users');
 const listingData = require('./sampleData/listings');
 const availabilityData = require('./sampleData/availabilities');
 const requestData = require('./sampleData/requests');
+const listingPhotosData = require('./sampleData/listingPhotos');
 
 const {
   User,
@@ -14,38 +15,47 @@ const {
   Availability,
 } = require('../db/index');
 
-const seed = () => {
-  User.bulkCreate(userData)
-    .then((results) => {
-    // console.log("USERS:", results);
-      if (results.length) {
-      // console.log('Users added to DB:', results);
-        console.log(`✅🎃✅ ${results.length} users successfully added to DB`);
+const seed = async () => {
+  await User.bulkCreate(userData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} users successfully added to DB`);
       } else {
         console.log('❌☠️❌ USERS not added');
       }
-    })
-    .then(() => {
-      Listing.bulkCreate(listingData)
-        .then((results) => {
-          if (results.length) {
-            console.log(`✅🎃✅ ${results.length} listings successfully added to DB`);
-          } else {
-            console.log('❌☠️❌ LISTINGS NOT ADDED');
-          }
-        })
-        .then(() => {
-          Availability.bulkCreate(availabilityData)
-            .then((results) => console.log(`✅🎃✅ ${results.length} availabilities successfully added to DB`))
-            .then(() => {
-              Request.bulkCreate(requestData)
-                .then((results) => console.log(`✅🎃✅ ${results.length} requests successfully added to DB`))
-                .catch((err) => console.log(err));
-            })
-            .catch((err) => console.log(err));
-        });
-    })
-    .catch((err) => console.error('Database falied to give results. Error:', err));
+    });
+  await Listing.bulkCreate(listingData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} listings successfully added to DB`);
+      } else {
+        console.log('❌☠️❌ LISTINGS NOT ADDED');
+      }
+    });
+  await Availability.bulkCreate(availabilityData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} availabilities successfully added to DB`);
+      } else {
+        console.log('❌☠️❌ AVAILABILITIES NOT ADDED');
+      }
+    });
+  await Request.bulkCreate(requestData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} requests successfully added to DB`);
+      } else {
+        console.log('❌☠️❌ REQUESTS NOT ADDED');
+      }
+    });
+  await ListingPhotos.bulkCreate(listingPhotosData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} listing photos successfully added to DB`);
+      } else {
+        console.log('❌☠️❌ LISTING PHOTOS NOT ADDED');
+      }
+    });
 };
 
 seed();

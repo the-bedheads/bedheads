@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const ThreadList = () => (
+const ThreadList: FC = (): JSX.Element => (
   <>
     ThreadList
   </>

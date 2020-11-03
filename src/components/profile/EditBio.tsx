@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC } from 'react';
 import {
   Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions,
 } from '@material-ui/core';
@@ -11,14 +11,14 @@ interface BioProps {
   open: boolean,
 }
 
-const EditBio: FunctionComponent<BioProps> = (Props: BioProps): JSX.Element => {
+const EditBio: FC<BioProps> = (props): JSX.Element => {
   const {
     handleClose,
     handleClickOff,
     handleTextChange,
     bio,
     open,
-  } = Props;
+  } = props;
 
   return (
     <Dialog open={open} onClose={handleClickOff} fullWidth maxWidth="md" aria-labelledby="form-dialog-title">
