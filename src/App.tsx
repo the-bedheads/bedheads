@@ -22,6 +22,7 @@ import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
+import Invite from './components/global/Invite';
 
 toast.configure();
 
@@ -82,7 +83,7 @@ const App: FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <Login handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/dashboard" />
-          ))}
+            ))}
         />
         <Route
           exact
@@ -91,7 +92,7 @@ const App: FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/dashboard" />
-          ))}
+            ))}
         />
         {/* // <Redirect to="/dashboard" /> */}
 
@@ -102,7 +103,7 @@ const App: FC = (): JSX.Element => {
           render={() => (isAuthenticated ? (
             <Dashboard handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-          ))}
+            ))}
         />
         {/* //     <Login handleLogin={[isAuthenticated, setAuth]} />
            */}
@@ -142,6 +143,11 @@ const App: FC = (): JSX.Element => {
           exact
           path="/swaps"
           component={() => <Swaps user={testUser} />}
+        />
+        <Route
+          exact
+          path="/invite"
+          component={Invite}
         />
       </Switch>
     </BrowserRouter>

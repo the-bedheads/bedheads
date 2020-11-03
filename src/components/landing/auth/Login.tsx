@@ -1,6 +1,9 @@
 import React, { useEffect, SyntheticEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import nightbed from '../../../assets/nightbed.jpg';
+import '../../../App.css';
+
 // Declare the type of data that will be handled in onSubmit function
 type LoginExistingUser = {
   email: string;
@@ -10,7 +13,15 @@ type LoginExistingUser = {
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
-
+const styles = {
+  header: {
+    backgroundImage: `url(${nightbed})`,
+    height: '100vh',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+  },
+};
 const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const { errors } = useForm<LoginExistingUser>();
   const [email, setEmail] = useState<string>('');
@@ -27,13 +38,12 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
   const onLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {
-      const body = {
-        email, password,
-      };
+      const body = { email, password };
       const response = await fetch('http://localhost:3000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // Accept: 'application/json,text/plain, */*',
         },
         body: JSON.stringify(body),
       });
@@ -56,53 +66,52 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
   };
 
   return (
-    <>
-      <div className="container">
-        <h1 className="text-center my-5">Login</h1>
-        <div className="row justify-content-center">
-          <form onSubmit={onLogin}>
-            <div className="form-group">
-              <label htmlFor="email">
-                Email
-                <input
-                  className="form-control my-3"
-                  type="email"
-                  name="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {errors.email && <div className="error"> Enter A Valid Email </div>}
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">
-                Enter Password
-                <input
-                  className="form-control my-3"
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Create Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                {errors.password && <div className="error">Enter A Valid Password </div>}
-              </label>
-            </div>
-            <div className="button">
-              <button
-                className="btn btn-success btn-block"
-                type="submit"
-              >
-                Start Swapping
-              </button>
-              <a href="/register">Have a verification code? Sign Up Here</a>
-            </div>
-          </form>
-        </div>
+    <div className="login-container" style={styles.header}>
+      <h1 className="text-center my-5">Login</h1>
+      <div className="row justify-content-center">
+        <form>
+          <div className="form-group">
+            <label htmlFor="email">
+              Email
+              <input
+                className="form-control my-3"
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {errors.email && <div className="error"> Enter A Valid Email </div>}
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">
+              Enter Password
+              <input
+                className="form-control my-3"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {errors.password && <div className="error">Enter A Valid Password </div>}
+            </label>
+          </div>
+          <div className="button">
+            <button
+              className="btn btn-success btn-block"
+              type="submit"
+              onClick={onLogin}
+            >
+              Start Swapping
+            </button>
+            <a href="/register">Have a verification code? Sign Up Here</a>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 export default Login;
