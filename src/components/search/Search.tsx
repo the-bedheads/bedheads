@@ -1,13 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import moment, { isMoment } from 'moment';
+import axios from 'axios';
 
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
-import ResultsList from './ResultsList';
-import DatePicker from './DatePicker';
+import ResultsList from './SearchResultsList';
+import DatePicker from './SearchDatePicker';
 
 type SearchProps = {
   query: string
@@ -34,6 +35,21 @@ const Search: React.FC = () => {
     start: moment().format('YYYY-MM-DD'),
     end: moment().add(7, 'days').format('YYYY-MM-DD'),
   });
+
+  // view all listings in default search view
+  // pass the setter to resultsList; will be updated via search there
+  const getListings = () => {
+    axios.get('/listing')
+      .then((results) => {
+        const savedListings = results.data;
+        setListings(savedListings);
+      })
+      .catch((err) => err);
+  };
+
+  useEffect(() => {
+    getListings();
+  }, []);
 
   return (
     <div className={classes.root}>
