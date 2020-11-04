@@ -7,9 +7,9 @@ import '../../App.css';
 import realisticbed from '../../assets/realisticbed.jpg';
 import generateVerificationCode from '../../invite/verificationCode';
 
-const {
-  EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
-} = process.env;
+// const {
+//   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
+// } = process.env;
 
 const Invite: React.FC = (props: any): JSX.Element => {
   const [friendEmail, setFriendEmail] = useState<string>('');
