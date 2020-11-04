@@ -31,10 +31,6 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
     setAuth(true);
   };
 
-  const logoutUser = () => {
-    setAuth(false);
-  };
-
   const onLogin = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {
