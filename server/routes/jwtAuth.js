@@ -15,6 +15,7 @@ router.post("/register", async (req, res) => {
     profilePhotoUrl: pic,
   } = req.body;
   try {
+    console.info("Entered variables", firstName, lastName, email, password);
     const existingUser = await User.findOne({
       where: {
         email,
@@ -74,6 +75,24 @@ router.post('/verify', authorize, (req, res) => {
     console.warn(err.message);
     res.status(500).send("Error verifying user token.");
   }
+});
+
+router.post("/invite", (req, res) => {
+  const { email, newUserEmail, verificationCode } = req.body;
+  User.findOne({
+    where: {
+      email: email,
+    },
+  })
+    .then((results) => {
+      const senderId = results.id;
+      const query = db.query(`INSERT INTO invites (verificationCode, newUserEmail, sender_id) 
+      VALUES ('${verificationCode}', '${newUserEmail}', '${senderId}');`);
+      res.status(200).send("Invited friend to Goldilocks!");
+    })
+    .catch((err) => {
+      res.status(500).send("Error inviting friend");
+    });
 });
 
 module.exports = router;
