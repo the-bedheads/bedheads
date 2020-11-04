@@ -2,18 +2,6 @@ const router = require("express").Router();
 const authorize = require("../utils/authorize");
 const { db, User } = require("../db/index");
 
-// router.post("/", authorize, (req, res) => {
-//   const results = {};
-//   const { email } = req.query;
-//   const user = User.findAll({
-//     where: {
-//       email: 'poop@gmail.com',
-//     },
-//   });
-//   res.send(user);
-//   console.log(req.query);
-// });
-
 router.post("/", authorize, async (req, res) => {
   try {
     const { email, password } = req.body;
