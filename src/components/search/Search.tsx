@@ -8,7 +8,6 @@ import axios from 'axios';
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
 import ResultsList from './SearchResultsList';
-import DatePicker from './SearchDatePicker';
 
 type SearchProps = {
   query: string
@@ -55,10 +54,8 @@ const Search: React.FC = () => {
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={4}>
-          <SearchBar onSubmit={(value: any) => setLocationQuery(value)} />
-        </Grid>
-        <Grid item xs={3}>
-          <DatePicker
+          <SearchBar
+            onSubmit={(value: any) => setLocationQuery(value)}
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
@@ -68,9 +65,10 @@ const Search: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <ResultsList
-            startDate={startDate}
-            endDate={endDate}
+            // startDate={startDate}
+            // endDate={endDate}
             dateRange={dateRange}
+            locationQuery={locationQuery}
             listings={listings}
             setListings={setListings}
           />

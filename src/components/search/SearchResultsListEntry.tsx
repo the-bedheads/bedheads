@@ -21,7 +21,11 @@ import { Link } from 'react-router-dom';
 // });
 
 const ResultsListEntry = (props: any) => {
-  const { user, title, address } = props;
+  const {
+    user, title, location, avail,
+  } = props;
+  const { listingCity, listingState } = location;
+  const { startAvail, endAvail } = avail;
 
   return (
     <ListItem
@@ -30,8 +34,15 @@ const ResultsListEntry = (props: any) => {
     >
       <ListItemText
         primary={title}
-        secondary={address}
+        secondary={`${listingCity}, ${listingState}`}
       />
+      available from
+      {' '}
+      {startAvail}
+      {' '}
+      to
+      {' '}
+      {endAvail}
     </ListItem>
   );
 };

@@ -39,11 +39,41 @@ listingRouter
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
+  })
+  .get('/fullSearch/:listingId/:location', (req, res) => {
+    const { listingId, location } = req.params;
+    Listing.findOne({
+      where: {
+        id: listingId,
+        listingCity: location,
+      },
+    })
+      .then((listing) => res.send(listing))
+      .catch((err) => res.status(500).send(err));
   });
 
 listingRouter
   .post('/', (req, res) => {
-    console.log('made a post request to listings');
+    const {
+      listingAddress, listingCity, listingState, listingZipCode, listingTitle,
+      listingDescription, pets, ada, smoking, roommates, internet, privateBath,
+    } = req.body;
+    Listing.create({
+      listingAddress,
+      listingCity,
+      listingState,
+      listingZipCode,
+      listingTitle,
+      listingDescription,
+      pets,
+      ada,
+      smoking,
+      roommates,
+      internet,
+      privateBath,
+    })
+      .then(() => res.status(201).send('created!'))
+      .catch((err) => res.send(err));
   });
 
 module.exports = {
