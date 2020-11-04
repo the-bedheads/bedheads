@@ -83,7 +83,7 @@ const App: FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <Login handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/dashboard" />
-            ))}
+          ))}
         />
         <Route
           exact
@@ -92,7 +92,7 @@ const App: FC = (): JSX.Element => {
           render={() => (!isAuthenticated ? (
             <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/dashboard" />
-            ))}
+          ))}
         />
         {/* // <Redirect to="/dashboard" /> */}
 
@@ -103,7 +103,7 @@ const App: FC = (): JSX.Element => {
           render={() => (isAuthenticated ? (
             <Dashboard handleLogin={[isAuthenticated, setAuth]} />) : (
               <Redirect to="/" />
-            ))}
+          ))}
         />
         {/* //     <Login handleLogin={[isAuthenticated, setAuth]} />
            */}
