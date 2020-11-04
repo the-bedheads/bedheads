@@ -85,7 +85,7 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             <MenuItem component={Link} to="/calendar" color="inherit" onClick={handleClose}>
               Set availability
             </MenuItem>
-            <MenuItem>
+            <MenuItem component={Link} to="/invite" color="inherit" onClick={handleClose}>
               Invite friends
             </MenuItem>
           </Menu>

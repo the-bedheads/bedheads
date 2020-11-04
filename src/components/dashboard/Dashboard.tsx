@@ -49,14 +49,12 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
         method: 'POST',
         headers: { jwt_token: localStorage.token },
       });
-      console.log('getprof1');
+      console.log('Auth state is ', isAuthenticated);
+      console.log(userName, userEmail);
       const parseData = await res.json();
       console.log(parseData);
-      setAuth(true);
       setUserEmail(parseData.email);
-      setUserName('Kris');
-      console.log('STATE after LOGIN:  ', isAuthenticated);
-      console.log(userName, userEmail);
+      setUserName(parseData.first_name);
       console.log('final getprof');
     } catch (err) {
       console.error(err.message);
@@ -83,6 +81,17 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     setShownIndex(getRandomAvlb());
   };
 
+  const postUserInfo = () => {
+    axios.post('/dashboard', {
+      params: {
+        userEmail,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+        console.log('hit post User info');
+      });
+  };
   const getDashboardInfo = () => {
     axios.get('/dashboardInfo', {
       params: {

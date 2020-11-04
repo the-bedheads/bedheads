@@ -5,13 +5,10 @@ const validEmail = require("../utils/validEmail");
 const generateToken = require("../utils/jsonWebToken");
 const authorize = require("../utils/authorize");
 
-// Signup/Register
+// Signup/Register a new user
 router.post("/register", async (req, res) => {
-  //1. Destructure the req.body (name, email, password)
-  // Change back to camel case
   const { firstName, lastName, email, password } = req.body;
   try {
-    //2. Check if user exists
     console.log(req.body);
     console.log("Entered variables", firstName, lastName, email, password);
     const existingUser = await User.findOne({
@@ -20,12 +17,8 @@ router.post("/register", async (req, res) => {
       },
     });
     if (existingUser === null && email.length && password.length >= 6) {
-      //2.a. If not, bcrypt user's password
       const hashedPassword = await bcrypt.hash(password, 10);
-      console.log(hashedPassword);
 
-      // Insert user into database
-      // Change back to camel case
       await db.query(`INSERT INTO users (first_name, last_name, email, password) 
       VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
 
@@ -36,14 +29,10 @@ router.post("/register", async (req, res) => {
       });
       console.log("USER ID   ", user.id);
       const jwtToken = generateToken(user.id);
-      console.log("NUT LMAO", jwtToken);
       res.json({ jwtToken });
     } else {
-      // 2.b. If user already exists, throw error
       res.status(401).json("Already registered");
     }
-
-    // 3. Generate JWT
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -52,7 +41,6 @@ router.post("/register", async (req, res) => {
 
 // Verify (login) registered user
 router.post("/login", validEmail, async (req, res) => {
-  // console.log(email, password);
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -77,6 +65,7 @@ router.post("/login", validEmail, async (req, res) => {
   }
 });
 
+// Verify logged in user's web token
 router.post("/verify", authorize, (req, res) => {
   try {
     res.json(true);
@@ -85,9 +74,5 @@ router.post("/verify", authorize, (req, res) => {
     res.status(500).send("Error verifying user token.");
   }
 });
-
-// router.get("/", (req, res) => {
-//   res.json({ message: "👽" });
-// });
 
 module.exports = router;

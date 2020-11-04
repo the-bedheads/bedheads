@@ -22,6 +22,7 @@ import UserProfile from './components/profile/UserProfile';
 import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
+import Invite from './components/global/Invite';
 
 toast.configure();
 
@@ -142,6 +143,11 @@ const App: FC = (): JSX.Element => {
           exact
           path="/swaps"
           component={() => <Swaps user={testUser} />}
+        />
+        <Route
+          exact
+          path="/invite"
+          component={Invite}
         />
       </Switch>
     </BrowserRouter>

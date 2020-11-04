@@ -3,8 +3,8 @@ const authorize = require("../utils/authorize");
 const { db, User } = require("../db/index");
 
 router.post("/", authorize, async (req, res) => {
-  const { email } = req.body;
   try {
+    const { email, password } = req.body;
     console.log("reqbodyindashroute", req.body);
     const user = await User.findAll({
       where: {
@@ -13,7 +13,7 @@ router.post("/", authorize, async (req, res) => {
     });
 
     console.log(user[0].dataValues);
-    res.json(user[0].dataValues);
+    res.send(user[0].dataValues);
     // res.status(200).send(user[0].dataValues);
   } catch (err) {
     console.error(err.message);
