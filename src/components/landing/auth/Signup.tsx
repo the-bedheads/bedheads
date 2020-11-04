@@ -201,7 +201,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
