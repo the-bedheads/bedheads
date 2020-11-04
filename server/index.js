@@ -5,7 +5,6 @@ require('dotenv').config();
 require('./db/index.js');
 
 const PORT = process.env.PORT || 3000;
-<<<<<<< HEAD
 const { listingRouter } = require("./db/routes/listingRoutes");
 const { userRouter } = require("./db/routes/userRoutes");
 const { availabilityRouter } = require("./db/routes/availabilityRoutes");
@@ -15,17 +14,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { requestRouter } = require("./db/routes/requestRoutes.js");
 const { listingPhotosRouter } = require("./db/routes/listingPhotosRoutes.js");
-=======
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const { listingRouter } = require('./db/routes/listingRoutes');
-const { userRouter } = require('./db/routes/userRoutes');
-const { availabilityRouter } = require('./db/routes/availabilityRoutes');
-const { dashboardRouter } = require('./db/routes/dashboardRoutes.js');
-const { mapRouter } = require('./api/Map');
-const { requestRouter } = require('./db/routes/requestRoutes.js');
-const { imageRouter } = require('./api/cloudinaryRoutes');
->>>>>>> (add) call to server to add image to cloudinary
+const { imageRouter } = require('./api/cloudinaryRoutes')
 
 const app = express();
 app.use(express.json());
@@ -48,16 +37,6 @@ app.use(express.static(path.join(__dirname, '../build')));
 app.use('/auth', require('./routes/jwtAuth'));
 app.use('/dashboard', require('./routes/dashboard'));
 
-<<<<<<< HEAD
-app.use("/listing", listingRouter);
-app.use("/user", userRouter);
-app.use("/availability", availabilityRouter);
-app.use("/dashboardInfo", dashboardRouter);
-app.use("/request", requestRouter);
-app.use("/map", mapRouter);
-app.use("/listingPhotos", listingPhotosRouter);
-app.get("/*", (req, res) => {
-=======
 app.use('/listing', listingRouter);
 app.use('/user', userRouter);
 app.use('/availability', availabilityRouter);
@@ -67,7 +46,6 @@ app.use('/map', mapRouter);
 app.use('/image', imageRouter);
 
 app.get('/*', (req, res) => {
->>>>>>> (add) call to server to add image to cloudinary
   res.render(html_file);
 });
 
