@@ -39,7 +39,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   //     }
   //     setAuth(false);
   //   } catch (err) {
-  //     console.error(err.message);
+  //     console.warn(err.message);
   //   }
   // };
 
@@ -57,7 +57,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       setUserName(parseData.first_name);
       console.log('final getprof');
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 
@@ -68,7 +68,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       setAuth(false);
       toast.success('Successfully logged out!');
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 

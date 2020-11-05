@@ -48,7 +48,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       .then(({ data }) => {
         setProfilePhotoUrl(data);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.warn(error));
   };
 
   const handleFileChange = (e: any) => {
@@ -61,7 +61,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       uploadImage(reader.result);
     };
     reader.onerror = () => {
-      console.error('reader experienced an error');
+      console.warn('reader experienced an error');
     };
   };
 
@@ -92,7 +92,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       // setAuth(true);
       // toast.success('Registered successfully!');
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 

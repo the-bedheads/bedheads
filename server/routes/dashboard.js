@@ -16,7 +16,7 @@ router.post("/", authorize, async (req, res) => {
     res.send(user[0].dataValues);
     // res.status(200).send(user[0].dataValues);
   } catch (err) {
-    console.error(err.message);
+    console.warn(err.message);
     res.status(500).send("Error authorizing user to dashboard, ln 16");
   }
 });

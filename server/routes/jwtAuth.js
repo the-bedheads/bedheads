@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
       res.status(401).json("Already registered");
     }
   } catch (err) {
-    console.error(err.message);
+    console.warn(err.message);
     res.status(500).send("Server error");
   }
 });
@@ -61,7 +61,7 @@ router.post("/login", validEmail, async (req, res) => {
     const jwtToken = generateToken(user.id);
     res.json({ jwtToken });
   } catch (err) {
-    console.error(err.message);
+    console.warn(err.message);
     res.status(500).send("Error logging in line 64 jwtAuth.js");
   }
 });
@@ -71,7 +71,7 @@ router.post("/verify", authorize, (req, res) => {
   try {
     res.json(true);
   } catch (err) {
-    console.error(err.message);
+    console.warn(err.message);
     res.status(500).send("Error verifying user token.");
   }
 });

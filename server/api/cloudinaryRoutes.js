@@ -24,7 +24,7 @@ imageRouter.post('/profile', async (req, res) => {
     res.json({ data: uploadedImage });
     res.end();
   } catch (error) {
-    console.error(error);
+    console.warn(error);
     res.status(500).json({ msg: error });
   }
 });
