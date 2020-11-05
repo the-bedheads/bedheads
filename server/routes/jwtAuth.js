@@ -7,10 +7,16 @@ const authorize = require("../utils/authorize");
 
 // Signup/Register a new user
 router.post("/register", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { 
+    firstName,
+    lastName,
+    email,
+    password,
+    profilePhotoUrl: pic,
+  } = req.body;
   try {
-    console.log(req.body);
-    console.log("Entered variables", firstName, lastName, email, password);
+    console.log('pic url being added:', pic);
+    console.log("Entered variables from form:", firstName, lastName, email, password, pic);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -19,8 +25,8 @@ router.post("/register", async (req, res) => {
     if (existingUser === null && email.length && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await db.query(`INSERT INTO users (first_name, last_name, email, password) 
-      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
+      await db.query(`INSERT INTO users (first_name, last_name, email, password, profile_photo) 
+      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${pic}');`);
 
       const user = await User.findOne({
         where: {
