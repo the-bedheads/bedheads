@@ -37,25 +37,45 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [password, setPassword] = useState<string>('');
   const [fileInputState, setFileInputState] = useState('');
   const [selectedFile, setSelectedFile] = useState<any>();
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
 
   const handleFileChange = (e: any) => {
     const image = e.target.files[0];
     setSelectedFile(image);
     setFileInputState(e.target.value);
-    console.log('selected file:', selectedFile);
   };
 
   const uploadImage = async (encodedImage: any) => {
-    try {
-      await fetch('http://localhost:3000/image/profile', {
-        method: 'POST',
-        body: JSON.stringify({ data: encodedImage }),
-        headers: { 'Content-Type': 'application/json' },
+    console.log('just got inside the upload image function');
+    await axios.get('http://localhost:3000/image/newProfilePicture', {
+      params: {
+        image: encodedImage,
+      },
+    })
+      .then(async ({ data }) => {
+        console.log('data returned from axios image call', data);
+        await setProfilePhotoUrl(data);
+        return data;
       })
-        .then((results) => console.log(results));
-    } catch (error) {
-      console.error(error);
-    }
+      .catch((error) => console.error(error));
+
+    // imageRouter.get('/newProfilePicture', (req, res) => {
+    //   const countRequestUrl = 'http://localhost:3000/request/countByArray';
+    //   axios.get(countRequestUrl, {
+    //     params: {
+    //       arr: data,
+    //     },
+
+    // try {
+    //   await fetch('http://localhost:3000/image/newProfilePicture', {
+    //     method: 'GET',
+    //     body: JSON.stringify({ data: encodedImage }),
+    //     headers: { 'Content-Type': 'application/json' },
+    //   })
+    //     .then((results) => console.log(results));
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   const getUserProfile = async () => {
@@ -78,15 +98,16 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
     event.preventDefault();
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
-    reader.onloadend = () => {
-      uploadImage(reader.result);
+    reader.onloadend = async () => {
+      await uploadImage(reader.result);
     };
     reader.onerror = () => {
       console.error('reader experienced an error');
     };
     try {
+      console.log('profilePhotoUrl right before sending: ', profilePhotoUrl);
       const body = {
-        firstName, lastName, email, password,
+        firstName, lastName, email, password, profilePhotoUrl,
       };
       const response = await fetch('http://localhost:3000/auth/register',
         {
