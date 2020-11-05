@@ -31,7 +31,7 @@ const Dashboard: React.FC<AuthProps> = ({
       const parseData = await res.json();
       setAuth(true);
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 
@@ -49,7 +49,7 @@ const Dashboard: React.FC<AuthProps> = ({
       setAuth(false);
       toast.success('Successfully logged out!');
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 
