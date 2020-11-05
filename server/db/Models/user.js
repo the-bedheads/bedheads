@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       dob: DataTypes.DATEONLY,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
-      profilePhoto: DataTypes.STRING,
+      profile_photo: DataTypes.STRING,
       swapCount: DataTypes.INTEGER,
       guestRating: DataTypes.FLOAT,
       hostRating: DataTypes.FLOAT,
