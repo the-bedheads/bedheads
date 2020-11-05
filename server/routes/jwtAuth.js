@@ -5,12 +5,18 @@ const validEmail = require('../utils/validEmail');
 const generateToken = require('../utils/jsonWebToken');
 const authorize = require('../utils/authorize');
 
-// Signup/Register
-router.post('/register', async (req, res) => {
-  // 1. Destructure the req.body (name, email, password)
-  // Change back to camel case
-  const { firstName, lastName, email, password } = req.body;
+// Signup/Register a new user
+router.post("/register", async (req, res) => {
+  const { 
+    firstName,
+    lastName,
+    email,
+    password,
+    profilePhotoUrl: pic,
+  } = req.body;
   try {
+    console.log('pic url being added:', pic);
+    console.log("Entered variables from form:", firstName, lastName, email, password, pic);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -19,10 +25,9 @@ router.post('/register', async (req, res) => {
     if (existingUser === null && email.length && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Insert user into database
-      // Change back to camel case
-      await db.query(`INSERT INTO users (first_name, last_name, email, password)
-      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
+      await db.query(`INSERT INTO users (first_name, last_name, email, password, profile_photo) 
+      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${pic}');`);
+
       const user = await User.findOne({
         where: {
           email: email,
