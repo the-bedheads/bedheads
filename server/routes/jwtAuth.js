@@ -15,11 +15,9 @@ router.post("/register", async (req, res) => {
     profilePhotoUrl: pic,
   } = req.body;
   try {
-    console.log('pic url being added:', pic);
-    console.log("Entered variables from form:", firstName, lastName, email, password, pic);
     const existingUser = await User.findOne({
       where: {
-        email: email,
+        email,
       },
     });
     if (existingUser === null && email.length && password.length >= 6) {
@@ -30,10 +28,9 @@ router.post("/register", async (req, res) => {
 
       const user = await User.findOne({
         where: {
-          email: email,
+          email,
         },
       });
-      console.log("USER ID   ", user.id);
       const jwtToken = generateToken(user.id);
       res.json({ jwtToken });
     } else {
@@ -58,12 +55,10 @@ router.post("/login", validEmail, async (req, res) => {
       return res.status(401).json("Invalid credentials, line 53");
     }
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log("password is valid?", validPassword);
     if (!validPassword) {
       return res.status(401).json("Invalid Password, line 58");
     }
     const jwtToken = generateToken(user.id);
-    console.log({ jwtToken });
     res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
