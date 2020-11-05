@@ -12,7 +12,6 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
   const { image } = req.query;
   const uploadedImage = await cloudinary.uploader
     .upload(image);
-  console.log('url about to be sent back:', uploadedImage.url);
   res.send(uploadedImage.url);
 });
 
