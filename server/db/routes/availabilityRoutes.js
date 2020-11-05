@@ -1,8 +1,7 @@
-const { Router } = require('express');
-const { Op } = require('sequelize');
-const moment = require('moment');
-
-const { Availability, Request, Listing } = require('../index');
+const { Router } = require("express");
+const { Op } = require("sequelize");
+const { moment } = require("moment");
+const { Availability, Request, Listing } = require("../index");
 
 const availabilityRouter = Router();
 
@@ -16,7 +15,10 @@ availabilityRouter
     const { hostId } = req.params;
     Availability.findAll({
       where: {
-        [Op.and]: [{ accepted: false }, { host_id: hostId }],
+        [Op.and]: [
+          { accepted: false },
+          { host_id: hostId },
+        ],
       },
     })
       .then((availabilities) => res.send(availabilities))

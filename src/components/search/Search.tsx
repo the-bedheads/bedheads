@@ -8,6 +8,7 @@ import axios from 'axios';
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
 import ResultsList from './SearchResultsList';
+import DatePicker from './SearchDatePicker';
 
 type SearchProps = {
   query: string

@@ -42,7 +42,7 @@ const initUser = {
   userBio: '1',
 };
 const App: FC = (): JSX.Element => {
-  const [isAuthenticated, setAuth] = useState(true);
+  const [isAuthenticated, setAuth] = useState(false);
   const [testUser, setTestUser] = useState(initUser);
 
   const checkAuth = async () => {

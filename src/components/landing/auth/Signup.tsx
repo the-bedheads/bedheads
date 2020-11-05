@@ -35,10 +35,42 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [fileInputState, setFileInputState] = useState('');
+  const [selectedFile, setSelectedFile] = useState<any>();
+
+  const handleFileChange = (e: any) => {
+    console.log('handling file upload change');
+    const image = e.target.files[0];
+    console.log(image);
+    setSelectedFile(image);
+    setFileInputState(e.target.value);
+    console.log('selected file:', selectedFile);
+  };
+
+  const uploadImage = async (encodedImage: any) => {
+    console.log('just got inside the upload image function');
+    try {
+      await fetch('http://localhost:3000/image/profile', {
+        method: 'POST',
+        body: JSON.stringify({ data: encodedImage }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((results) => console.log(results));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const onSubmitForm = async (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log('hello2');
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      uploadImage(reader.result);
+    };
+    reader.onerror = () => {
+      console.error('reader experienced an error');
+    };
     try {
       const body = {
         firstName, lastName, email, password,
@@ -74,91 +106,102 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   };
 
   return (
-    <div className="signup-container" style={styles.header}>
-      <h1 className="text-center my-5">Register</h1>
-      <div className="row justify-content-center">
-        <form onSubmit={onSubmitForm}>
-          <div className="form-group align-center my-3">
-            <label htmlFor="first-name">
-              First Name
+    <>
+      <div className="container">
+        <h1 className="text-center my-5">Register</h1>
+        <div className="row justify-content-center">
+          <form onSubmit={onSubmitForm}>
+            <div className="form-group align-center my-5">
+              <label htmlFor="first-name">
+                First Name
+                <input
+                  className="form-control my-3"
+                  type="text"
+                  name="first-name"
+                  placeholder="Enter your first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                {errors.first_name && <div className="error">Enter Your First Name</div>}
+              </label>
+            </div>
+            <div className="form-group align-center">
+              <label htmlFor="last-name">
+                Last Name
+                <input
+                  className="form-control my-3"
+                  type="text"
+                  name="last-name"
+                  placeholder="Enter your last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                {errors.last_name && <div className="error">Enter Your Last Name</div>}
+              </label>
+            </div>
+            <div className="form-group align-center">
+              <label htmlFor="email">
+                Email
+                <input
+                  className="form-control my-3"
+                  type="text"
+                  name="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && <div className="error">Enter Your Email</div>}
+              </label>
+            </div>
+            <div className="form-group align-center">
+              <label htmlFor="password">
+                Password
+                <input
+                  className="form-control my-3"
+                  type="password"
+                  name="password"
+                  placeholder="Create Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && <div className="error">Enter Your Password</div>}
+              </label>
+            </div>
+            {/* <div className="field"> */}
+            {/* <label htmlFor="verification-code">
+            Enter Verification Code
+            <input
+              type="text"
+              id="verification"
+              name="verification-code"
+              placeholder="Enter verification code"
+            />
+            {errors.name && <div className="error">Enter a valid verfication code</div>}
+          </label> */}
+            {/* </div> */}
+            <div className="form-group align-center">
               <input
-                className="form-control my-3"
-                type="text"
-                name="first-name"
-                placeholder="Enter your first name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                id="imageInput"
+                type="file"
+                name="image"
+                onChange={(e) => handleFileChange(e)}
+                value={fileInputState}
               />
-              {errors.first_name && <div className="error">Enter Your First Name</div>}
-            </label>
-          </div>
-          <div className="form-group align-center">
-            <label htmlFor="last-name">
-              Last Name
-              <input
-                className="form-control my-3"
-                type="text"
-                name="last-name"
-                placeholder="Enter your last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              {errors.last_name && <div className="error">Enter Your Last Name</div>}
-            </label>
-          </div>
-          <div className="form-group align-center">
-            <label htmlFor="email">
-              Email
-              <input
-                className="form-control my-3"
-                type="text"
-                name="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {errors.email && <div className="error">Enter Your Email</div>}
-            </label>
-          </div>
-          <div className="form-group align-center">
-            <label htmlFor="password">
-              Password
-              <input
-                className="form-control my-3"
-                type="password"
-                name="password"
-                placeholder="Create Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {errors.password && <div className="error">Enter Your Password</div>}
-            </label>
-          </div>
-          <div className="form-group align-center my-3">
-            <label htmlFor="verification-code">
-              Enter Verification Code
-              <input
-                type="text"
-                id="verification"
-                name="verification-code"
-                placeholder="Enter verification code"
-              />
-              {errors.verification_code && <div className="error">Enter a valid verfication code</div>}
-            </label>
-          </div>
-          <div className="form-group align-center">
-            <button
-              className="btn btn-success btn-block"
-              type="submit"
-            >
-              Register
-            </button>
-            <br />
-            <a href="/">Already registered? Login here.</a>
-          </div>
-        </form>
+            </div>
+            <div className="form-group align-center">
+              <button
+                className="btn btn-success btn-block"
+                type="submit"
+              >
+                Register
+              </button>
+              <br />
+              <a href="/">Already registered? Login here.</a>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
