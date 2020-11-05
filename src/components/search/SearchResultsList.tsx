@@ -22,7 +22,7 @@ const ResultsList = (props: any) => {
   const {
     locationQuery, listings, setListings, dateRange,
   } = props;
-  const [errorMessage, setErrorMessage] = useState('');
+  const [defaultView, setDefaultView] = useState(true);
 
   // use listing ids to render list of listings
   const getAvailListingInfo = (listingIds: any) => {
@@ -70,11 +70,11 @@ const ResultsList = (props: any) => {
             // object keys are unique!
             if (!listingsToRender[listingId]) {
               listingsToRender[listingId] = { startDate, endDate };
-              console.log('LISTINGS TO RENDER AFTER UPDATING', listingsToRender);
             }
             return null;
           });
           getAvailListingInfo(listingsToRender);
+          setDefaultView(false);
         }
       })
       .catch((err) => err);
@@ -82,7 +82,6 @@ const ResultsList = (props: any) => {
 
   useEffect(() => {
     if (locationQuery) {
-      console.log('location query', locationQuery);
       getAvailListings();
     }
   }, [locationQuery]);
@@ -91,10 +90,12 @@ const ResultsList = (props: any) => {
     <List className={classes.root}>
       {listings.map((listing: {
         id: any; user_id: any; listingTitle: any;
-        listingCity: any; listingState: any; startAvail: any; endAvail: any; }) => {
+        listingCity: any; listingState: any; startAvail: any;
+        endAvail: any; availabilities: any; }) => {
         const {
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          id, user_id, listingTitle, listingCity, listingState, startAvail, endAvail,
+          id, user_id, listingTitle, listingCity, listingState,
+          startAvail, endAvail, availabilities,
         } = listing;
         return (
           <ResultsListEntry
@@ -102,7 +103,9 @@ const ResultsList = (props: any) => {
             user={user_id}
             title={listingTitle}
             location={{ listingCity, listingState }}
+            availForDefault={availabilities}
             avail={{ startAvail, endAvail }}
+            defaultView={defaultView}
           />
         );
       })}
