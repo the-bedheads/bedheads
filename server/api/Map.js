@@ -16,7 +16,7 @@ mapRouter.get('/api/geocode/:query', (req, res) => {
     //   'Content-Type': 'application/x-www-form-urlencoded',
     // },
   }).then((response) => res.send(response.data))
-    .catch((err) => console.log(err));
+    .catch((err) => console.warn(err));
 });
 
 module.exports = {

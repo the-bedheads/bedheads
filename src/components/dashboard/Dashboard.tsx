@@ -20,7 +20,30 @@ const Dashboard: React.FC<AuthProps> = ({
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
+
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(user.id);
+  const [userListingId, setUserListingId] = useState(0);
+
+  // const checkAuth = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:3000/auth/verify', {
+  //       method: 'POST',
+  //       headers: { jwt_token: localStorage.token },
+  //     });
+
+  //     const parseRes = await response.json();
+
+  //     console.log('web token?', parseRes);
+  //     if (parseRes === true) {
+  //       setAuth(true);
+  //     }
+  //     setAuth(false);
+  //   } catch (err) {
+  //     console.warn(err.message);
+  //   }
+  // };
 
   const getProfile = async () => {
     try {
