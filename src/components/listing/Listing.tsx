@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -20,7 +20,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 const Listing = () => {
   const classes = useStyles();
+  const [userId] = useState(localStorage.userId);
   const { id } = useParams<{ id: any }>();
+  const [avbId] = useState(3);
 
   return (
     <div className={classes.root}>
@@ -32,7 +34,11 @@ const Listing = () => {
         </Grid>
         <Grid item xs={12} sm={2}>
           <Paper className={classes.paper}>
-            <HostInfo hostId={id} />
+            <HostInfo
+              hostId={id}
+              userId={userId}
+              avbId={avbId}
+            />
           </Paper>
         </Grid>
       </Grid>

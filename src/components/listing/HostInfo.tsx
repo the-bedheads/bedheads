@@ -4,7 +4,11 @@ import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const HostInfo = (props: any) => {
-  const { hostId } = props;
+  const {
+    hostId,
+    userId,
+    avbId,
+  } = props;
   const [hostData, setHostData] = useState({
     firstName: '',
     lastName: '',
@@ -38,6 +42,11 @@ const HostInfo = (props: any) => {
         });
       })
       .catch((err) => err);
+  };
+
+  const requestSwap = () => {
+    const params = { userId, avbId };
+    axios.post('/request/newRequest', { params });
   };
 
   useEffect(() => {
@@ -79,7 +88,7 @@ const HostInfo = (props: any) => {
       </Button>
       <br />
       <br />
-      <Button variant="outlined" color="secondary">
+      <Button variant="outlined" color="secondary" onClick={requestSwap}>
         request swap
       </Button>
     </div>

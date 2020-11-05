@@ -3,62 +3,47 @@ import axios from 'axios';
 import { createGenerateClassName } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppType } from 'goldilocksTypes';
 import Navbar from '../global/Navbar';
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  user: AppType,
 }
 
-const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
-  // const userEmail = 'khellstorm@gmail.com';
-  // const userId = 1;
+const Dashboard: React.FC<AuthProps> = ({
+  handleLogin: [isAuthenticated, setAuth],
+  user,
+}) => {
   const listingId = 1;
-  // const userName = 'Kyle';
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
-
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState(1);
-  const [userListingId, setUserListingId] = useState(0);
-
-  // const checkAuth = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:3000/auth/verify', {
-  //       method: 'POST',
-  //       headers: { jwt_token: localStorage.token },
-  //     });
-
-  //     const parseRes = await response.json();
-
-  //     console.log('web token?', parseRes);
-  //     if (parseRes === true) {
-  //       setAuth(true);
-  //     }
-  //     setAuth(false);
-  //   } catch (err) {
-  //     console.error(err.message);
-  //   }
-  // };
+  const [userId, setUserId] = useState(user.id);
 
   const getProfile = async () => {
     try {
       const res = await fetch('http://localhost:3000/dashboard', {
         method: 'POST',
-        headers: { jwt_token: localStorage.token },
+        headers: { jwt_token: localStorage.token, email: user.email },
       });
       console.log('Auth state is ', isAuthenticated);
       console.log(userName, userEmail);
       const parseData = await res.json();
-      console.log(parseData);
-      setUserEmail(parseData.email);
-      setUserName(parseData.first_name);
-      console.log('final getprof');
+      console.log(parseData, 'parseData from dashboard.tsx line 54');
+      setAuth(true);
+      // setUserEmail(parseData.email);
     } catch (err) {
       console.error(err.message);
     }
+  };
+
+  const getListingInfo = async () => {
+    await axios.get(`listing/user/${userId}`)
+      .then(({ data }) => {
+        console.log(data);
+      });
   };
 
   const logout = async (event: SyntheticEvent) => {
@@ -109,6 +94,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
   };
 
   useEffect(() => {
+    // getListingInfo();
     getDashboardInfo();
     // checkAuth();
     getProfile();
@@ -119,7 +105,7 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
       <h4>
         Hello,
         {' '}
-        {userName}
+        {user.firstName}
         !!
       </h4>
       <div id="user-notifications">

@@ -16,7 +16,7 @@ type RegisterNewUser = {
 };
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
 }
 
 const styles = {
@@ -61,6 +61,22 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
     }
   };
 
+  const getUserProfile = async () => {
+    await axios.get(`user/email/${email}`)
+      .then(({ data }) => {
+        localStorage.setItem('userId', data.id);
+        localStorage.setItem('firstName', data.firstName);
+        localStorage.setItem('pronouns', data.pronouns);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('profilePhoto', data.profilePhoto);
+        localStorage.setItem('swapCount', data.swapCount);
+        localStorage.setItem('guestRating', data.guestRating);
+        localStorage.setItem('hostRating', data.hostRating);
+        localStorage.setItem('inviteCount', data.inviteCount);
+        localStorage.setItem('userBio', data.userBio);
+      });
+  };
+
   const onSubmitForm = async (event: SyntheticEvent) => {
     event.preventDefault();
     const reader = new FileReader();
@@ -91,6 +107,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       if (parseRes.jwtToken) {
         console.log(parseRes.jwtToken);
         localStorage.setItem('token', parseRes.jwtToken);
+        getUserProfile();
         setAuth(true);
         console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');

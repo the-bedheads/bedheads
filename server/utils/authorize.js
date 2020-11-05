@@ -23,8 +23,9 @@ module.exports = async (req, res, next) => {
     // const verify = jwt.verify(token, webTokenSecret);
     // req.user = verify.user;
     const payload = jwt.verify(token, webTokenSecret);
+    console.log(payload, 'payload');
     req.user = payload.user;
-    console.log("verified user id", req.user); // { id: 28 }
+    // console.log("verified user id", verify.user); // { id: 28 }
     next();
   } catch (err) {
     res.status(401).json({ msg: "Invalid web token" });
