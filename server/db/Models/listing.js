@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     Listing.belongsTo(models.User, {
       foreignKey: 'user_id',
     });
+    Listing.hasMany(models.Availability);
   };
 
   return Listing;
