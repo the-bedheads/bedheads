@@ -43,14 +43,12 @@ userRouter
   })
   .get('/email/:address', (req, res) => {
     const { address } = req.params;
-    console.log('here?');
     User.findOne({
       where: {
         email: address,
       },
     })
       .then((response) => {
-        console.log(response, 'wheres my fucking response');
         const {
           id,
           pronouns,

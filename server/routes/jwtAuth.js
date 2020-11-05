@@ -49,7 +49,6 @@ router.post('/register', async (req, res) => {
 router.post('/login', validEmail, async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, 'email from auth/login');
     const user = await User.findOne({
       where: {
         email,
@@ -59,14 +58,10 @@ router.post('/login', validEmail, async (req, res) => {
       return res.status(401).json('Invalid credentials, line 53');
     }
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log('password is valid?', validPassword);
     if (!validPassword) {
       return res.status(401).json('Invalid Password, line 58');
     }
     const jwtToken = generateToken(user.id);
-    console.log({ jwtToken }, 'jwt token, jwtAuth.js, line 72');
-    console.log(jwtToken , 'jwt token, jwtAuth.js, line 73');
-
     res.json({ jwtToken, idk: 'whatsgonnahappen' });
   } catch (err) {
     console.error(err.message);

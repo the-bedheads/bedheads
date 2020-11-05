@@ -44,7 +44,7 @@ const initUser = {
 const App: FC = (): JSX.Element => {
   const [isAuthenticated, setAuth] = useState(false);
   const [testUser, setTestUser] = useState(initUser);
-  const [user] = useState<AppType>({
+  const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
     firstName: localStorage.firstName,
     guestRating: localStorage.guestRating,
@@ -65,8 +65,6 @@ const App: FC = (): JSX.Element => {
       });
 
       const parseRes = await response.json();
-
-      console.log('web token?', parseRes);
       if (parseRes === true) {
         setAuth(true);
       }
@@ -82,7 +80,7 @@ const App: FC = (): JSX.Element => {
         const userList = data.filter((tempUser: UserType) => tempUser.id === 1);
         setTestUser(userList[0]);
       });
-  }, []);
+  }, [user]);
 
   return (
     <BrowserRouter>
@@ -93,7 +91,7 @@ const App: FC = (): JSX.Element => {
           strict
           path="/"
           render={() => (!isAuthenticated ? (
-            <Login handleLogin={[isAuthenticated, setAuth]} />) : (
+            <Login handleLogin={[isAuthenticated, setAuth]} setUser={setUser} />) : (
               <Redirect to="/dashboard" />
           ))}
         />
