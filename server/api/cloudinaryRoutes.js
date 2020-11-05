@@ -16,7 +16,6 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
 });
 
 imageRouter.post('/profile', async (req, res) => {
-  console.log('post route got hit');
   try {
     const fileString = req.body.data;
     const uploadedImage = await cloudinary.uploader

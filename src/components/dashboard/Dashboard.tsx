@@ -49,13 +49,9 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
         method: 'POST',
         headers: { jwt_token: localStorage.token },
       });
-      console.log('Auth state is ', isAuthenticated);
-      console.log(userName, userEmail);
       const parseData = await res.json();
-      console.log(parseData);
       setUserEmail(parseData.email);
       setUserName(parseData.first_name);
-      console.log('final getprof');
     } catch (err) {
       console.warn(err.message);
     }
@@ -89,7 +85,6 @@ const Dashboard: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth
     })
       .then((results) => {
         const { data } = results;
-        console.log('hit post User info');
       });
   };
   const getDashboardInfo = () => {
