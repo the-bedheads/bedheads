@@ -39,57 +39,35 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [selectedFile, setSelectedFile] = useState<any>();
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
 
-  const handleFileChange = (e: any) => {
-    const image = e.target.files[0];
-    setSelectedFile(image);
-    setFileInputState(e.target.value);
-  };
-
   const uploadImage = async (encodedImage: any) => {
-    console.log('just got inside the upload image function');
     await axios.get('http://localhost:3000/image/newProfilePicture', {
       params: {
         image: encodedImage,
       },
     })
-      .then(async ({ data }) => {
-        console.log('data returned from axios image call', data);
-        await setProfilePhotoUrl(data);
-        return data;
+      .then(({ data }) => {
+        setProfilePhotoUrl(data);
       })
       .catch((error) => console.error(error));
-
-    // imageRouter.get('/newProfilePicture', (req, res) => {
-    //   const countRequestUrl = 'http://localhost:3000/request/countByArray';
-    //   axios.get(countRequestUrl, {
-    //     params: {
-    //       arr: data,
-    //     },
-
-    // try {
-    //   await fetch('http://localhost:3000/image/newProfilePicture', {
-    //     method: 'GET',
-    //     body: JSON.stringify({ data: encodedImage }),
-    //     headers: { 'Content-Type': 'application/json' },
-    //   })
-    //     .then((results) => console.log(results));
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
 
-  const onSubmitForm = async (event: SyntheticEvent) => {
-    event.preventDefault();
+  const handleFileChange = (e: any) => {
+    const image = e.target.files[0];
+    setSelectedFile(image);
+    setFileInputState(e.target.value);
     const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-    reader.onloadend = async () => {
-      await uploadImage(reader.result);
+    reader.readAsDataURL(image);
+    reader.onloadend = () => {
+      uploadImage(reader.result);
     };
     reader.onerror = () => {
       console.error('reader experienced an error');
     };
+  };
+
+  const onSubmitForm = async (event: SyntheticEvent) => {
+    event.preventDefault();
     try {
-      console.log('profilePhotoUrl right before sending: ', profilePhotoUrl);
       const body = {
         firstName, lastName, email, password, profilePhotoUrl,
       };
@@ -101,16 +79,11 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
           },
           body: JSON.stringify(body),
         });
-      console.log('ln 39');
 
       const parseRes = await response.json();
-      console.log('ln 41');
-      console.log(parseRes);
       if (parseRes.jwtToken) {
-        console.log(parseRes.jwtToken);
         localStorage.setItem('token', parseRes.jwtToken);
         setAuth(true);
-        console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');
       } else {
         setAuth(false);
