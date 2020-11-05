@@ -8,15 +8,27 @@ const {
   Listing,
   Invite,
   Availability,
+  models,
 } = require('../index');
 
 const listingRouter = Router();
 
 listingRouter
-  .get('/', (req, res) => {
-    Listing.findAll()
-      .then((listings) => res.send(listings))
-      .catch((err) => res.status(500).send(err));
+  .get('/', async (req, res) => {
+    await Listing.findAll({
+      include: {
+        model: Availability,
+      },
+      order: [
+        [Availability, 'startDate', 'ASC'],
+      ],
+    })
+      .then((listings) => {
+        res.send(listings);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
   })
   .get('/user/:userId', (req, res) => {
     const { userId } = req.params;
