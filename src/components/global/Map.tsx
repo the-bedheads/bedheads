@@ -66,7 +66,6 @@ const Map = (props: any) => {
   }
   return (
     <>
-      map
     </>
   );
 };
