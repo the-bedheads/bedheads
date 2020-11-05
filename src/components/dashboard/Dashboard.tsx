@@ -28,12 +28,8 @@ const Dashboard: React.FC<AuthProps> = ({
         method: 'POST',
         headers: { jwt_token: localStorage.token, email: user.email },
       });
-      console.log('Auth state is ', isAuthenticated);
-      console.log(userName, userEmail);
       const parseData = await res.json();
-      console.log(parseData, 'parseData from dashboard.tsx line 54');
       setAuth(true);
-      // setUserEmail(parseData.email);
     } catch (err) {
       console.error(err.message);
     }
@@ -66,17 +62,6 @@ const Dashboard: React.FC<AuthProps> = ({
     setShownIndex(getRandomAvlb());
   };
 
-  const postUserInfo = () => {
-    axios.post('/dashboard', {
-      params: {
-        userEmail,
-      },
-    })
-      .then((results) => {
-        const { data } = results;
-        console.log('hit post User info');
-      });
-  };
   const getDashboardInfo = () => {
     axios.get('/dashboardInfo', {
       params: {
@@ -94,9 +79,7 @@ const Dashboard: React.FC<AuthProps> = ({
   };
 
   useEffect(() => {
-    // getListingInfo();
     getDashboardInfo();
-    // checkAuth();
     getProfile();
   }, []);
 
