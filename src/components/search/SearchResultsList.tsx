@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -21,8 +21,8 @@ const ResultsList = (props: any) => {
   const classes = useStyles();
   const {
     locationQuery, listings, setListings, dateRange,
+    defaultView, setLocationQuery, updated, setUpdated,
   } = props;
-  const [defaultView, setDefaultView] = useState(true);
 
   // use listing ids to render list of listings
   const getAvailListingInfo = (listingIds: any) => {
@@ -57,34 +57,33 @@ const ResultsList = (props: any) => {
         const availListings = results.data;
         // if there are no available listings, inform the user
         if (!availListings.length) {
-          console.log(`sorry :/ there doesn't seem to be any available listings in ${locationQuery} from ${start} to ${end}`);
+          console.error(`sorry :/ there doesn't seem to be any available listings in ${locationQuery} from ${start} to ${end}`);
         } else {
         // if there are availabilities, collect the listing IDs of those availabilities
         // push that collection of IDs into an array called listingsToRender
         // {listing id: {start: _, end: _}}
+          // eslint-disable-next-line array-callback-return
           availListings.map((listing: any) => {
             // map through & look up listing by listing_id
-            const listingId = listing.listing_id;
-            const { startDate, endDate } = listing;
+            const { listingId, startDate, endDate } = listing;
             // note to self: would be a good place to compare soonest available date
             // object keys are unique!
             if (!listingsToRender[listingId]) {
               listingsToRender[listingId] = { startDate, endDate };
             }
-            return null;
           });
           getAvailListingInfo(listingsToRender);
-          setDefaultView(false);
         }
       })
       .catch((err) => err);
   };
 
   useEffect(() => {
-    if (locationQuery) {
+    if (locationQuery && !updated) {
       getAvailListings();
+      setUpdated(true);
     }
-  }, [locationQuery]);
+  }, [listings, locationQuery]);
 
   return (
     <List className={classes.root}>
@@ -95,17 +94,23 @@ const ResultsList = (props: any) => {
         const {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           id, user_id, listingTitle, listingCity, listingState,
-          startAvail, endAvail, availabilities,
+          startAvail, endAvail,
         } = listing;
+        let defaultAvail = {};
+        if (listing.availabilities) {
+          const { availabilities } = listing;
+          [defaultAvail] = availabilities;
+        }
         return (
           <ResultsListEntry
             key={id}
             user={user_id}
             title={listingTitle}
             location={{ listingCity, listingState }}
-            availForDefault={availabilities}
             avail={{ startAvail, endAvail }}
             defaultView={defaultView}
+            updated={updated}
+            availForDefault={defaultAvail}
           />
         );
       })}

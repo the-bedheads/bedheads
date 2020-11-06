@@ -10,18 +10,19 @@ type Search = {
 
 const SearchBar = (props: any) => {
   const {
-    startDate, setStartDate, endDate, setEndDate, setDateRange,
+    startDate, setStartDate, endDate, setEndDate, setDateRange, setDefaultView,
   } = props;
   const { register, handleSubmit } = useForm<Search>();
   const onSubmit = (data: Search) => {
     if (data.locationQuery && startDate && endDate) {
       props.onSubmit(data.locationQuery);
+      // setDefaultView(false);
     } else if (!data.locationQuery && !startDate && !endDate) {
-      console.log('sorry, that didn\'t work. please complete a new query.');
+      console.error('sorry, that didn\'t work. please complete a new query.');
     } else if (!data.locationQuery) {
-      console.log('please enter a destination.');
+      console.error('please enter a destination.');
     } else if (!startDate || !endDate) {
-      console.log('please enter a valid date range.');
+      console.error('please enter a valid date range.');
     }
   };
 
