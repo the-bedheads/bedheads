@@ -8,17 +8,22 @@ imageRouter.get('/', (req, res) => {
   res.send('You made a get request but you ain\'t getting nothin\' back!');
 });
 
+imageRouter.get('/newProfilePicture', async (req, res) => {
+  const { image } = req.query;
+  const uploadedImage = await cloudinary.uploader
+    .upload(image);
+  res.send(uploadedImage.url);
+});
+
 imageRouter.post('/profile', async (req, res) => {
-  console.log('post route got hit');
   try {
     const fileString = req.body.data;
     const uploadedImage = await cloudinary.uploader
       .upload(fileString);
-    console.log('uploaded image:::', uploadedImage);
     res.json({ data: uploadedImage });
     res.end();
   } catch (error) {
-    console.error(error);
+    console.warn(error);
     res.status(500).json({ msg: error });
   }
 });

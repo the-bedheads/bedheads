@@ -37,25 +37,18 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [password, setPassword] = useState<string>('');
   const [fileInputState, setFileInputState] = useState('');
   const [selectedFile, setSelectedFile] = useState<any>();
-
-  const handleFileChange = (e: any) => {
-    const image = e.target.files[0];
-    setSelectedFile(image);
-    setFileInputState(e.target.value);
-    console.log('selected file:', selectedFile);
-  };
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
 
   const uploadImage = async (encodedImage: any) => {
-    try {
-      await fetch('http://localhost:3000/image/profile', {
-        method: 'POST',
-        body: JSON.stringify({ data: encodedImage }),
-        headers: { 'Content-Type': 'application/json' },
+    await axios.get('http://localhost:3000/image/newProfilePicture', {
+      params: {
+        image: encodedImage,
+      },
+    })
+      .then(({ data }) => {
+        setProfilePhotoUrl(data);
       })
-        .then((results) => console.log(results));
-    } catch (error) {
-      console.error(error);
-    }
+      .catch((error) => console.warn(error));
   };
 
   const getUserProfile = async () => {
@@ -74,19 +67,25 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       });
   };
 
-  const onSubmitForm = async (event: SyntheticEvent) => {
-    event.preventDefault();
+  const handleFileChange = (e: any) => {
+    const image = e.target.files[0];
+    setSelectedFile(image);
+    setFileInputState(e.target.value);
     const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
+    reader.readAsDataURL(image);
     reader.onloadend = () => {
       uploadImage(reader.result);
     };
     reader.onerror = () => {
-      console.error('reader experienced an error');
+      console.warn('reader experienced an error');
     };
+  };
+
+  const onSubmitForm = async (event: SyntheticEvent) => {
+    event.preventDefault();
     try {
       const body = {
-        firstName, lastName, email, password,
+        firstName, lastName, email, password, profilePhotoUrl,
       };
       const response = await fetch('http://localhost:3000/auth/register',
         {
@@ -108,7 +107,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
         toast.error(parseRes);
       }
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 

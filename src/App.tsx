@@ -69,7 +69,7 @@ const App: FC = (): JSX.Element => {
         setAuth(true);
       }
     } catch (err) {
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 

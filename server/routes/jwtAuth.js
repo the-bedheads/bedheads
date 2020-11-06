@@ -5,27 +5,30 @@ const validEmail = require('../utils/validEmail');
 const generateToken = require('../utils/jsonWebToken');
 const authorize = require('../utils/authorize');
 
-// Signup/Register
-router.post('/register', async (req, res) => {
-  // 1. Destructure the req.body (name, email, password)
-  // Change back to camel case
-  const { firstName, lastName, email, password } = req.body;
+// Signup/Register a new user
+router.post("/register", async (req, res) => {
+  const { 
+    firstName,
+    lastName,
+    email,
+    password,
+    profilePhotoUrl: pic,
+  } = req.body;
   try {
     const existingUser = await User.findOne({
       where: {
-        email: email,
+        email,
       },
     });
     if (existingUser === null && email.length && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Insert user into database
-      // Change back to camel case
-      await db.query(`INSERT INTO users (first_name, last_name, email, password)
-      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
+      await db.query(`INSERT INTO users (first_name, last_name, email, password, profile_photo) 
+      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${pic}');`);
+
       const user = await User.findOne({
         where: {
-          email: email,
+          email,
         },
       });
       const jwtToken = generateToken(user.id);
@@ -35,8 +38,8 @@ router.post('/register', async (req, res) => {
       res.status(401).json('Already registered');
     }
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.warn(err.message);
+    res.status(500).send("Server error");
   }
 });
 
@@ -57,10 +60,10 @@ router.post('/login', validEmail, async (req, res) => {
       return res.status(401).json('Invalid Password, line 58');
     }
     const jwtToken = generateToken(user.id);
-    res.json({ jwtToken, idk: 'whatsgonnahappen' });
+    res.json({ jwtToken });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error logging in line 64 jwtAuth.js');
+    console.warn(err.message);
+    res.status(500).send("Error logging in line 64 jwtAuth.js");
   }
 });
 
@@ -68,8 +71,8 @@ router.post('/verify', authorize, (req, res) => {
   try {
     res.json(true);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error verifying user token.');
+    console.warn(err.message);
+    res.status(500).send("Error verifying user token.");
   }
 });
 

@@ -92,7 +92,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], s
       }
     } catch (err) {
       toast.error('Invalid credentials entered!');
-      console.error(err.message);
+      console.warn(err.message);
     }
   };
 
