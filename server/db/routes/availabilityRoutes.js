@@ -1,7 +1,7 @@
-const { Router } = require("express");
-const { Op } = require("sequelize");
-const { moment } = require("moment");
-const { Availability, Request, Listing } = require("../index");
+const moment = require('moment');
+const { Router } = require('express');
+const { Op } = require('sequelize');
+const { Availability, Request, Listing } = require('../index');
 
 const availabilityRouter = Router();
 
@@ -81,10 +81,9 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
     endDate: end,
   })
     .then(() => {
-      console.log('Availability created');
       res.status(201).send('complete');
     })
-    .catch((err) => console.log(err));
+    .catch((err) => err);
 });
 
 // get current users entire calendar
@@ -102,8 +101,8 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
           return {
             start: startDate,
             end: endDate,
-            title: "Availability",
-            backgroundColor: "green",
+            title: 'Availability',
+            backgroundColor: 'green',
             id,
             listingId: item.dataValues.listing_id,
             type: 'avb',
@@ -112,8 +111,8 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
         return {
           start: startDate,
           end: endDate,
-          title: "Swap Confirmed",
-          backgroundColor: "purple",
+          title: 'Swap Confirmed',
+          backgroundColor: 'purple',
           id,
           listingId: item.dataValues.listing_id,
           guestId: item.dataValues.guest_id,
@@ -142,28 +141,26 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
         });
         testArr.push(nestedObj);
       });
-      const arrJoin = async () =>
-        Promise.all(
-          testArr.map((request) =>
-            Availability.findOne({
-              where: {
-                id: request.availability_id,
-              },
-            }).then((availability) => {
-              const reqLength = request.requester_ids.length;
-              const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
-              const idkAnymore = {
-                availability_id: request.availability_id,
-                requester_ids: request.requester_ids,
-                title,
-                backgroundColor: 'blue',
-                start: availability.dataValues.startDate,
-                end: availability.dataValues.endDate,
-                type: 'req',
-              };
-              return idkAnymore;
-            })),
-        );
+      const arrJoin = async () => Promise.all(
+        testArr.map((request) => Availability.findOne({
+          where: {
+            id: request.availability_id,
+          },
+        }).then((availability) => {
+          const reqLength = request.requester_ids.length;
+          const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
+          const idkAnymore = {
+            availability_id: request.availability_id,
+            requester_ids: request.requester_ids,
+            title,
+            backgroundColor: 'blue',
+            start: availability.dataValues.startDate,
+            end: availability.dataValues.endDate,
+            type: 'req',
+          };
+          return idkAnymore;
+        })),
+      );
       const wut = await arrJoin().then((data) => data);
       wut.forEach((request) => final.push(request));
       res.status(200).send(final);
@@ -183,7 +180,6 @@ availabilityRouter.delete('/', (req, res) => {
   })
     .then((avlb) => {
       avlb.destroy();
-      console.log('Availability deleted');
       res.status(201).send('complete');
     })
     .catch((err) => res.status(500).send(err));

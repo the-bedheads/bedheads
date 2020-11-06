@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const Sequelize = require('sequelize');
 
 const {
   User,
@@ -21,12 +22,15 @@ listingRouter
       },
       order: [
         [Availability, 'startDate', 'ASC'],
+        [Sequelize.literal('random()')],
       ],
+      limit: 4,
     })
       .then((listings) => {
         res.send(listings);
       })
       .catch((err) => {
+        console.error(err);
         res.status(500).send(err);
       });
   })
