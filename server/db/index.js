@@ -20,6 +20,7 @@ const ListingPhotosModel = require('./Models/listingPhotos');
 const ListingModel = require('./Models/listing');
 const InviteModel = require('./Models/invite');
 const AvailabilityModel = require('./Models/availability');
+const PersonalityScaleModel = require('./Models/personalityScale');
 
 const User = UserModel(db, Sequelize);
 const Survey = SurveyModel(db, Sequelize);
@@ -28,6 +29,7 @@ const ListingPhotos = ListingPhotosModel(db, Sequelize);
 const Listing = ListingModel(db, Sequelize);
 const Invite = InviteModel(db, Sequelize);
 const Availability = AvailabilityModel(db, Sequelize);
+const PersonalityScale = PersonalityScaleModel(db, Sequelize);
 
 const models = {
   User,
@@ -37,6 +39,7 @@ const models = {
   Listing,
   Invite,
   Availability,
+  PersonalityScale,
 };
 
 Object.keys(models).forEach((model) => {
@@ -66,4 +69,5 @@ module.exports = {
   ListingPhotos,
   Invite,
   Availability,
+  PersonalityScale,
 };
