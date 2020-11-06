@@ -147,7 +147,7 @@ const App: FC = (): JSX.Element => {
         <Route
           exact
           path="/calendar"
-          component={() => <UserCalendar user={user} />}
+          component={() => <UserCalendar user={testUser} />}
         />
         <Route
           exact

@@ -99,7 +99,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       const parseRes = await response.json();
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
-        getUserProfile();
+        await getUserProfile();
         setAuth(true);
         toast.success('Registered successfullly!');
       } else {
