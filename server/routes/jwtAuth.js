@@ -7,7 +7,7 @@ const authorize = require('../utils/authorize');
 
 // Signup/Register a new user
 router.post("/register", async (req, res) => {
-  const { 
+  const {
     firstName,
     lastName,
     email,
