@@ -8,7 +8,7 @@ const UploadProfilePhoto: FC = (): JSX.Element => {
 
   return (
     <>
-      User signup form
+      Upload user profile photo
     </>
   );
 };

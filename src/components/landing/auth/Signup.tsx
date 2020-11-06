@@ -1,11 +1,9 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import axios, { AxiosResponse } from 'axios';
-import { Link, Redirect } from 'react-router-dom';
-import user from '../../../../server/db/Models/user';
 import nightbed from '../../../assets/nightbed.jpg';
 import '../../../App.css';
+import axios from 'axios';
 
 // Declare the type of data that will be handled in onSubmit function
 type RegisterNewUser = {
@@ -98,6 +96,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
         });
 
       const parseRes = await response.json();
+
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
@@ -114,14 +113,14 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
 
   return (
     <>
-      <div className="container">
+      <div className="signup-container" style={styles.header}>
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
           <form onSubmit={onSubmitForm}>
-            <div className="form-group align-center my-5">
+            <div className="form-group align-center my-3">
               <label htmlFor="first-name">
                 First Name
-                <input
+              <input
                   className="form-control my-3"
                   type="text"
                   name="first-name"
@@ -135,7 +134,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             <div className="form-group align-center">
               <label htmlFor="last-name">
                 Last Name
-                <input
+              <input
                   className="form-control my-3"
                   type="text"
                   name="last-name"
@@ -149,7 +148,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             <div className="form-group align-center">
               <label htmlFor="email">
                 Email
-                <input
+              <input
                   className="form-control my-3"
                   type="text"
                   name="email"
@@ -163,7 +162,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             <div className="form-group align-center">
               <label htmlFor="password">
                 Password
-                <input
+              <input
                   className="form-control my-3"
                   type="password"
                   name="password"
@@ -174,19 +173,9 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                 {errors.password && <div className="error">Enter Your Password</div>}
               </label>
             </div>
-            {/* <div className="field"> */}
-            {/* <label htmlFor="verification-code">
-            Enter Verification Code
-            <input
-              type="text"
-              id="verification"
-              name="verification-code"
-              placeholder="Enter verification code"
-            />
-            {errors.name && <div className="error">Enter a valid verfication code</div>}
-          </label> */}
-            {/* </div> */}
-            <div className="form-group align-center">
+            <div className="form-group align-center my-3">
+              <label htmlFor="verification-code" />
+              Enter Verification Code
               <input
                 id="imageInput"
                 type="file"

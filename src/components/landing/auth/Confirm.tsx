@@ -8,7 +8,7 @@ const Confirm: FC = (): JSX.Element => {
 
   return (
     <>
-      User signup form
+      Confirm registration details
     </>
   );
 };

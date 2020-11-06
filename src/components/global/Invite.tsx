@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Email, EmojiEmotions, PersonPin } from '@material-ui/icons';
 import '../../App.css';
 import realisticbed from '../../assets/realisticbed.jpg';
 import generateVerificationCode from '../../invite/verificationCode';
 
+// Will need this later for deployment
 // const {
 //   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
 // } = process.env; // hello

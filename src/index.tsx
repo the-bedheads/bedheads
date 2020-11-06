@@ -2,15 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Landing from './components/landing/Landing';
-import Login from './components/landing/auth/Login';
-import SignUp from './components/landing/auth/Signup';
-import UserCalendar from './components/dashboard/availability/Calendar';
-import UserForm from './components/landing/auth/UserForm';
+import UserFormFC from './components/landing/auth/UserFormFC';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserForm />
+    <UserFormFC />
   </React.StrictMode>,
   document.getElementById('root'),
 );
