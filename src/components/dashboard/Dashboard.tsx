@@ -1,10 +1,11 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
 import axios from 'axios';
-import { createGenerateClassName } from '@material-ui/core';
+import { createGenerateClassName, Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
 import Navbar from '../global/Navbar';
+import ListingModal from '../listing/ListingModal';
 
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
@@ -24,26 +25,71 @@ const Dashboard: React.FC<AuthProps> = ({
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(user.id);
-  const [userListingId, setUserListingId] = useState(0);
+  const [hasListing, setHasListing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [listingDescription, setListingDescription] = useState('listing');
+  const [listingAddress, setListingAddress] = useState('address');
+  const [listingCity, setListingCity] = useState('city');
+  const [listingState, setListingState] = useState('state');
+  const [listingZipCode, setListingZipCode] = useState('zip');
+  const [listingTitle, setListingTitle] = useState('title');
+  const [pets, setPets] = useState(false);
+  const [ada, setAda] = useState(false);
+  const [smoking, setSmoking] = useState(false);
+  const [roommates, setRoommates] = useState(false);
+  const [internet, setInternet] = useState(false);
+  const [privateBath, setPrivateBath] = useState(false);
 
-  // const checkAuth = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:3000/auth/verify', {
-  //       method: 'POST',
-  //       headers: { jwt_token: localStorage.token },
-  //     });
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    string: string,
+  ) => {
+    if (string === 'listingDescription') {
+      setListingDescription(e.target.value);
+    } else if (string === 'listingAddress') {
+      setListingAddress(e.target.value);
+    } else if (string === 'listingCity') {
+      setListingCity(e.target.value);
+    } else if (string === 'listingState') {
+      setListingState(e.target.value);
+    } else if (string === 'listingZipCode') {
+      setListingZipCode(e.target.value);
+    } else if (string === 'listingTitle') {
+      setListingTitle(e.target.value);
+    }
+  };
 
-  //     const parseRes = await response.json();
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-  //     console.log('web token?', parseRes);
-  //     if (parseRes === true) {
-  //       setAuth(true);
-  //     }
-  //     setAuth(false);
-  //   } catch (err) {
-  //     console.warn(err.message);
-  //   }
-  // };
+  const handleClose = (i: React.MouseEvent<HTMLButtonElement, MouseEvent>, check: boolean) => {
+    if (check) {
+      // save changes to DB
+      // update field on screen
+    }
+    setOpen(false);
+  };
+
+  const toggleSwitch = (string: string) => {
+    if (string === 'pets') {
+      setPets(!pets);
+    } else if (string === 'ada') {
+      setAda(!ada);
+    } else if (string === 'smoking') {
+      setSmoking(!smoking);
+    } else if (string === 'roommates') {
+      setRoommates(!roommates);
+    } else if (string === 'internet') {
+      setInternet(!internet);
+    } else if (string === 'privateBath') {
+      setPrivateBath(!privateBath);
+    }
+  };
+
+  const handleClickOff = () => {
+    setOpen(false);
+  };
 
   const getProfile = async () => {
     try {
@@ -61,7 +107,9 @@ const Dashboard: React.FC<AuthProps> = ({
   const getListingInfo = async () => {
     await axios.get(`listing/user/${userId}`)
       .then(({ data }) => {
-        console.log(data);
+        if (data) {
+          setHasListing(true);
+        }
       });
   };
 
@@ -104,7 +152,58 @@ const Dashboard: React.FC<AuthProps> = ({
   useEffect(() => {
     getDashboardInfo();
     getProfile();
+    getListingInfo();
   }, []);
+
+  // This should eventually live in another component. Or something. This is messy.
+  const listingCheck = () => {
+    if (hasListing) {
+      return (
+        <div id="random-listing">
+          <p>Need a weekend getaway?</p>
+          {
+            randomListings.length > 0
+            && (
+              <div>
+                <p>
+                  {randomListings[shownIndex].hostName}
+                  {' '}
+                  has a room open in
+                  {' '}
+                  {randomListings[shownIndex].city}
+                </p>
+                <p>
+                  {randomListings[shownIndex].startDate}
+                  {' to '}
+                  {randomListings[shownIndex].endDate}
+                </p>
+              </div>
+            )
+          }
+          <button type="submit">View Listing!</button>
+          <button type="submit" onClick={getNewListing}>Show me another!</button>
+        </div>
+      );
+    }
+    return (
+      <div>
+        It looks like you don&apos;t have a listing yet.
+        <br />
+        Lets fix that!
+        <br />
+        <Button onClick={handleOpen}>
+          Create Listing
+        </Button>
+        <ListingModal
+          handleClose={handleClose}
+          handleClickOff={handleClickOff}
+          handleTextChange={handleTextChange}
+          toggleSwitch={toggleSwitch}
+          open={open}
+        />
+      </div>
+    );
+  };
 
   return (
     <>
@@ -130,30 +229,7 @@ const Dashboard: React.FC<AuthProps> = ({
           requests to swap rooms
         </p>
       </div>
-      <div id="random-listing">
-        <p>Need a weekend getaway?</p>
-        {
-          randomListings.length > 0
-          && (
-            <div>
-              <p>
-                {randomListings[shownIndex].hostName}
-                {' '}
-                has a room open in
-                {' '}
-                {randomListings[shownIndex].city}
-              </p>
-              <p>
-                {randomListings[shownIndex].startDate}
-                {' to '}
-                {randomListings[shownIndex].endDate}
-              </p>
-            </div>
-          )
-        }
-        <button type="submit">View Listing!</button>
-        <button type="submit" onClick={getNewListing}>Show me another!</button>
-      </div>
+      {listingCheck()}
       <button
         className="btn btn-success btn-block"
         type="submit"
