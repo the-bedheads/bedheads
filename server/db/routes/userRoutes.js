@@ -14,7 +14,6 @@ userRouter
             dob,
             email,
             password,
-            profilePhoto,
             swapCount,
             guestRating,
             hostRating,
@@ -27,7 +26,7 @@ userRouter
             dob,
             email,
             password,
-            profilePhoto,
+            profilePhoto: user.dataValues.profile_photo,
             swapCount,
             guestRating,
             hostRating,
@@ -54,7 +53,6 @@ userRouter
           pronouns,
           dob,
           email,
-          profilePhoto,
           swapCount,
           guestRating,
           hostRating,
@@ -66,7 +64,7 @@ userRouter
           pronouns,
           dob,
           email,
-          profilePhoto,
+          profilePhoto: response.dataValues.profile_photo,
           swapCount,
           guestRating,
           hostRating,
@@ -105,7 +103,6 @@ userRouter.get('/:userId', (req, res) => {
         dob,
         email,
         password,
-        profilePhoto,
         swapCount,
         guestRating,
         hostRating,
@@ -118,7 +115,7 @@ userRouter.get('/:userId', (req, res) => {
         dob,
         email,
         password,
-        profilePhoto,
+        profilePhoto: dataValues.profile_photo,
         swapCount,
         guestRating,
         hostRating,
@@ -150,7 +147,6 @@ userRouter
   .patch('/bio/:userId', (req, res) => {
     const { userId } = req.params;
     const { newBio } = req.body.params;
-    console.log(req);
     User.update({ userBio: newBio }, {
       where: {
         id: userId,

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Availability.associate = (models) => {
     Availability.belongsTo(models.Listing, {
-      foreignKey: 'listingId',
+      foreignKey: 'listing_id',
     });
     Availability.belongsTo(models.User, {
       foreignKey: 'guest_id',
