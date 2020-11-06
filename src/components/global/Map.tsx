@@ -32,35 +32,41 @@ const Map = (props: any) => {
     }
   }, [locationQuery]);
 
+  if (locationQuery.length) {
+    return (
+      <div className="mapbox-react">
+        <ReactMapGL
+          latitude={viewport.latitude}
+          longitude={viewport.longitude}
+          zoom={viewport.zoom}
+          width="500px"
+          height="500px"
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+          onViewportChange={(nextViewport: React.SetStateAction<
+          { latitude: number;
+            longitude: number;
+            zoom: number;
+            bearing: number;
+            pitch: number; }>) => setViewport(nextViewport)}
+        >
+          <div style={{ position: 'absolute', right: 10, top: 10 }}>
+            <NavigationControl
+              onViewportChange={(nextViewport: React.SetStateAction<
+              { latitude: number;
+                longitude: number;
+                zoom: number;
+                bearing: number;
+                pitch: number; }>) => setViewport(nextViewport)}
+            />
+          </div>
+        </ReactMapGL>
+      </div>
+    );
+  }
   return (
-    <div className="mapbox-react">
-      <ReactMapGL
-        latitude={viewport.latitude}
-        longitude={viewport.longitude}
-        zoom={viewport.zoom}
-        width="500px"
-        height="500px"
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        onViewportChange={(nextViewport: React.SetStateAction<
-        { latitude: number;
-          longitude: number;
-          zoom: number;
-          bearing: number;
-          pitch: number; }>) => setViewport(nextViewport)}
-      >
-        <div style={{ position: 'absolute', right: 10, top: 10 }}>
-          <NavigationControl
-            onViewportChange={(nextViewport: React.SetStateAction<
-            { latitude: number;
-              longitude: number;
-              zoom: number;
-              bearing: number;
-              pitch: number; }>) => setViewport(nextViewport)}
-          />
-        </div>
-      </ReactMapGL>
-    </div>
+    <>
+    </>
   );
 };
 

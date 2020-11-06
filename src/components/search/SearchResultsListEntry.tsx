@@ -22,10 +22,34 @@ import { Link } from 'react-router-dom';
 
 const ResultsListEntry = (props: any) => {
   const {
-    user, title, location, avail,
+    user, title, location, avail, defaultView, availForDefault, updated,
   } = props;
   const { listingCity, listingState } = location;
+  // this is for the listings that are randomly shown in the default view
+  // const { startDate, endDate } = availForDefault;
+  // this is for the listings that match the query
   const { startAvail, endAvail } = avail;
+  const { startDate, endDate } = availForDefault;
+
+  let availMessage;
+  if (!updated) {
+    availMessage = (
+      <p>
+        available as soon as
+        {startDate}
+      </p>
+    );
+  } else if (updated) {
+    availMessage = (
+      <p>
+        available from
+        {startAvail}
+        {' '}
+        to
+        {endAvail}
+      </p>
+    );
+  }
 
   return (
     <ListItem
@@ -36,13 +60,7 @@ const ResultsListEntry = (props: any) => {
         primary={title}
         secondary={`${listingCity}, ${listingState}`}
       />
-      available from
-      {' '}
-      {startAvail}
-      {' '}
-      to
-      {' '}
-      {endAvail}
+      {availMessage}
     </ListItem>
   );
 };

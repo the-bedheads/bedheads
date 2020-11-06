@@ -28,27 +28,28 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 const Search: React.FC = () => {
   const classes = useStyles();
   const [locationQuery, setLocationQuery] = useState('');
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useState([] as any);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [dateRange, setDateRange] = useState({
     start: moment().format('YYYY-MM-DD'),
     end: moment().add(7, 'days').format('YYYY-MM-DD'),
   });
+  const [defaultView, setDefaultView] = useState(true);
+  const [updated, setUpdated] = useState(false);
 
   // view all listings in default search view
   // pass the setter to resultsList; will be updated via search there
   const getListings = () => {
     axios.get('/listing')
       .then((results) => {
-        const savedListings = results.data;
-        setListings(savedListings);
+        setListings(results.data);
       })
       .catch((err) => err);
   };
 
   useEffect(() => {
-    getListings();
+    if (defaultView) getListings();
   }, []);
 
   return (
@@ -57,6 +58,8 @@ const Search: React.FC = () => {
         <Grid item xs={4}>
           <SearchBar
             onSubmit={(value: any) => setLocationQuery(value)}
+            setDefaultView={setDefaultView}
+            setUpdated={setUpdated}
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
@@ -66,12 +69,14 @@ const Search: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <ResultsList
-            // startDate={startDate}
-            // endDate={endDate}
             dateRange={dateRange}
             locationQuery={locationQuery}
+            setLocationQuery={setLocationQuery}
             listings={listings}
             setListings={setListings}
+            defaultView={defaultView}
+            updated={updated}
+            setUpdated={setUpdated}
           />
         </Grid>
         <Grid item xs={6}>
