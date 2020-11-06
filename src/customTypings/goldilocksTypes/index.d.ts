@@ -43,6 +43,27 @@ declare module 'goldilocksTypes' {
   interface StateProps {
     hostData: UserType
   }
+
+  interface AppProps {
+    localStorage: number | string | null,
+  }
+
+  type AppType = {
+    email: localStorage,
+    firstName: localStorage,
+    guestRating: localStorage,
+    hostRating: localStorage,
+    id: localStorage,
+    inviteCount: localStorage,
+    profilePhoto: localStorage,
+    pronouns: localStorage,
+    swapCount: localStorage,
+    userBio: localStorage,
+  };
+
+  interface AppInterface {
+    user: AppType,
+  }
 }
 
 module.exports = {
@@ -50,4 +71,6 @@ module.exports = {
   UserProps,
   Availability,
   ProfileProps,
+  AppType,
+  AppInterface,
 };

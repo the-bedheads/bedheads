@@ -48,7 +48,35 @@ userRouter
         email: address,
       },
     })
-      .then((user) => res.send(user))
+      .then((response) => {
+        const {
+          id,
+          pronouns,
+          dob,
+          email,
+          profilePhoto,
+          swapCount,
+          guestRating,
+          hostRating,
+          inviteCount,
+          userBio,
+        } = response.dataValues;
+        const result = {
+          id,
+          pronouns,
+          dob,
+          email,
+          profilePhoto,
+          swapCount,
+          guestRating,
+          hostRating,
+          inviteCount,
+          userBio,
+          firstName: response.dataValues.first_name,
+          lastName: response.dataValues.last_name,
+        };
+        res.send(result);
+      })
       .catch((err) => res.status(500).send(err));
   })
   .get('/byId/:id', (req, res) => {

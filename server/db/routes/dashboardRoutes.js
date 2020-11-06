@@ -64,11 +64,11 @@ dashboardRouter
                   })
                   .catch((err) => res.status(500).send(err));
               })
-              .catch((err) => res.status(500).send(err));
+              .catch((err) => res.status(501).send(err));
           })
-          .catch((err) => res.status(500).send(err));
+          .catch((err) => res.status(502).send(err));
       })
-      .catch((err) => res.status(500).send(err));
+      .catch((err) => res.status(503).send(err));
   });
 
 module.exports = {

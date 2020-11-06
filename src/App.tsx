@@ -6,7 +6,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { UserType } from 'goldilocksTypes';
+import { AppType, UserType } from 'goldilocksTypes';
 
 // Components
 import { toast } from 'react-toastify';
@@ -44,6 +44,18 @@ const initUser = {
 const App: FC = (): JSX.Element => {
   const [isAuthenticated, setAuth] = useState(false);
   const [testUser, setTestUser] = useState(initUser);
+  const [user, setUser] = useState<AppType>({
+    id: localStorage.userId,
+    firstName: localStorage.firstName,
+    guestRating: localStorage.guestRating,
+    hostRating: localStorage.hostRating,
+    inviteCount: localStorage.inviteCount,
+    profilePhoto: localStorage.profilePhoto,
+    pronouns: localStorage.pronouns,
+    swapCount: localStorage.swapCount,
+    userBio: localStorage.userBio,
+    email: localStorage.email,
+  });
 
   const checkAuth = async () => {
     try {
@@ -53,8 +65,6 @@ const App: FC = (): JSX.Element => {
       });
 
       const parseRes = await response.json();
-
-      console.log('web token?', parseRes);
       if (parseRes === true) {
         setAuth(true);
       }
@@ -67,10 +77,10 @@ const App: FC = (): JSX.Element => {
     checkAuth();
     axios.get('user/')
       .then(({ data }) => {
-        const userList = data.filter((user: UserType) => user.id === 1);
+        const userList = data.filter((tempUser: UserType) => tempUser.id === 1);
         setTestUser(userList[0]);
       });
-  }, []);
+  }, [user]);
 
   return (
     <BrowserRouter>
@@ -81,7 +91,7 @@ const App: FC = (): JSX.Element => {
           strict
           path="/"
           render={() => (!isAuthenticated ? (
-            <Login handleLogin={[isAuthenticated, setAuth]} />) : (
+            <Login handleLogin={[isAuthenticated, setAuth]} setUser={setUser} />) : (
               <Redirect to="/dashboard" />
           ))}
         />
@@ -101,7 +111,7 @@ const App: FC = (): JSX.Element => {
           strict
           path="/dashboard"
           render={() => (isAuthenticated ? (
-            <Dashboard handleLogin={[isAuthenticated, setAuth]} />) : (
+            <Dashboard handleLogin={[isAuthenticated, setAuth]} user={user} />) : (
               <Redirect to="/" />
           ))}
         />
@@ -137,7 +147,7 @@ const App: FC = (): JSX.Element => {
         <Route
           exact
           path="/calendar"
-          component={() => <UserCalendar user={testUser} />}
+          component={() => <UserCalendar user={user} />}
         />
         <Route
           exact

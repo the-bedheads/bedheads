@@ -16,7 +16,7 @@ type RegisterNewUser = {
 };
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
 }
 
 const styles = {
@@ -39,16 +39,13 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [selectedFile, setSelectedFile] = useState<any>();
 
   const handleFileChange = (e: any) => {
-    console.log('handling file upload change');
     const image = e.target.files[0];
-    console.log(image);
     setSelectedFile(image);
     setFileInputState(e.target.value);
     console.log('selected file:', selectedFile);
   };
 
   const uploadImage = async (encodedImage: any) => {
-    console.log('just got inside the upload image function');
     try {
       await fetch('http://localhost:3000/image/profile', {
         method: 'POST',
@@ -59,6 +56,22 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getUserProfile = async () => {
+    await axios.get(`user/email/${email}`)
+      .then(({ data }) => {
+        localStorage.setItem('userId', data.id);
+        localStorage.setItem('firstName', data.firstName);
+        localStorage.setItem('pronouns', data.pronouns);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('profilePhoto', data.profilePhoto);
+        localStorage.setItem('swapCount', data.swapCount);
+        localStorage.setItem('guestRating', data.guestRating);
+        localStorage.setItem('hostRating', data.hostRating);
+        localStorage.setItem('inviteCount', data.inviteCount);
+        localStorage.setItem('userBio', data.userBio);
+      });
   };
 
   const onSubmitForm = async (event: SyntheticEvent) => {
@@ -83,23 +96,17 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
           },
           body: JSON.stringify(body),
         });
-      console.log('ln 39');
 
       const parseRes = await response.json();
-      console.log('ln 41');
-      console.log(parseRes);
       if (parseRes.jwtToken) {
-        console.log(parseRes.jwtToken);
         localStorage.setItem('token', parseRes.jwtToken);
+        getUserProfile();
         setAuth(true);
-        console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');
       } else {
         setAuth(false);
         toast.error(parseRes);
       }
-      // setAuth(true);
-      // toast.success('Registered successfully!');
     } catch (err) {
       console.error(err.message);
     }

@@ -47,7 +47,34 @@ requestRouter
     })
       .then((count) => res.send(count))
       .catch((err) => res.status(500).send(err));
-  })
+  });
+
+// to make a request
+requestRouter
+  .post('/newRequest', async (req, res) => {
+    const { userId, avbId } = req.body.params;
+    // does request already exist?
+    await Request.findOne({
+      where: {
+        requester_id: userId,
+        availability_id: avbId,
+      },
+    })
+      .then((request) => {
+        // if so, don't allow creation and throw error
+        if (request) {
+          throw request;
+        }
+        // else, create request
+        Request.create({
+          requester_id: userId,
+          availability_id: avbId,
+        })
+          .then(() => res.status(201).send('Request sent!'));
+      })
+      .catch(() => res.status(409).send('Request already exists'));
+  });
+
 module.exports = {
   requestRouter,
 };

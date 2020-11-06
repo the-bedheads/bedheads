@@ -1,5 +1,7 @@
 import React, { useEffect, SyntheticEvent, useState } from 'react';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { AppType } from 'goldilocksTypes';
 import { toast } from 'react-toastify';
 import nightbed from '../../../assets/nightbed.jpg';
 import '../../../App.css';
@@ -11,7 +13,8 @@ type LoginExistingUser = {
 };
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  setUser: React.Dispatch<React.SetStateAction<AppType>>,
 }
 const styles = {
   header: {
@@ -22,13 +25,45 @@ const styles = {
     backgroundSize: 'cover',
   },
 };
-const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
+const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], setUser }) => {
   const { errors } = useForm<LoginExistingUser>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const loginUser = () => {
+    setUser({
+      id: localStorage.userId,
+      firstName: localStorage.firstName,
+      guestRating: localStorage.guestRating,
+      hostRating: localStorage.hostRating,
+      inviteCount: localStorage.inviteCount,
+      profilePhoto: localStorage.profilePhoto,
+      pronouns: localStorage.pronouns,
+      swapCount: localStorage.swapCount,
+      userBio: localStorage.userBio,
+      email: localStorage.email,
+    });
     setAuth(true);
+  };
+
+  const logoutUser = () => {
+    setAuth(false);
+  };
+
+  const getUserProfile = async () => {
+    await axios.get(`user/email/${email}`)
+      .then(({ data }) => {
+        localStorage.setItem('userId', data.id);
+        localStorage.setItem('firstName', data.firstName);
+        localStorage.setItem('pronouns', data.pronouns);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('profilePhoto', data.profilePhoto);
+        localStorage.setItem('swapCount', data.swapCount);
+        localStorage.setItem('guestRating', data.guestRating);
+        localStorage.setItem('hostRating', data.hostRating);
+        localStorage.setItem('inviteCount', data.inviteCount);
+        localStorage.setItem('userBio', data.userBio);
+      });
   };
 
   const onLogin = async (event: SyntheticEvent) => {
@@ -42,14 +77,14 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] })
           // Accept: 'application/json,text/plain, */*',
         },
         body: JSON.stringify(body),
-      });
+      })
+        .then((data) => data);
 
       const parseRes = await response.json();
-      console.log(parseRes.jwtToken);
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
+        await getUserProfile();
         loginUser();
-        console.log('Logged in? ', isAuthenticated);
         toast.success('Logged in successfully!');
       } else {
         setAuth(false);
