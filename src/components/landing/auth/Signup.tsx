@@ -39,16 +39,13 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [selectedFile, setSelectedFile] = useState<any>();
 
   const handleFileChange = (e: any) => {
-    console.log('handling file upload change');
     const image = e.target.files[0];
-    console.log(image);
     setSelectedFile(image);
     setFileInputState(e.target.value);
     console.log('selected file:', selectedFile);
   };
 
   const uploadImage = async (encodedImage: any) => {
-    console.log('just got inside the upload image function');
     try {
       await fetch('http://localhost:3000/image/profile', {
         method: 'POST',
@@ -99,24 +96,17 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
           },
           body: JSON.stringify(body),
         });
-      console.log('ln 39');
 
       const parseRes = await response.json();
-      console.log('ln 41');
-      console.log(parseRes);
       if (parseRes.jwtToken) {
-        console.log(parseRes.jwtToken);
         localStorage.setItem('token', parseRes.jwtToken);
         getUserProfile();
         setAuth(true);
-        console.log('authed?', isAuthenticated);
         toast.success('Registered successfullly!');
       } else {
         setAuth(false);
         toast.error(parseRes);
       }
-      // setAuth(true);
-      // toast.success('Registered successfully!');
     } catch (err) {
       console.error(err.message);
     }
