@@ -1,15 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-  const PersonalityScale = sequelize.define('listing', {
+  const PersonalityScale = sequelize.define('personalityScales', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    openness: DataTypes.float,
-    conscientiousness: DataTypes.float,
-    extraversion: DataTypes.float,
-    agreeableness: DataTypes.float,
-    neuroticism: DataTypes.float,
+    openness: DataTypes.FLOAT,
+    conscientiousness: DataTypes.FLOAT,
+    extraversion: DataTypes.FLOAT,
+    agreeableness: DataTypes.FLOAT,
+    neuroticism: DataTypes.FLOAT,
   });
 
   PersonalityScale.associate = (models) => {
