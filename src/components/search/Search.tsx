@@ -35,34 +35,21 @@ const Search: React.FC = () => {
     start: moment().format('YYYY-MM-DD'),
     end: moment().add(7, 'days').format('YYYY-MM-DD'),
   });
+  const [defaultView, setDefaultView] = useState(true);
+  const [updated, setUpdated] = useState(false);
+
   // view all listings in default search view
   // pass the setter to resultsList; will be updated via search there
   const getListings = () => {
     axios.get('/listing')
       .then((results) => {
-        const savedListings = results.data.slice();
-        const listingTotal = savedListings.length;
-        const randomListings: number[] = [];
-        const resultsToDisplay: unknown[] = [];
-        while (randomListings.length < 4) {
-          const random = Math.floor(Math.random() * Math.floor(listingTotal));
-          if (!randomListings.includes(random)) randomListings.push(random);
-        }
-        for (let i = 0; i < randomListings.length; i += 1) {
-          const id = randomListings[i];
-          savedListings[id].availabilities = {
-            startDate: savedListings[id].availabilities[0].startDate,
-            endDate: savedListings[id].availabilities[0].endDate,
-          };
-          resultsToDisplay.push(savedListings[id]);
-        }
-        setListings(resultsToDisplay);
+        setListings(results.data);
       })
       .catch((err) => err);
   };
 
   useEffect(() => {
-    getListings();
+    if (defaultView) getListings();
   }, []);
 
   return (
@@ -71,6 +58,8 @@ const Search: React.FC = () => {
         <Grid item xs={4}>
           <SearchBar
             onSubmit={(value: any) => setLocationQuery(value)}
+            setDefaultView={setDefaultView}
+            setUpdated={setUpdated}
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
@@ -80,12 +69,14 @@ const Search: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <ResultsList
-            // startDate={startDate}
-            // endDate={endDate}
             dateRange={dateRange}
             locationQuery={locationQuery}
+            setLocationQuery={setLocationQuery}
             listings={listings}
             setListings={setListings}
+            defaultView={defaultView}
+            updated={updated}
+            setUpdated={setUpdated}
           />
         </Grid>
         <Grid item xs={6}>
