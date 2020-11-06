@@ -11,8 +11,6 @@ router.post('/register', async (req, res) => {
   // Change back to camel case
   const { firstName, lastName, email, password } = req.body;
   try {
-    console.log(req.body);
-    console.log('Entered variables', firstName, lastName, email, password);
     const existingUser = await User.findOne({
       where: {
         email: email,
@@ -31,9 +29,7 @@ router.post('/register', async (req, res) => {
           email: email,
         },
       });
-      console.log('USER ID   ', user.id);
       const jwtToken = generateToken(user.id);
-      console.log('NUT LMAO', jwtToken);
       res.json({ jwtToken });
     } else {
       // 2.b. If user already exists, throw error
