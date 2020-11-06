@@ -187,10 +187,7 @@ const Dashboard: React.FC<AuthProps> = ({
     }
     return (
       <div>
-        It looks like you don&apos;t have a listing yet.
-        <br />
-        Lets fix that!
-        <br />
+        It looks like you don&apos;t have a listing yet. Lets fix that!
         <Button onClick={handleOpen}>
           Create Listing
         </Button>
