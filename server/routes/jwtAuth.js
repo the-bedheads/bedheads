@@ -23,7 +23,6 @@ router.post('/register', async (req, res) => {
       // Change back to camel case
       await db.query(`INSERT INTO users (first_name, last_name, email, password)
       VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}');`);
-
       const user = await User.findOne({
         where: {
           email: email,
