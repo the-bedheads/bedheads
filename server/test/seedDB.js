@@ -4,6 +4,7 @@ const listingData = require('./sampleData/listings');
 const availabilityData = require('./sampleData/availabilities');
 const requestData = require('./sampleData/requests');
 const listingPhotosData = require('./sampleData/listingPhotos');
+const personalityData = require('./sampleData/personalityScales');
 
 const {
   User,
@@ -13,6 +14,7 @@ const {
   Listing,
   Invite,
   Availability,
+  PersonalityScale,
 } = require('../db/index');
 
 const seed = async () => {
@@ -54,6 +56,14 @@ const seed = async () => {
         console.log(`✅🎃✅ ${length} listing photos successfully added to DB`);
       } else {
         console.log('❌☠️❌ LISTING PHOTOS NOT ADDED');
+      }
+    });
+  await PersonalityScale.bulkCreate(personalityData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅🎃✅ ${length} personality scales successfully added to DB`);
+      } else {
+        console.log('❌☠️❌ PERSONALITY SCALES NOT ADDED');
       }
     });
 };
