@@ -67,8 +67,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       });
   };
 
-  const onSubmitForm = async (event: SyntheticEvent) => {
-    event.preventDefault();
   const handleFileChange = (e: any) => {
     const image = e.target.files[0];
     setSelectedFile(image);
