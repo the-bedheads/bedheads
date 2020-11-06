@@ -1,6 +1,6 @@
+const moment = require('moment');
 const { Router } = require('express');
 const { Op } = require('sequelize');
-const { moment } = require('moment');
 const { Availability, Request, Listing } = require('../index');
 
 const availabilityRouter = Router();
@@ -81,10 +81,9 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
     endDate: end,
   })
     .then(() => {
-      console.log('Availability created');
       res.status(201).send('complete');
     })
-    .catch((err) => console.log(err));
+    .catch((err) => err);
 });
 
 // get current users entire calendar
@@ -181,7 +180,6 @@ availabilityRouter.delete('/', (req, res) => {
   })
     .then((avlb) => {
       avlb.destroy();
-      console.log('Availability deleted');
       res.status(201).send('complete');
     })
     .catch((err) => res.status(500).send(err));
