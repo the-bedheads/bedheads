@@ -21,7 +21,6 @@ const ListingModel = require('./Models/listing');
 const InviteModel = require('./Models/invite');
 const AvailabilityModel = require('./Models/availability');
 const PersonalityScaleModel = require('./Models/personalityScale');
-const GeolocationModel = require('./Models/geolocation');
 const MessageModel = require('./Models/message');
 const ThreadModel = require('./Models/thread');
 
@@ -33,7 +32,6 @@ const Listing = ListingModel(db, Sequelize);
 const Invite = InviteModel(db, Sequelize);
 const Availability = AvailabilityModel(db, Sequelize);
 const PersonalityScale = PersonalityScaleModel(db, Sequelize);
-const Geolocation = GeolocationModel(db, Sequelize);
 const Message = MessageModel(db, Sequelize);
 const Thread = ThreadModel(db, Sequelize);
 
@@ -46,7 +44,6 @@ const models = {
   Invite,
   Availability,
   PersonalityScale,
-  Geolocation,
   Message,
   Thread,
 };
@@ -72,7 +69,6 @@ module.exports = {
   Invite,
   Availability,
   PersonalityScale,
-  Geolocation,
   Thread,
   Message,
 };
