@@ -73,4 +73,6 @@ module.exports = {
   Availability,
   PersonalityScale,
   Geolocation,
+  Thread,
+  Message,
 };
