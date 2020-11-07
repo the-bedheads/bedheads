@@ -47,11 +47,11 @@ const Dashboard: React.FC<AuthProps> = ({
     if (string === 'listingDescription') {
       setListingDescription(e.target.value);
     } else if (string === 'listingAddress') {
-      setListingAddress(e.target.value);
+      setListingAddress((e.target.value).toLowerCase());
     } else if (string === 'listingCity') {
-      setListingCity(e.target.value);
+      setListingCity((e.target.value).toLowerCase());
     } else if (string === 'listingState') {
-      setListingState(e.target.value);
+      setListingState((e.target.value).toLowerCase());
     } else if (string === 'listingZipCode') {
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
@@ -65,6 +65,21 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const handleClose = (i: React.MouseEvent<HTMLButtonElement, MouseEvent>, check: boolean) => {
     if (check) {
+      axios.post('/listing', {
+        listingAddress,
+        listingCity,
+        listingState,
+        listingZipCode,
+        listingTitle,
+        listingDescription,
+        pets,
+        ada,
+        smoking,
+        roommates,
+        internet,
+        privateBath,
+        userId,
+      });
       // save changes to DB
       // update field on screen
     }
