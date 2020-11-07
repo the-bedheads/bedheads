@@ -146,7 +146,16 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           email={emailaddress}
           dob={birthday}
           password={pword}
-          nextStep={nextStep}
+          q1={q1}
+          q2={q2}
+          q3={q3}
+          q4={q4}
+          q5={q5}
+          q6={q6}
+          q7={q7}
+          q8={q8}
+          q9={q9}
+          q10={q10}
           prevStep={prevStep}
         />
       );
