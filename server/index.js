@@ -1,20 +1,23 @@
 const express = require('express');
+const socketio = require('socket.io');
+const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 require('./db/index.js');
 
 const PORT = process.env.PORT || 3000;
-const { listingRouter } = require("./db/routes/listingRoutes");
-const { userRouter } = require("./db/routes/userRoutes");
-const { availabilityRouter } = require("./db/routes/availabilityRoutes");
-const { dashboardRouter } = require("./db/routes/dashboardRoutes.js");
-const { mapRouter } = require("./api/Map");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const { requestRouter } = require("./db/routes/requestRoutes.js");
-const { listingPhotosRouter } = require("./db/routes/listingPhotosRoutes.js");
-const { imageRouter } = require('./api/cloudinaryRoutes');
+const { listingRouter } = require('./db/routes/listingRoutes');
+const { userRouter } = require('./db/routes/userRoutes');
+const { availabilityRouter } = require('./db/routes/availabilityRoutes');
+const { dashboardRouter } = require('./db/routes/dashboardRoutes.js');
+const { mapRouter } = require('./api/Map');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const { requestRouter } = require('./db/routes/requestRoutes.js');
+const { listingPhotosRouter } = require('./db/routes/listingPhotosRoutes.js');
+const { imageRouter } = require('./api/cloudinaryRoutes')
+const { socketRouter } = require('./socket/socketInit');
 const { personalityRouter } = require('./api/ibmPersonalityTraits');
 
 const app = express();
@@ -46,11 +49,22 @@ app.use('/request', requestRouter);
 app.use('/map', mapRouter);
 app.use('/image', imageRouter);
 app.use('/personality', personalityRouter);
+app.use('/socket', socketRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+const io = socketio(server);
+
+io.on('connection', (socket) => {
+  console.log('we have a new connection');
+  socket.on('disconnect', () => {
+    console.log('user has left');
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`Listening on port :${PORT}!`);
 });
