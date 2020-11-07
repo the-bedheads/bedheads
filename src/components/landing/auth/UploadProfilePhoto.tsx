@@ -25,7 +25,7 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     <>
       <Dialog open fullWidth>
         <AppBar title="Upload Profile Photo" />
-        <DialogTitle id="form-dialog-title">Upload Your Profile Photo</DialogTitle>
+        <DialogTitle id="form-dialog-title">Step 3: Upload Your Profile Photo</DialogTitle>
         <Typography>Greg\s Upload Button Here</Typography>
         <br />
         <Button

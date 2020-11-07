@@ -64,19 +64,11 @@ declare module 'goldilocksTypes' {
   interface AppInterface {
     user: AppType,
   }
-  type RegisterNewUser = {
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-    verification_code: number;
-  };
 
-  interface ConfirmSignupProps { // Multi-Step Registration Survey
+  interface RegisterNewUser {
     firstName: string,
     lastName: string,
     pronouns: string,
-    dob: string,
     email: string,
     password: string,
     q1: string,
@@ -89,9 +81,29 @@ declare module 'goldilocksTypes' {
     q8: string,
     q9: string,
     q10: string,
-    // nextStep: () => void,
-    prevStep: () => void
+    onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   }
+
+  interface ConfirmSignupProps { // Multi-Step Registration Survey
+    firstName: string,
+    lastName: string,
+    pronouns: string,
+    email: string,
+    password: string,
+    q1: string,
+    q2: string,
+    q3: string,
+    q4: string,
+    q5: string,
+    q6: string,
+    q7: string,
+    q8: string,
+    q9: string,
+    q10: string,
+    nextStep: () => void,
+    prevStep: () => void,
+  }
+
 }
 
 module.exports = {

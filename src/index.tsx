@@ -6,7 +6,7 @@ import UserFormFC from './components/landing/auth/UserFormFC';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserFormFC />
+    <App />
   </React.StrictMode>,
   document.getElementById('root'),
 );

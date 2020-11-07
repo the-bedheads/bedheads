@@ -1,9 +1,31 @@
 import React from 'react';
-import { ConfirmSignupProps } from 'goldilocksTypes';
 import {
-  Dialog, Grid, Paper, AppBar, List, ListItem, ListItemText, Button, Typography,
+  Grid, Paper, AppBar, List, ListItem, ListItemText, Button, Typography,
 } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+
+interface TestProps {
+  firstName: string,
+  lastName: string,
+  pronouns: string,
+  dob: string,
+  email: string,
+  password: string,
+  q1: string,
+  q2: string,
+  q3: string,
+  q4: string,
+  q5: string,
+  q6: string,
+  q7: string,
+  q8: string,
+  q9: string,
+  q10: string,
+  nextStep: () => void,
+  prevStep: () => void,
+  onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+}
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -16,9 +38,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const Confirm: React.FC<ConfirmSignupProps> = (Props: ConfirmSignupProps): JSX.Element => {
+const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
   const classes = useStyles();
   const {
+    nextStep,
     prevStep,
     firstName,
     lastName,
@@ -37,6 +60,34 @@ const Confirm: React.FC<ConfirmSignupProps> = (Props: ConfirmSignupProps): JSX.E
     q10,
   } = Props;
 
+  const continueStep = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    try {
+      const body = {
+        firstName, lastName, pronouns, email, password, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+      };
+      const response = await fetch('http://localhost:3000/auth/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
+
+      const parseRes = await response.json();
+
+      if (parseRes.jwtToken) {
+        localStorage.setItem('token', parseRes.jwtToken);
+        toast.success('New user created!');
+      } else {
+        toast.error(parseRes);
+      }
+    } catch (err) {
+      console.warn(err.message);
+    }
+    nextStep();
+  };
   const backAStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     prevStep();
@@ -141,6 +192,14 @@ const Confirm: React.FC<ConfirmSignupProps> = (Props: ConfirmSignupProps): JSX.E
           </Grid>
         </Grid>
         <br />
+        <Button
+          className="confirm-btn"
+          color="primary"
+          variant="contained"
+          onClick={(event) => continueStep(event)}
+        >
+          Submit
+        </Button>
         <Button
           className="confirm-btn"
           onClick={(event) => backAStep(event)}

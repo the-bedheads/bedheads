@@ -5,38 +5,36 @@ const validEmail = require('../utils/validEmail');
 const generateToken = require('../utils/jsonWebToken');
 const authorize = require('../utils/authorize');
 
-// Signup/Register a new user
 router.post("/register", async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    profilePhotoUrl: pic,
-  } = req.body;
+
+  const { firstName, lastName, pronouns, email, password, profilePhotoUrl: pic, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10 } = req.body;
   try {
-    console.info("Entered variables", firstName, lastName, email, password);
+    // TODO: Confirm values are being passed through (for debugging)
+    console.info("Entered variables", firstName, lastName, pronouns, email, password, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10);
     const existingUser = await User.findOne({
       where: {
         email,
       },
-    });
-    if (existingUser === null && email.length && password.length >= 6) {
+    })
+    if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await db.query(`INSERT INTO users (first_name, last_name, email, password, profile_photo) 
-      VALUES ('${firstName}', '${lastName}', '${email}', '${hashedPassword}', '${pic}');`);
+      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo) 
+      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}');`);
 
       const user = await User.findOne({
         where: {
           email,
         },
       });
+
+      await db.query(`INSERT INTO survey (q1Response, q2Response, q3Response, q4Response, q5Response, q6Response, q7Response, q8Response, q9Response, q10Response, user_id)
+      VALUES ('${q1}', '${q2}', '${q3}', '${q4}', '${q5}', '${q6}', '${q7}', '${q8}', '${q9}', '${q10}', '${user.id}');`);
+
       const jwtToken = generateToken(user.id);
       res.json({ jwtToken });
     } else {
-      // 2.b. If user already exists, throw error
-      res.status(401).json('Already registered');
+      res.status(401).json("User already exists, try again!");
     }
   } catch (err) {
     console.warn(err.message);
@@ -44,8 +42,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Verify (login) registered user
-router.post('/login', validEmail, async (req, res) => {
+router.post("/login", validEmail, async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -54,17 +51,21 @@ router.post('/login', validEmail, async (req, res) => {
       },
     });
     if (user === null) {
-      return res.status(401).json('Invalid credentials, line 53');
+      return res.status(401).json("User not found!");
     }
     const validPassword = await bcrypt.compare(password, user.password);
+
     if (!validPassword) {
-      return res.status(401).json('Invalid Password, line 58');
+      return res.status(401).json("Please provide a valid password.");
     }
     const jwtToken = generateToken(user.id);
+
+    //TODO: Verify token is being created
+    console.info({ jwtToken });
     res.json({ jwtToken });
   } catch (err) {
     console.warn(err.message);
-    res.status(500).send("Error logging in line 64 jwtAuth.js");
+    res.status(500).send("Server error!");
   }
 });
 

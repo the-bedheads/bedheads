@@ -13,9 +13,10 @@ interface AuthProps {
 }
 
 const Dashboard: React.FC<AuthProps> = ({
-  handleLogin: [isAuthenticated, setAuth],
+  handleLogin: [isAuth, setAuth],
   user,
 }) => {
+
   const listingId = 1;
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
@@ -114,6 +115,8 @@ const Dashboard: React.FC<AuthProps> = ({
       });
       const parseData = await res.json();
       setAuth(true);
+      setUserEmail(parseData.email);
+      setUserName(parseData.first_name);
     } catch (err) {
       console.warn(err.message);
     }
@@ -148,6 +151,17 @@ const Dashboard: React.FC<AuthProps> = ({
     setShownIndex(getRandomAvlb());
   };
 
+  const postUserInfo = () => {
+    axios.post('/dashboard', {
+      params: {
+        userEmail,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+        console.warn('hit post User info');
+      });
+  };
   const getDashboardInfo = () => {
     axios.get('/dashboardInfo', {
       params: {

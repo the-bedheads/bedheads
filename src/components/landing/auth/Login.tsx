@@ -10,16 +10,9 @@ interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
   setUser: React.Dispatch<React.SetStateAction<AppType>>,
 }
-const styles = {
-  header: {
-    backgroundImage: `url(${nightbed})`,
-    height: '100vh',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-  },
-};
-const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], setUser }) => {
+
+const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser }) => {
+
   const { errors } = useForm<LoginExistingUser>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');

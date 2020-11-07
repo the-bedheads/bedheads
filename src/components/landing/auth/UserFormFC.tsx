@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MuiThemeProvider from '@material-ui/core/styles';
+import { RegisterNewUser } from 'goldilocksTypes';
 import UserDetailsForm from './UserDetailsForm';
 import Questions from './Questions';
 import Questions2 from './Questions2';
@@ -7,16 +8,10 @@ import UploadProfilePhoto from './UploadProfilePhoto';
 import Confirm from './Confirm';
 import Success from './Success';
 
-interface MyProps {
-  nextStep: () => void,
-  prevStep: () => void,
-  handleChange: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-    type: string,
-  ) => void
-}
-
-const UserFormAsFC: React.FC = (props: any): JSX.Element => {
+const UserFormAsFC: React.FC<RegisterNewUser> = (Props: RegisterNewUser): JSX.Element => {
+  const {
+    onSubmitForm, firstName, lastName, pronouns, email, password,
+  } = Props;
   const [step, setStep] = useState(1);
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -100,7 +95,6 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           dob={birthday}
           password={pword}
           nextStep={nextStep}
-          prevStep={prevStep}
           handleChange={handleChange}
         />
       );
@@ -156,11 +150,16 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           q8={q8}
           q9={q9}
           q10={q10}
+          nextStep={nextStep}
           prevStep={prevStep}
+          onSubmitForm={onSubmitForm}
         />
       );
     case 6:
-      return <Success />;
+      return (
+        <Success />
+      );
+
     default:
       return <h1>Didney worl</h1>;
   }
