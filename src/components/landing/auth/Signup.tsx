@@ -18,16 +18,6 @@ interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
 }
 
-const styles = {
-  header: {
-    backgroundImage: `url(${nightbed})`,
-    height: '100vh',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-  },
-};
-
 const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -112,9 +102,10 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
 
   return (
     <>
-      <div className="signup-container" style={styles.header}>
+      <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
+          {/* <UserFormFC /> */}
           <form onSubmit={onSubmitForm}>
             <div className="form-group align-center my-3">
               <label htmlFor="first-name">
