@@ -17,10 +17,6 @@ interface MyProps {
 }
 
 const UserFormAsFC: React.FC = (props: any): JSX.Element => {
-  const {
-    firstName, lastName, pronouns, dob, email, password,
-  } = props;
-
   const [step, setStep] = useState(1);
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -28,6 +24,16 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
   const [birthday, setDob] = useState('');
   const [emailaddress, setEmail] = useState('');
   const [pword, setPassword] = useState('');
+  const [q1, setResponse1] = useState('');
+  const [q2, setResponse2] = useState('');
+  const [q3, setResponse3] = useState('');
+  const [q4, setResponse4] = useState('');
+  const [q5, setResponse5] = useState('');
+  const [q6, setResponse6] = useState('');
+  const [q7, setResponse7] = useState('');
+  const [q8, setResponse8] = useState('');
+  const [q9, setResponse9] = useState('');
+  const [q10, setResponse10] = useState('');
 
   const nextStep = () => {
     setStep(step + 1);
@@ -56,6 +62,33 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
     }
   };
 
+  const handleResponse = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    type: string,
+  ) => {
+    if (type === 'response1') {
+      setResponse1(e.target.value);
+    } else if (type === 'response2') {
+      setResponse2(e.target.value);
+    } else if (type === 'response3') {
+      setResponse3(e.target.value);
+    } else if (type === 'response4') {
+      setResponse4(e.target.value);
+    } else if (type === 'response5') {
+      setResponse5(e.target.value);
+    } else if (type === 'response6') {
+      setResponse6(e.target.value);
+    } else if (type === 'response7') {
+      setResponse7(e.target.value);
+    } else if (type === 'response8') {
+      setResponse8(e.target.value);
+    } else if (type === 'response9') {
+      setResponse9(e.target.value);
+    } else if (type === 'response10') {
+      setResponse10(e.target.value);
+    }
+  };
+
   switch (step) {
     case 1:
       return (
@@ -74,29 +107,27 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
     case 2:
       return (
         <Questions
-          firstName={firstname}
-          lastName={lastname}
-          pronouns={prefpros}
-          email={emailaddress}
-          dob={birthday}
-          password={pword}
+          q1={q1}
+          q2={q2}
+          q3={q3}
+          q4={q4}
+          q5={q5}
           nextStep={nextStep}
           prevStep={prevStep}
-          handleChange={handleChange}
+          handleResponse={handleResponse}
         />
       );
     case 3:
       return (
         <Questions2
-          firstName={firstname}
-          lastName={lastname}
-          pronouns={prefpros}
-          email={emailaddress}
-          dob={birthday}
-          password={pword}
+          q6={q6}
+          q7={q7}
+          q8={q8}
+          q9={q9}
+          q10={q10}
           nextStep={nextStep}
           prevStep={prevStep}
-          handleChange={handleChange}
+          handleResponse={handleResponse}
         />
       );
     case 4:

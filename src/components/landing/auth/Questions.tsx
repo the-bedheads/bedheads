@@ -9,29 +9,22 @@ import Filter4Icon from '@material-ui/icons/Filter4';
 import Filter5Icon from '@material-ui/icons/Filter5';
 
 interface MyProps {
-  firstName: string,
-  lastName: string,
-  pronouns: string,
-  dob: string,
-  email: string,
-  password: string,
+  q1: string,
+  q2: string,
+  q3: string,
+  q4: string,
+  q5: string,
   nextStep: () => void,
   prevStep: () => void,
-  handleChange: (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  handleResponse: (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     type: string
   ) => void,
 }
 
 const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
-  const [q1, setResponse1] = useState('');
-  const [q2, setResponse2] = useState('');
-  const [q3, setResponse3] = useState('');
-  const [q4, setResponse4] = useState('');
-  const [q5, setResponse5] = useState('');
-
   const {
-    nextStep, prevStep, handleChange, firstName, lastName, pronouns, dob, email, password,
+    nextStep, prevStep, handleResponse, q1, q2, q3, q4, q5,
   } = Props;
 
   const continueStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,7 +53,8 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response1')}
+          defaultValue={q1}
+          onChange={(e) => handleResponse(e, 'response1')}
         />
         <br />
         <Typography>
@@ -74,7 +68,8 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response2')}
+          defaultValue={q2}
+          onChange={(e) => handleResponse(e, 'response2')}
         />
         <br />
         <Typography>
@@ -88,7 +83,8 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response3')}
+          defaultValue={q3}
+          onChange={(e) => handleResponse(e, 'response3')}
         />
         <br />
         <Typography>
@@ -102,7 +98,8 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response4')}
+          defaultValue={q4}
+          onChange={(e) => handleResponse(e, 'response4')}
         />
         <br />
         <Typography>
@@ -116,7 +113,8 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response5')}
+          defaultValue={q5}
+          onChange={(e) => handleResponse(e, 'response5')}
         />
         <br />
         <Button
