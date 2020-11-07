@@ -40,7 +40,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
 
   const uploadImage = async (encodedImage: any) => {
-    await axios.get('http://localhost:3000/image/newProfilePicture', {
+    await axios.get(`http://${process.env.HOST}:${process.env.PORT}/image/newProfilePicture`, {
       params: {
         image: encodedImage,
       },
@@ -87,7 +87,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       const body = {
         firstName, lastName, email, password, profilePhotoUrl,
       };
-      const response = await fetch('http://localhost:3000/auth/register',
+      const response = await fetch(`http://${process.env.HOST}:${process.env.PORT}/auth/register`,
         {
           method: 'POST',
           headers: {

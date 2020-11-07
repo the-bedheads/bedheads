@@ -5,6 +5,8 @@ const availabilityData = require('./sampleData/availabilities');
 const requestData = require('./sampleData/requests');
 const listingPhotosData = require('./sampleData/listingPhotos');
 const personalityData = require('./sampleData/personalityScales');
+const messageData = require('./sampleData/message');
+const threadData = require('./sampleData/thread');
 
 const {
   User,
@@ -15,55 +17,73 @@ const {
   Invite,
   Availability,
   PersonalityScale,
+  Message,
+  Thread,
 } = require('../db/index');
 
 const seed = async () => {
   await User.bulkCreate(userData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} users successfully added to DB`);
+        console.info(`✅🎃✅ ${length} users successfully added to DB`);
       } else {
-        console.log('❌☠️❌ USERS not added');
+        console.warn('❌☠️❌ USERS not added');
       }
     });
   await Listing.bulkCreate(listingData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} listings successfully added to DB`);
+        console.info(`✅🎃✅ ${length} listings successfully added to DB`);
       } else {
-        console.log('❌☠️❌ LISTINGS NOT ADDED');
+        console.warn('❌☠️❌ LISTINGS NOT ADDED');
       }
     });
   await Availability.bulkCreate(availabilityData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} availabilities successfully added to DB`);
+        console.info(`✅🎃✅ ${length} availabilities successfully added to DB`);
       } else {
-        console.log('❌☠️❌ AVAILABILITIES NOT ADDED');
+        console.warn('❌☠️❌ AVAILABILITIES NOT ADDED');
       }
     });
   await Request.bulkCreate(requestData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} requests successfully added to DB`);
+        console.info(`✅🎃✅ ${length} requests successfully added to DB`);
       } else {
-        console.log('❌☠️❌ REQUESTS NOT ADDED');
+        console.warn('❌☠️❌ REQUESTS NOT ADDED');
       }
     });
   await ListingPhotos.bulkCreate(listingPhotosData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} listing photos successfully added to DB`);
+        console.info(`✅🎃✅ ${length} listing photos successfully added to DB`);
       } else {
-        console.log('❌☠️❌ LISTING PHOTOS NOT ADDED');
+        console.warn('❌☠️❌ LISTING PHOTOS NOT ADDED');
       }
     });
   await PersonalityScale.bulkCreate(personalityData)
     .then(({ length }) => {
       if (length) {
-        console.log(`✅🎃✅ ${length} personality scales successfully added to DB`);
+        console.info(`✅🎃✅ ${length} personality scales successfully added to DB`);
       } else {
-        console.log('❌☠️❌ PERSONALITY SCALES NOT ADDED');
+        console.warn('❌☠️❌ PERSONALITY SCALES NOT ADDED');
+      }
+    });
+  await Thread.bulkCreate(threadData)
+    .then(({ length }) => {
+      if (length) {
+        console.info(`✅🎃✅ ${length} threads successfully added to DB`);
+      } else {
+        console.warn('❌☠️❌ THREADS NOT ADDED');
+      }
+    });
+  await Message.bulkCreate(messageData)
+    .then(({ length }) => {
+      if (length) {
+        console.info(`✅🎃✅ ${length} messages successfully added to DB`);
+      } else {
+        console.warn('❌☠️❌ MESSAGES NOT ADDED');
       }
     });
 };
