@@ -18,15 +18,15 @@ dashboardRouter
   .get('/', (req, res) => {
     const results = {};
     const { userId, listingId } = req.query;
-    const swapCountUrl = `http://localhost:3000/availability/countSwaps/${userId}`;
+    const swapCountUrl = `http://${process.env.HOST}:${process.env.PORT}/availability/countSwaps/${userId}`;
     axios.get(swapCountUrl)
       .then((swaps) => {
         results.confirmedSwapCount = swaps.data.count;
-        const availabilityArrayUrl = `http://localhost:3000/availability/mineIdOnly/${userId}`;
+        const availabilityArrayUrl = `http://${process.env.HOST}:${process.env.PORT}/availability/mineIdOnly/${userId}`;
         axios.get(availabilityArrayUrl)
           .then((arr) => {
             const { data } = arr;
-            const countRequestUrl = 'http://localhost:3000/request/countByArray';
+            const countRequestUrl = `http://${process.env.HOST}:${process.env.PORT}/request/countByArray`;
             axios.get(countRequestUrl, {
               params: {
                 arr: data,
@@ -34,15 +34,15 @@ dashboardRouter
             })
               .then((requests) => {
                 results.pendingRequests = requests.data;
-                const otherAvailabilitiesUrl = `http://localhost:3000/availability/others/currentUser/${userId}`;
+                const otherAvailabilitiesUrl = `http://${process.env.HOST}:${process.env.PORT}/availability/others/currentUser/${userId}`;
                 axios.get(otherAvailabilitiesUrl)
                   .then(async (avails) => {
                     const { data } = avails;
                     const getBigData = async () => Promise.all(data.map(async (avlb) => {
                       const obj = {};
                       const { listing_id, host_id } = avlb;
-                      const listingUrl = `http://localhost:3000/listing/byId/${listing_id}`;
-                      const userUrl = `http://localhost:3000/user/byId/${host_id}`;
+                      const listingUrl = `http://${process.env.HOST}:${process.env.PORT}/listing/byId/${listing_id}`;
+                      const userUrl = `http://${process.env.HOST}:${process.env.PORT}/user/byId/${host_id}`;
                       const first = await axios.get(listingUrl)
                         .then(async (listing) => {
                           obj.city = listing.data.listingCity;
