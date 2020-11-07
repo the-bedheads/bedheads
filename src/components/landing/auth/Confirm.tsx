@@ -1,6 +1,17 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 
-const Confirm: FC = (): JSX.Element => {
+interface MyProps {
+  firstName: string,
+  lastName: string,
+  pronouns: string,
+  dob: string,
+  email: string,
+  password: string,
+  nextStep: () => void,
+  prevStep: () => void,
+}
+
+const Confirm: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');

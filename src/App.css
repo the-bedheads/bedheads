@@ -79,3 +79,15 @@ input[type="button"],
 input[type="submit"] {
   -webkit-appearance: none;
 }
+
+.question-btn {
+  margin: 15
+}
+
+.login-container {
+  background-image: url('../src/assets/nightbed.jpg');
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

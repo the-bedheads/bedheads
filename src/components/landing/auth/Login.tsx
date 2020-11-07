@@ -4,13 +4,8 @@ import { useForm } from 'react-hook-form';
 import { AppType } from 'goldilocksTypes';
 import { toast } from 'react-toastify';
 import nightbed from '../../../assets/nightbed.jpg';
+import LoginExistingUser from './ts-utils/types';
 import '../../../App.css';
-
-// Declare the type of data that will be handled in onSubmit function
-type LoginExistingUser = {
-  email: string;
-  password: string;
-};
 
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
@@ -74,7 +69,6 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], s
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Accept: 'application/json,text/plain, */*',
         },
         body: JSON.stringify(body),
       })
@@ -97,7 +91,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], s
   };
 
   return (
-    <div className="login-container" style={styles.header}>
+    <div className="login-container">
       <h1 className="text-center my-5">Login</h1>
       <div className="row justify-content-center">
         <form>

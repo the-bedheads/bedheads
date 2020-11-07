@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Button, Dialog, DialogTitle, DialogContent, Typography, AppBar, TextField, DialogActions,
+  Button, Dialog, DialogTitle, Typography, AppBar, TextField, DialogActions,
 } from '@material-ui/core';
-import Filter1Icon from '@material-ui/icons/Filter1';
-import Filter2Icon from '@material-ui/icons/Filter2';
-import Filter3Icon from '@material-ui/icons/Filter3';
-import Filter4Icon from '@material-ui/icons/Filter4';
-import Filter5Icon from '@material-ui/icons/Filter5';
+import Filter6Icon from '@material-ui/icons/Filter6';
+import Filter7Icon from '@material-ui/icons/Filter7';
+import Filter8Icon from '@material-ui/icons/Filter8';
+import Filter9Icon from '@material-ui/icons/Filter9';
+import Filter9PlusIcon from '@material-ui/icons/Filter9Plus';
+import '../../../App.css';
 
 interface MyProps {
   firstName: string,
@@ -23,12 +24,12 @@ interface MyProps {
   ) => void,
 }
 
-const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
-  const [q1, setResponse1] = useState('');
-  const [q2, setResponse2] = useState('');
-  const [q3, setResponse3] = useState('');
-  const [q4, setResponse4] = useState('');
-  const [q5, setResponse5] = useState('');
+const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
+  const [q6, setResponse6] = useState('');
+  const [q7, setResponse7] = useState('');
+  const [q8, setResponse8] = useState('');
+  const [q9, setResponse9] = useState('');
+  const [q10, setResponse10] = useState('');
 
   const {
     nextStep, prevStep, handleChange, firstName, lastName, pronouns, dob, email, password,
@@ -48,75 +49,75 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     <>
       <Dialog open fullWidth>
         <AppBar title="New User Questionnaire" />
-        <DialogTitle id="form-dialog-title">Step 2: Fill Out Survey (1/2)</DialogTitle>
+        <DialogTitle id="form-dialog-title">Step 3: Fill Out Survey (2/2)</DialogTitle>
         <Typography>
-          <Filter1Icon />
-          Finish this sentence: Strangers would describe me as ____, but I know that I am ____.
+          <Filter6Icon />
+          What is your favorite way to spend a Sunday night?
         </Typography>
         <TextField
-          name="response1"
+          name="response6"
           autoFocus
           multiline
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response1')}
+          onChange={(event) => handleChange(event, 'response6')}
         />
         <br />
         <Typography>
-          <Filter2Icon />
-          What does it feel like when you feel your best?
+          <Filter7Icon />
+          How do you think you are as a roommate?
         </Typography>
         <TextField
-          name="response2"
+          name="response7"
           autoFocus
           multiline
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response2')}
+          onChange={(event) => handleChange(event, 'response7')}
         />
         <br />
         <Typography>
-          <Filter3Icon />
-          What is your relationship like with your neighbors?
+          <Filter8Icon />
+          What do you do for a living?
         </Typography>
         <TextField
-          name="response3"
+          name="response8"
           autoFocus
           multiline
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response3')}
+          onChange={(event) => handleChange(event, 'response8')}
         />
         <br />
         <Typography>
-          <Filter4Icon />
-          How would you describe the vibe of your home? What makes it that way?
+          <Filter9Icon />
+          Describe a typical day in your life.
         </Typography>
         <TextField
-          name="response4"
+          name="response9"
           autoFocus
           multiline
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response4')}
+          onChange={(event) => handleChange(event, 'response9')}
         />
         <br />
         <Typography>
-          <Filter5Icon />
-          How do you decompress day to day?
+          <Filter9PlusIcon />
+          Do you have any allergies or special food requirements?
         </Typography>
         <TextField
-          name="response5"
+          name="response10"
           autoFocus
           multiline
           rows={2}
           variant="outlined"
           fullWidth
-          onChange={(event) => handleChange(event, 'response5')}
+          onChange={(event) => handleChange(event, 'response10')}
         />
         <br />
         <Button
@@ -140,4 +141,4 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
   );
 };
 
-export default Questions;
+export default Questions2;

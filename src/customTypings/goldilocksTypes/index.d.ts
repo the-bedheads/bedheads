@@ -64,6 +64,13 @@ declare module 'goldilocksTypes' {
   interface AppInterface {
     user: AppType,
   }
+  type RegisterNewUser = {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    verification_code: number;
+  };
 }
 
 module.exports = {
@@ -73,4 +80,5 @@ module.exports = {
   ProfileProps,
   AppType,
   AppInterface,
+  RegisterNewUser,
 };

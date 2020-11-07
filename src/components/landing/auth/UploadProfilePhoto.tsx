@@ -1,16 +1,29 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
+import {
+  Button, Dialog, DialogTitle, DialogContent, AppBar, TextField, DialogActions,
+} from '@material-ui/core';
 
-const UploadProfilePhoto: FC = (): JSX.Element => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [pronouns, setPronouns] = useState('');
+interface MyProps {
+  nextStep: () => void,
+  prevStep: () => void,
+}
 
-  return (
-    <>
-      Upload user profile photo
-    </>
-  );
-};
+const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => (
+  <>
+    <Dialog open fullWidth>
+      <AppBar title="Upload Profile Photo">
+        <DialogTitle id="form-dialog-title">Upload Your Profile Photo</DialogTitle>
+        <TextField
+          name="response6"
+          autoFocus
+          multiline
+          rows={3}
+          variant="outlined"
+          fullWidth
+        />
+      </AppBar>
+    </Dialog>
+  </>
+);
 
 export default UploadProfilePhoto;

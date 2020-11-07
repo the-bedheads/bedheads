@@ -2,28 +2,12 @@ import React, { useState } from 'react';
 import MuiThemeProvider from '@material-ui/core/styles';
 import UserDetailsForm from './UserDetailsForm';
 import Questions from './Questions';
-import Confirm from './Confirm';
+import Questions2 from './Questions2';
 import UploadProfilePhoto from './UploadProfilePhoto';
+import Confirm from './Confirm';
 import Success from './Success';
 
-// type State = {
-//   step: number,
-//   firstName: string,
-//   lastName: string,
-//   pronouns: string,
-//   dob: string,
-//   email: string,
-//   password: string,
-// };
-
 interface MyProps {
-  // step: number,
-  // firstName: string,
-  // lastName: string,
-  // pronouns: string,
-  // dob: string,
-  // email: string,
-  // password: string,
   nextStep: () => void,
   prevStep: () => void,
   handleChange: (
@@ -46,7 +30,6 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
   const [emailaddress, setEmail] = useState('');
   const [pword, setPassword] = useState('');
 
-  // Proceed to next step in registration
   const nextStep = () => {
     setStep(step + 1);
   };
@@ -87,12 +70,54 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
         />
       );
     case 2:
-      return <Questions />;
+      return (
+        <Questions
+          firstName={firstname}
+          lastName={lastname}
+          pronouns={prefpros}
+          email={emailaddress}
+          dob={birthday}
+          password={pword}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          handleChange={() => handleChange}
+        />
+      );
     case 3:
-      return <UploadProfilePhoto />;
+      return (
+        <Questions2
+          firstName={firstname}
+          lastName={lastname}
+          pronouns={prefpros}
+          email={emailaddress}
+          dob={birthday}
+          password={pword}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          handleChange={() => handleChange}
+        />
+      );
     case 4:
-      return <Confirm />;
+      return (
+        <UploadProfilePhoto
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
     case 5:
+      return (
+        <Confirm
+          firstName={firstname}
+          lastName={lastname}
+          pronouns={prefpros}
+          email={emailaddress}
+          dob={birthday}
+          password={pword}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      );
+    case 6:
       return <Success />;
     default:
       return <h1>Didney worl</h1>;

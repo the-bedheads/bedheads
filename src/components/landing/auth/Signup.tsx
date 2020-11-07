@@ -29,7 +29,6 @@ const styles = {
 };
 
 const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
-  const { errors } = useForm<RegisterNewUser>();
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -128,7 +127,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                {errors.first_name && <div className="error">Enter Your First Name</div>}
               </label>
             </div>
             <div className="form-group align-center">
@@ -142,7 +140,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
-                {errors.last_name && <div className="error">Enter Your Last Name</div>}
               </label>
             </div>
             <div className="form-group align-center">
@@ -156,7 +153,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {errors.email && <div className="error">Enter Your Email</div>}
               </label>
             </div>
             <div className="form-group align-center">
@@ -170,19 +166,19 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {errors.password && <div className="error">Enter Your Password</div>}
               </label>
             </div>
             <div className="form-group align-center my-3">
-              <label htmlFor="verification-code" />
-              Enter Verification Code
+              <label htmlFor="verification-code">
+                Enter Verification Code
               <input
-                id="imageInput"
-                type="file"
-                name="image"
-                onChange={(e) => handleFileChange(e)}
-                value={fileInputState}
-              />
+                  id="imageInput"
+                  type="file"
+                  name="image"
+                  onChange={(e) => handleFileChange(e)}
+                  value={fileInputState}
+                />
+              </label>
             </div>
             <div className="form-group align-center">
               <button
@@ -190,7 +186,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
                 type="submit"
               >
                 Register
-              </button>
+            </button>
               <br />
               <a href="/">Already registered? Login here.</a>
             </div>
