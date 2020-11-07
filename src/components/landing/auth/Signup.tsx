@@ -6,6 +6,7 @@ import { Link, Redirect } from 'react-router-dom';
 import user from '../../../../server/db/Models/user';
 import nightbed from '../../../assets/nightbed.jpg';
 import '../../../App.css';
+
 // Declare the type of data that will be handled in onSubmit function
 type RegisterNewUser = {
   first_name: string;
@@ -40,7 +41,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
 
   const uploadImage = async (encodedImage: any) => {
-    await axios.get('http://localhost:3000/image/newProfilePicture', {
+    await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/image/newProfilePicture`, {
       params: {
         image: encodedImage,
       },
@@ -87,7 +88,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       const body = {
         firstName, lastName, email, password, profilePhotoUrl,
       };
-      const response = await fetch('http://localhost:3000/auth/register',
+      const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/register`,
         {
           method: 'POST',
           headers: {

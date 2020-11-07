@@ -70,7 +70,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth], s
     event.preventDefault();
     try {
       const body = { email, password };
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

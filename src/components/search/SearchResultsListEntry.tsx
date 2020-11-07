@@ -25,18 +25,18 @@ const ResultsListEntry = (props: any) => {
     user, title, location, avail, defaultView, availForDefault, updated,
   } = props;
   const { listingCity, listingState } = location;
-  // this is for the listings that are randomly shown in the default view
-  // const { startDate, endDate } = availForDefault;
   // this is for the listings that match the query
   const { startAvail, endAvail } = avail;
-  const { startDate, endDate } = availForDefault;
+  // this is for the listings that are randomly shown in the default view
+  // const { startDate, endDate } = availForDefault;
 
   let availMessage;
   if (!updated) {
+    // TODO: fix this bug - avail not passing properly for listings randomly loaded on default
     availMessage = (
       <p>
-        available as soon as
-        {startDate}
+        {/* available as soon as */}
+        {/* {startDate} */}
       </p>
     );
   } else if (updated) {

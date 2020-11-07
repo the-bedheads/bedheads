@@ -59,7 +59,7 @@ const App: FC = (): JSX.Element => {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/verify', {
+      const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/verify`, {
         method: 'POST',
         headers: { jwt_token: localStorage.token },
       });

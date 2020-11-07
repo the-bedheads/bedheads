@@ -14,7 +14,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { requestRouter } = require("./db/routes/requestRoutes.js");
 const { listingPhotosRouter } = require("./db/routes/listingPhotosRoutes.js");
-const { imageRouter } = require('./api/cloudinaryRoutes')
+const { imageRouter } = require('./api/cloudinaryRoutes');
+const { personalityRouter } = require('./api/ibmPersonalityTraits');
 
 const app = express();
 app.use(express.json());
@@ -44,6 +45,7 @@ app.use('/dashboardInfo', dashboardRouter);
 app.use('/request', requestRouter);
 app.use('/map', mapRouter);
 app.use('/image', imageRouter);
+app.use('/personality', personalityRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);
