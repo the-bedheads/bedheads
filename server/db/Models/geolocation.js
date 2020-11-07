@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    latitude: DataTypes.DECIMAL(5, 3),
-    longitude: DataTypes.DECIMAL(5, 3),
+    latitude: DataTypes.DECIMAL(6, 3),
+    longitude: DataTypes.DECIMAL(6, 3),
   });
 
   Geolocation.associate = (models) => {
