@@ -69,4 +69,6 @@ module.exports = {
   Invite,
   Availability,
   PersonalityScale,
+  Thread,
+  Message,
 };
