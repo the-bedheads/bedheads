@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { AppType } from 'goldilocksTypes';
 import { toast } from 'react-toastify';
-import nightbed from '../../../assets/nightbed.jpg';
 import LoginExistingUser from './ts-utils/types';
 import '../../../App.css';
 

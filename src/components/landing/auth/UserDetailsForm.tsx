@@ -14,7 +14,7 @@ interface MyProps {
   nextStep: () => void,
   prevStep: () => void,
   handleChange: (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     type: string
   ) => void,
 }
@@ -45,32 +45,32 @@ const UserDetailsForm: React.FC<MyProps> = (Props: MyProps) => {
           name="firstName"
           placeholder="Enter Your First Name"
           label="First Name"
-          onChange={(event) => handleChange(event, 'firstName')}
           defaultValue={firstName}
+          onChange={(e) => handleChange(e, 'firstName')}
         />
         <br />
         <TextField
           name="lastName"
           placeholder="Enter Your Last Name"
           label="Last Name"
-          onChange={(event) => handleChange(event, 'lastName')}
           defaultValue={lastName}
+          onChange={(e) => handleChange(e, 'lastName')}
         />
         <br />
         <TextField
           name="pronouns"
           placeholder="Preferred Pronouns"
           label="Pronouns"
-          onChange={(event) => handleChange(event, 'pronouns')}
           defaultValue={pronouns}
+          onChange={(e) => handleChange(e, 'pronouns')}
         />
         <br />
         <TextField
           name="dob"
           placeholder="Enter Your Birthday"
           type="date"
-          onChange={(event) => handleChange(event, 'dob')}
           defaultValue={dob}
+          onChange={(e) => handleChange(e, 'dob')}
         />
         <br />
         <TextField
@@ -78,8 +78,8 @@ const UserDetailsForm: React.FC<MyProps> = (Props: MyProps) => {
           placeholder="Enter Your Email Address"
           label="Email"
           type="email"
-          onChange={(event) => handleChange(event, 'email')}
           defaultValue={email}
+          onChange={(e) => handleChange(e, 'email')}
         />
         <br />
         <TextField
@@ -87,13 +87,13 @@ const UserDetailsForm: React.FC<MyProps> = (Props: MyProps) => {
           placeholder="Create a password"
           label="Password"
           type="password"
-          onChange={(event) => handleChange(event, 'password')}
           defaultValue={password}
+          onChange={(e) => handleChange(e, 'password')}
         />
         <br />
         <Button
           className="question-btn"
-          onClick={(event) => continueStep(event)}
+          onClick={(e) => continueStep(e)}
           color="primary"
           variant="contained"
         >

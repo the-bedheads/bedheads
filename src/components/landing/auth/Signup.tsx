@@ -1,7 +1,5 @@
 import React, { useState, SyntheticEvent } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import nightbed from '../../../assets/nightbed.jpg';
 import '../../../App.css';
 import axios from 'axios';
 

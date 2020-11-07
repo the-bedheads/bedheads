@@ -11,8 +11,7 @@ interface MyProps {
   nextStep: () => void,
   prevStep: () => void,
   handleChange: (
-    input: string,
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     type: string,
   ) => void
 }
@@ -38,19 +37,22 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
     setStep(step - 1);
   };
 
-  const handleChange = (input: string) => (event: React.ChangeEvent<HTMLInputElement>): void => {
-    if (input === 'firstName') {
-      setFirstName(event.target.value);
-    } else if (input === 'lastName') {
-      setLastName(event.target.value);
-    } else if (input === 'pronouns') {
-      setPronouns(event.target.value);
-    } else if (input === 'dob') {
-      setDob(event.target.value);
-    } else if (input === 'email') {
-      setEmail(event.target.value);
-    } else if (input === 'password') {
-      setPassword(event.target.value);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    type: string,
+  ) => {
+    if (type === 'firstName') {
+      setFirstName(e.target.value);
+    } else if (type === 'lastName') {
+      setLastName(e.target.value);
+    } else if (type === 'pronouns') {
+      setPronouns(e.target.value);
+    } else if (type === 'dob') {
+      setDob(e.target.value);
+    } else if (type === 'email') {
+      setEmail(e.target.value);
+    } else if (type === 'password') {
+      setPassword(e.target.value);
     }
   };
 
@@ -66,7 +68,7 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           password={pword}
           nextStep={nextStep}
           prevStep={prevStep}
-          handleChange={() => handleChange}
+          handleChange={handleChange}
         />
       );
     case 2:
@@ -80,7 +82,7 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           password={pword}
           nextStep={nextStep}
           prevStep={prevStep}
-          handleChange={() => handleChange}
+          handleChange={handleChange}
         />
       );
     case 3:
@@ -94,7 +96,7 @@ const UserFormAsFC: React.FC = (props: any): JSX.Element => {
           password={pword}
           nextStep={nextStep}
           prevStep={prevStep}
-          handleChange={() => handleChange}
+          handleChange={handleChange}
         />
       );
     case 4:
