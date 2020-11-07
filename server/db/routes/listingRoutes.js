@@ -96,7 +96,6 @@ listingRouter
         const listingId = response.dataValues.id;
         axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
           .then((geocoded) => {
-            console.log(geocoded.data[0]);
             Geolocation.create({
               latitude: geocoded.data[1],
               longitude: geocoded.data[0],
