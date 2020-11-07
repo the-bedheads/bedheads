@@ -5,7 +5,6 @@ const availabilityData = require('./sampleData/availabilities');
 const requestData = require('./sampleData/requests');
 const listingPhotosData = require('./sampleData/listingPhotos');
 const personalityData = require('./sampleData/personalityScales');
-const geolocationData = require('./sampleData/geolocation');
 
 const {
   User,
@@ -16,7 +15,6 @@ const {
   Invite,
   Availability,
   PersonalityScale,
-  Geolocation,
 } = require('../db/index');
 
 const seed = async () => {
@@ -66,14 +64,6 @@ const seed = async () => {
         console.log(`✅🎃✅ ${length} personality scales successfully added to DB`);
       } else {
         console.log('❌☠️❌ PERSONALITY SCALES NOT ADDED');
-      }
-    });
-  await Geolocation.bulkCreate(geolocationData)
-    .then(({ length }) => {
-      if (length) {
-        console.log(`✅ 🎃 ✅ ${length} geolocations successfully added to DB`);
-      } else {
-        console.log('❌ ☠️ ❌ GEOLOCATIONS NOT ADDED');
       }
     });
 };

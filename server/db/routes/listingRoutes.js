@@ -70,6 +70,15 @@ listingRouter
       .catch((err) => res.status(500).send(err));
   });
 
+// TEST
+listingRouter.get('/geocode', (req, res) => {
+  Geolocation.findAll({
+
+  })
+    .then((listingGeo) => res.send(listingGeo))
+    .catch((err) => res.send(err.message));
+});
+
 listingRouter
   .post('/', (req, res) => {
     const {
@@ -77,37 +86,26 @@ listingRouter
       listingDescription, pets, ada, smoking, roommates, internet, privateBath, userId,
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
-    Listing.create({
-      user_id: userId,
-      listingAddress,
-      listingCity,
-      listingState,
-      listingZipCode,
-      listingTitle,
-      listingDescription,
-      pets,
-      ada,
-      smoking,
-      roommates,
-      internet,
-      privateBath,
-    })
-      .then((response) => {
-        const listingId = response.dataValues.id;
-        axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
-          .then((geocoded) => {
-            Geolocation.create({
-              latitude: geocoded.data[1],
-              longitude: geocoded.data[0],
-              listing_id: listingId,
-            })
-              .then(() => console.log('created right!'))
-              .catch((err) => console.log(err));
-          })
-          .catch((err) => {
-            res.send(err);
-          });
-      })
+    axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
+      .then((geocoded => {
+        Listing.create({
+          user_id: userId,
+          listingAddress,
+          listingCity,
+          listingState,
+          listingZipCode,
+          listingTitle,
+          listingDescription,
+          pets,
+          ada,
+          smoking,
+          roommates,
+          internet,
+          privateBath,
+          latitude: geocoded.data[1],
+          longitude: geocoded.data[0],
+        })
+      }))
       .catch((err) => res.send(err));
   });
 

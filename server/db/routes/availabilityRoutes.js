@@ -202,6 +202,9 @@ availabilityRouter.get('/listings/:start/:end', (req, res) => {
         },
       }],
     },
+    include: {
+      model: Listing,
+    },
   })
     .then((availListings) => res.send(availListings))
     .catch((err) => res.send(err));

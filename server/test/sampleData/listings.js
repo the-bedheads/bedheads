@@ -13,6 +13,8 @@ module.exports = [
     roommates: false,
     internet: true,
     privateBath: true,
+    latitude: 29.978,
+    longitude: -90.103,
   },
   {
     user_id: 2,
@@ -28,6 +30,8 @@ module.exports = [
     roommates: true,
     internet: true,
     privateBath: false,
+    latitude: 29.927,
+    longitude: -90.072,
   },
   {
     user_id: 3,
@@ -43,6 +47,8 @@ module.exports = [
     roommates: false,
     internet: true,
     privateBath: true,
+    latitude: 29.927,
+    longitude: -90.072,
   },
   {
     user_id: 4,
@@ -58,6 +64,8 @@ module.exports = [
     roommates: false,
     internet: false,
     privateBath: true,
+    latitude: 37.757,
+    longitude: -122.41,
   },
   {
     user_id: 5,
@@ -73,5 +81,7 @@ module.exports = [
     roommates: true,
     internet: true,
     privateBath: false,
+    latitude: 37.761,
+    longitude: -122.39,
   },
 ];
