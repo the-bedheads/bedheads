@@ -86,6 +86,14 @@ const seed = async () => {
         console.warn('❌☠️❌ MESSAGES NOT ADDED');
       }
     });
+  await Geolocation.bulkCreate(geolocationData)
+    .then(({ length }) => {
+      if (length) {
+        console.log(`✅ 🎃 ✅ ${length} geolocations successfully added to DB`);
+      } else {
+        console.log('❌ ☠️ ❌ GEOLOCATIONS NOT ADDED');
+      }
+    });
 };
 
 seed();
