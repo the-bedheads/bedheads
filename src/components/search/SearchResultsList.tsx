@@ -57,15 +57,15 @@ const ResultsList = (props: any) => {
         const availListings = results.data;
         // if there are no available listings, inform the user
         if (!availListings.length) {
+          // TODO: render this message
           console.error(`sorry :/ there doesn't seem to be any available listings in ${locationQuery} from ${start} to ${end}`);
         } else {
         // if there are availabilities, collect the listing IDs of those availabilities
         // push that collection of IDs into an array called listingsToRender
         // {listing id: {start: _, end: _}}
-          // eslint-disable-next-line array-callback-return
-          availListings.map((listing: any) => {
+          availListings.forEach((listing: any) => {
             // map through & look up listing by listing_id
-            const { listingId, startDate, endDate } = listing;
+            const { listing_id: listingId, startDate, endDate } = listing;
             // note to self: would be a good place to compare soonest available date
             // object keys are unique!
             if (!listingsToRender[listingId]) {
@@ -92,11 +92,13 @@ const ResultsList = (props: any) => {
         listingCity: any; listingState: any; startAvail: any;
         endAvail: any; availabilities: any; }) => {
         const {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          id, user_id, listingTitle, listingCity, listingState,
+          id, user_id: userId, listingTitle, listingCity, listingState,
           startAvail, endAvail,
         } = listing;
-        let defaultAvail = {};
+        let defaultAvail = {
+          startDate: '',
+          endDate: '',
+        };
         if (listing.availabilities) {
           const { availabilities } = listing;
           [defaultAvail] = availabilities;
@@ -104,7 +106,7 @@ const ResultsList = (props: any) => {
         return (
           <ResultsListEntry
             key={id}
-            user={user_id}
+            user={userId}
             title={listingTitle}
             location={{ listingCity, listingState }}
             avail={{ startAvail, endAvail }}
