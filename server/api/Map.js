@@ -19,6 +19,20 @@ mapRouter.get('/api/geocode/:query', (req, res) => {
     .catch((err) => console.warn(err));
 });
 
+mapRouter.get('/listing/geocode/:query', (req, res) => {
+  const { query } = req.params;
+  axios({
+    url: `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?`,
+    method: 'get',
+    params: {
+      access_token: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
+    },
+  }).then((response) => {
+    res.send(response.data.features[0].center);
+  })
+    .catch((err) => console.warn(err));
+});
+
 module.exports = {
   mapRouter,
 };
