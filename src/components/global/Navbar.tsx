@@ -76,6 +76,9 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
             <MenuItem component={Link} to="/profile" color="inherit" onClick={handleClose}>
               Profile
             </MenuItem>
+            <MenuItem component={Link} to="/messages" color="inherit" onClick={handleClose}>
+              Messages
+            </MenuItem>
             <MenuItem>
               Manage Listing
             </MenuItem>

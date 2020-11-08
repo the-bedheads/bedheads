@@ -1,8 +1,18 @@
 import React, { FC } from 'react';
+import MessageListEntry from './MessageListEntry';
 
-const MessageList: FC = (): JSX.Element => (
+type ThreadType = {
+  thread: number,
+  message: string,
+};
+
+interface ThreadTypeInt {
+  thread: ThreadType,
+}
+
+const MessageList: FC<ThreadTypeInt> = ({ thread }): JSX.Element => (
   <>
-    Message List
+    <MessageListEntry thread={thread} />
   </>
 );
 

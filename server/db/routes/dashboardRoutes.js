@@ -58,7 +58,7 @@ dashboardRouter
                       return first;
                     }))
                     const bigData = await getBigData()
-                      .then((datum) => datum)
+                      .then((datum) => datum);
                     results.openAvailabilities = bigData;
                     res.send(results);
                   })
