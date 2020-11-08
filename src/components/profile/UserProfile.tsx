@@ -1,21 +1,60 @@
 import React, { FC, useState } from 'react';
+import PropTypes, { checkPropTypes } from 'prop-types';
 import {
-  Grid, makeStyles, Typography, Paper, Tabs, Tab,
+  Grid, Typography, Paper, Tabs, Tab, AppBar, Box,
 } from '@material-ui/core';
+import { Theme, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Hotel, Home } from '@material-ui/icons';
 import { UserProps } from 'goldilocksTypes';
-import UserProfileInfo from './UserProfileInfo';
 import UserSidebarInfo from './UserSidebarInfo';
+import UserProfileInfo from './UserProfileInfo';
 
-const useStyles = makeStyles({
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const {
+    children, value, index,
+  } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.defaultProps = {
+  children: PropTypes.string,
+};
+
+const useStyles = makeStyles((theme: Theme) => ({
   main: {
     marginTop: '10px',
     marginBottom: '10px',
   },
   root: {
     flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
   },
-});
+}));
 
 const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
@@ -31,21 +70,29 @@ const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
         <UserSidebarInfo user={user} />
       </Grid>
       <Grid item xs={9}>
-        <UserProfileInfo user={user} />< br />
+        <UserProfileInfo user={user} />
+        <br />
         <Grid item xs={12}>
           <Typography align="center" variant="h5">{`${user.firstName}'s Reviews`}</Typography>
           <Paper className={classes.root}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="secondary"
-              textColor="primary"
-              // variant="fullWidth"
-              centered
-            >
-              <Tab label="Host" icon={<Home />} />
-              <Tab label="Guest" icon={<Hotel />} />
-            </Tabs>
+            <AppBar position="static" color="default">
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                indicatorColor="secondary"
+                textColor="primary"
+                centered
+              >
+                <Tab label="Host" icon={<Home />} />
+                <Tab label="Guest" icon={<Hotel />} />
+              </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0}>
+              Reviews left by users about User as a Host.
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              Reviews left by users about User as a Guest.
+            </TabPanel>
           </Paper>
         </Grid>
       </Grid>
