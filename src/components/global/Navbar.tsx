@@ -2,16 +2,14 @@ import React, { SyntheticEvent, useState } from 'react';
 import {
   makeStyles, Typography, AppBar, Toolbar, Button, MenuItem, Menu, IconButton, Avatar, Switch,
 } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-  },
-  title: {
-    flexGrow: 1,
+    background: '#4E3977',
   },
   avatar: {
     marginLeft: '7px',
@@ -48,13 +46,15 @@ const Navbar: React.FC<AuthProps> = ({
 
   return (
     <div className="toggle-container">
-      <AppBar position="static">
+      <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
           <Typography component={Link} to="/dashboard" variant="h3" color="inherit">
             🛏
           </Typography>
           <Button component={Link} to="/" color="inherit">HOME</Button>
-          <Button component={Link} to="/search" color="inherit" className={classes.title}>SEARCH</Button>
+          <IconButton component={Link} to="/search" color="inherit">
+            <SearchIcon />
+          </IconButton>
           <Switch
             checked={darkMode}
             onChange={() => setDarkMode((prevMode: boolean) => !prevMode)}

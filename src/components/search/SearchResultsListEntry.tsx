@@ -1,26 +1,28 @@
 import React, { useEffect } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import { Link } from 'react-router-dom';
+import GridListTile from '@material-ui/core/GridListTile';
 
-// const useStyles = makeStyles((theme: Theme) => {
-//   createStyles({
-//     root: {
-//       width: '100%',
-//       maxWidth: '50ch',
-//     },
-//     inline: {
-//       display: 'inline',
-//     },
-//   });
-// });
+const useStyles = makeStyles((theme: Theme) => {
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: '50ch',
+    },
+    inline: {
+      display: 'inline',
+    },
+    defaultView: {
+      alignItems: 'center',
+    },
+  });
+});
 
 const ResultsListEntry = (props: any) => {
+  const classes = useStyles();
   const {
     user, title, location, avail, defaultView, availForDefault, updated,
   } = props;
@@ -28,7 +30,6 @@ const ResultsListEntry = (props: any) => {
   // this is for the listings that match the query
   const { startAvail, endAvail } = avail;
   // this is for the listings that are randomly shown in the default view
-  // const { startDate, endDate } = availForDefault;
 
   let availMessage;
   if (!updated) {
@@ -52,16 +53,19 @@ const ResultsListEntry = (props: any) => {
   }
 
   return (
-    <ListItem
-      component={Link}
-      to={`/listing/${user}`}
-    >
-      <ListItemText
-        primary={title}
-        secondary={`${listingCity}, ${listingState}`}
-      />
+    <>
+      <GridListTile
+        cols={2}
+        component={Link}
+        to={`/listing/${user}`}
+      >
+        <ListItemText
+          primary={title}
+          secondary={`${listingCity}, ${listingState}`}
+        />
+      </GridListTile>
       {availMessage}
-    </ListItem>
+    </>
   );
 };
 

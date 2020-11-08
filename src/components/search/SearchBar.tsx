@@ -1,11 +1,13 @@
 import React, { SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Input } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 import DatePicker from './SearchDatePicker';
 
 type Search = {
   locationQuery: string;
+  // onSubmit: (string) => void;
+  setDefaultView: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SearchBar = (props: any) => {
@@ -29,10 +31,13 @@ const SearchBar = (props: any) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <TextField
           name="locationQuery"
           inputRef={register}
-          aria-describedby="my-helper-text"
+          placeholder="where to?"
+          fullWidth
+          margin="normal"
+          aria-describedby="search by location"
         />
         <DatePicker
           startDate={startDate}
