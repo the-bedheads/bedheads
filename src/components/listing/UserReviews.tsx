@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserReviews: FC<UserProps> = (Props: UserProps): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  //TODO: Will change to not use localStorage **POLISH WEEK**
+  // TODO: Will change to not use localStorage **POLISH WEEK**
   const [userId] = useState(localStorage.userId);
   const { user } = Props;
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
