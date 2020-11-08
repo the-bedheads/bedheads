@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
         },
       });
 
-      await db.query(`INSERT INTO survey (q1Response, q2Response, q3Response, q4Response, q5Response, q6Response, q7Response, q8Response, q9Response, q10Response, user_id)
+      await db.query(`INSERT INTO surveys (q1response, q2response, q3response, q4response, q5response, q6response, q7response, q8response, q9response, q10response, user_id)
       VALUES ('${q1}', '${q2}', '${q3}', '${q4}', '${q5}', '${q6}', '${q7}', '${q8}', '${q9}', '${q10}', '${user.id}');`);
 
       const jwtToken = generateToken(user.id);
