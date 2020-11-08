@@ -56,6 +56,7 @@ const App: FC = (): JSX.Element => {
     userBio: localStorage.userBio,
     email: localStorage.email,
   });
+  const [darkMode, setDarkMode] = useState(false);
 
   const checkAuth = async () => {
     try {
@@ -83,81 +84,82 @@ const App: FC = (): JSX.Element => {
   }, [user]);
 
   return (
-    <BrowserRouter>
-      <Navbar handleLogin={[isAuth, setAuth]} />
-      <Switch>
-        <Route
-          exact
-          strict
-          path="/"
-          render={() => (!isAuth ? (
-            <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
-              <Redirect to="/dashboard" />
-          ))}
-        />
-        <Route
-          exact
-          strict
-          path="/register"
-          render={() => (!isAuth ? (
-            <SignUp handleLogin={[isAuth, setAuth]} />) : (
-              <Redirect to="/dashboard" />
-          ))}
-        />
-        <Route
-          exact
-          strict
-          path="/dashboard"
-          render={() => (isAuth ? (
-            <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
-              <Redirect to="/" />
-          ))}
-        />
-        <Route
-          exact
-          strict
-          path="/search"
-          component={Search}
-        />
-        <Route
-          exact
-          path="/listing/:id"
-          component={Listing}
-        />
-        <Route
-          exact
-          strict
-          path="/messages"
-          component={Messages}
-        />
-        <Route
-          exact
-          path="/profile"
-          component={() => <UserProfile user={testUser} />}
-        />
-        <Route
-          exact
-          path="/hostProfile"
-          component={Profile}
-        />
-        <Route
-          exact
-          path="/calendar"
-          component={() => <UserCalendar user={testUser} />}
-        />
-        <Route
-          exact
-          path="/swaps"
-          component={() => <Swaps user={testUser} />}
-        />
-        <Route
-          exact
-          path="/invite"
-          component={Invite}
-        />
-      </Switch>
-    </BrowserRouter>
-
+    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+      <BrowserRouter>
+        <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />
+        <Switch>
+          <Route
+            exact
+            strict
+            path="/"
+            render={() => (!isAuth ? (
+              <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
+                <Redirect to="/dashboard" />
+            ))}
+          />
+          <Route
+            exact
+            strict
+            path="/register"
+            render={() => (!isAuth ? (
+              <SignUp handleLogin={[isAuth, setAuth]} />) : (
+                <Redirect to="/dashboard" />
+            ))}
+          />
+          <Route
+            exact
+            strict
+            path="/dashboard"
+            render={() => (isAuth ? (
+              <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
+                <Redirect to="/" />
+            ))}
+          />
+          <Route
+            exact
+            strict
+            path="/search"
+            component={Search}
+          />
+          <Route
+            exact
+            path="/listing/:id"
+            component={Listing}
+          />
+          <Route
+            exact
+            strict
+            path="/messages"
+            component={Messages}
+          />
+          <Route
+            exact
+            path="/profile"
+            component={() => <UserProfile user={testUser} />}
+          />
+          <Route
+            exact
+            path="/hostProfile"
+            component={Profile}
+          />
+          <Route
+            exact
+            path="/calendar"
+            component={() => <UserCalendar user={testUser} />}
+          />
+          <Route
+            exact
+            path="/swaps"
+            component={() => <Swaps user={testUser} />}
+          />
+          <Route
+            exact
+            path="/invite"
+            component={Invite}
+          />
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 };
 

@@ -5,7 +5,7 @@
 } */
 
 .login-container {
-  background-color: black;
+  /* background-color: black; */
 }
 
 form {
@@ -85,7 +85,7 @@ input[type="submit"] {
 }
 
 .login-container {
-  background-image: url('../src/assets/nightbed.jpg');
+  /* background-image: url('../src/assets/nightbed.jpg'); */
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -93,7 +93,7 @@ input[type="submit"] {
 }
 
 .signup-container {
-  background-image: url('../src/assets/realisticbed.jpg');
+  /* background-image: url('../src/assets/realisticbed.jpg'); */
   height: 100vh;
   background-position: center;
   background-size: cover;
@@ -104,4 +104,16 @@ input[type="submit"] {
   width: 32px;
   height: 32px;
   cursor: pointer;
+}
+
+.light-mode {
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.25s ease-out;
+}
+
+.dark-mode {
+  background-color: #1a1919;
+  color: #999;
+  transition: background-color 0.25s ease-out;
 }
