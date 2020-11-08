@@ -130,7 +130,7 @@ const App: FC = (): JSX.Element => {
             exact
             strict
             path="/messages"
-            component={Messages}
+            component={() => <Messages user={testUser} />}
           />
           <Route
             exact
