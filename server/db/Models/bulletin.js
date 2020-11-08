@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Bulletin.associate = (models) => {
     Bulletin.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
   };
 
