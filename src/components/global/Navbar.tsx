@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react';
 import {
-  makeStyles, Typography, AppBar, Toolbar, Button, MenuItem, Menu, IconButton, Avatar,
+  makeStyles, Typography, AppBar, Toolbar, Button, MenuItem, Menu, IconButton, Avatar, Switch,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
   },
   title: {
     flexGrow: 1,
@@ -18,10 +19,13 @@ const useStyles = makeStyles({
 });
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  toggleMode: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 }
 
-const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }): JSX.Element => {
+const Navbar: React.FC<AuthProps> = ({
+  handleLogin: [isAuth, setAuth], toggleMode: [darkMode, setDarkMode],
+}):JSX.Element => {
   const classes = useStyles();
   const [isUserAuthenticated, setIsAuthenticated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -40,8 +44,10 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }): JSX.El
     setAuth(false);
   };
 
+  // TODO: give the dark mode toggle a label; reformat nav bar -- formgroup?}
+
   return (
-    <div className={classes.root}>
+    <div className="toggle-container">
       <AppBar position="static">
         <Toolbar variant="dense">
           <Typography component={Link} to="/dashboard" variant="h3" color="inherit">
@@ -49,6 +55,12 @@ const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }): JSX.El
           </Typography>
           <Button component={Link} to="/" color="inherit">HOME</Button>
           <Button component={Link} to="/search" color="inherit" className={classes.title}>SEARCH</Button>
+          <Switch
+            checked={darkMode}
+            onChange={() => setDarkMode((prevMode: boolean) => !prevMode)}
+            name="toggleMode"
+            inputProps={{ 'aria-label': 'toggle between light and dark mode' }}
+          />
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
