@@ -57,6 +57,10 @@ const Dashboard: React.FC<AuthProps> = ({
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
       setListingTitle(e.target.value);
+    } else if (string === 'listingPhoto') {
+      const target = e.target as HTMLInputElement;
+      const file: File = (target.files as FileList)[0];
+      console.log(file);
     }
   };
 

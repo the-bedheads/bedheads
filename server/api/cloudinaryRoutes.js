@@ -16,13 +16,11 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
 });
 
 imageRouter.post('/newListingPhoto', async (req, res) => {
-  // console.log('req.body:', req.body);
-  console.log('getting here');
   const { data } = req.body;
-  console.log(data);
   const uploadedImage = await cloudinary.uploader
     .upload(data);
-  console.log('uploaded image:', uploadedImage.url);
+  // TODO: finish getting image url to db
+  // console.info('uploaded image:', uploadedImage.url);
   res.send(uploadedImage.url);
 });
 

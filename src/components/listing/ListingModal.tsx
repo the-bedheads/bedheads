@@ -13,7 +13,7 @@ interface BioProps {
   ) => void,
   handleClickOff: (type: string) => void,
   handleTextChange: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | string,
     string: string) => void,
   toggleSwitch: (string: string) => void,
   open: boolean,
