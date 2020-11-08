@@ -98,3 +98,10 @@ input[type="submit"] {
   background-position: center;
   background-size: cover;
 }
+.map-marker{
+  background-image: url('./assets/map_marker.png');
+  background-size: cover;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}

@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     roommates: DataTypes.BOOLEAN,
     internet: DataTypes.BOOLEAN,
     privateBath: DataTypes.BOOLEAN,
+    latitude: DataTypes.DECIMAL(6, 3),
+    longitude: DataTypes.DECIMAL(6, 3),
   });
 
   Listing.associate = (models) => {
