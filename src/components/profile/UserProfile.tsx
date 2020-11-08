@@ -1,68 +1,19 @@
-import React, { FC, useState } from 'react';
-import PropTypes, { checkPropTypes } from 'prop-types';
-import {
-  Grid, Typography, Paper, Tabs, Tab, AppBar, Box,
-} from '@material-ui/core';
-import { Theme, useTheme, makeStyles } from '@material-ui/core/styles';
-import { Hotel, Home } from '@material-ui/icons';
+import React, { FC } from 'react';
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { UserProps } from 'goldilocksTypes';
 import UserSidebarInfo from './UserSidebarInfo';
 import UserProfileInfo from './UserProfileInfo';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const {
-    children, value, index,
-  } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.defaultProps = {
-  children: PropTypes.string,
-};
-
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles({
   main: {
     marginTop: '10px',
     marginBottom: '10px',
   },
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+});
 
 const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
-    setValue(newValue);
-  };
 
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
@@ -71,30 +22,6 @@ const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
       </Grid>
       <Grid item xs={9}>
         <UserProfileInfo user={user} />
-        <br />
-        <Grid item xs={12}>
-          <Typography align="center" variant="h5">{`${user.firstName}'s Reviews`}</Typography>
-          <Paper className={classes.root}>
-            <AppBar position="static" color="default">
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                indicatorColor="secondary"
-                textColor="primary"
-                centered
-              >
-                <Tab label="Host" icon={<Home />} />
-                <Tab label="Guest" icon={<Hotel />} />
-              </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
-              Reviews left by users about User as a Host.
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              Reviews left by users about User as a Guest.
-            </TabPanel>
-          </Paper>
-        </Grid>
       </Grid>
     </Grid>
   );
