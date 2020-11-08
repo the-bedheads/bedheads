@@ -21,7 +21,7 @@ interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
-const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }): JSX.Element => {
+const Navbar: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }): JSX.Element => {
   const classes = useStyles();
   const [isUserAuthenticated, setIsAuthenticated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

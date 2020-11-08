@@ -42,7 +42,7 @@ const initUser = {
   userBio: '1',
 };
 const App: FC = (): JSX.Element => {
-  const [isAuthenticated, setAuth] = useState(false);
+  const [isAuth, setAuth] = useState(false);
   const [testUser, setTestUser] = useState(initUser);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
@@ -84,14 +84,14 @@ const App: FC = (): JSX.Element => {
 
   return (
     <BrowserRouter>
-      <Navbar handleLogin={[isAuthenticated, setAuth]} />
+      <Navbar handleLogin={[isAuth, setAuth]} />
       <Switch>
         <Route
           exact
           strict
           path="/"
-          render={() => (!isAuthenticated ? (
-            <Login handleLogin={[isAuthenticated, setAuth]} setUser={setUser} />) : (
+          render={() => (!isAuth ? (
+            <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
               <Redirect to="/dashboard" />
           ))}
         />
@@ -99,24 +99,20 @@ const App: FC = (): JSX.Element => {
           exact
           strict
           path="/register"
-          render={() => (!isAuthenticated ? (
-            <SignUp handleLogin={[isAuthenticated, setAuth]} />) : (
+          render={() => (!isAuth ? (
+            <SignUp handleLogin={[isAuth, setAuth]} />) : (
               <Redirect to="/dashboard" />
           ))}
         />
-        {/* // <Redirect to="/dashboard" /> */}
-
         <Route
           exact
           strict
           path="/dashboard"
-          render={() => (isAuthenticated ? (
-            <Dashboard handleLogin={[isAuthenticated, setAuth]} user={user} />) : (
+          render={() => (isAuth ? (
+            <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
               <Redirect to="/" />
           ))}
         />
-        {/* //     <Login handleLogin={[isAuthenticated, setAuth]} />
-           */}
         <Route
           exact
           strict

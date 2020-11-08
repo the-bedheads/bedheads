@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Email, EmojiEmotions } from '@material-ui/icons';
+import { Email, EmojiEmotions, PersonPin } from '@material-ui/icons';
 import '../../App.css';
 import realisticbed from '../../assets/realisticbed.jpg';
 import generateVerificationCode from '../../invite/verificationCode';
 
+// Will need this later for deployment
 // const {
 //   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
 // } = process.env; // hello
@@ -14,6 +14,7 @@ import generateVerificationCode from '../../invite/verificationCode';
 const Invite: React.FC = (props: any): JSX.Element => {
   const [friendEmail, setFriendEmail] = useState<string>('');
   const [friendName, setFriendName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
   const [vCode, setVCode] = useState<string>('changed?');
 
   const styles = {
@@ -52,11 +53,22 @@ const Invite: React.FC = (props: any): JSX.Element => {
           Email
           <input
             type="email"
-            placeholder="Email address"
+            placeholder="Enter your friend's email address"
             name="user_email"
             onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
               setFriendEmail(ev.target.value);
               setVCode(generateVerificationCode());
+            }}
+          />
+        </label>
+        <label htmlFor="sender-info">
+          <PersonPin />
+          Your Email
+          <input
+            type="email"
+            placeholder="Enter your email address"
+            onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
+              setUserEmail(ev.target.value);
             }}
           />
         </label>

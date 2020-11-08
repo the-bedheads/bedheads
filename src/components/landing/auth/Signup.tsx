@@ -1,13 +1,9 @@
 import React, { useState, SyntheticEvent } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import axios, { AxiosResponse } from 'axios';
-import { Link, Redirect } from 'react-router-dom';
-import user from '../../../../server/db/Models/user';
-import nightbed from '../../../assets/nightbed.jpg';
 import '../../../App.css';
+import axios from 'axios';
+import UserFormFC from './UserFormFC';
 
-// Declare the type of data that will be handled in onSubmit function
 type RegisterNewUser = {
   first_name: string;
   last_name: string;
@@ -20,20 +16,10 @@ interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
 }
 
-const styles = {
-  header: {
-    backgroundImage: `url(${nightbed})`,
-    height: '100vh',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-  },
-};
-
-const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }) => {
-  const { errors } = useForm<RegisterNewUser>();
+const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
+  const [pronouns, setPronouns] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [fileInputState, setFileInputState] = useState('');
@@ -81,12 +67,38 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
       console.warn('reader experienced an error');
     };
   };
+  const [q1, setResponse1] = useState('');
+  const [q2, setResponse2] = useState('');
+  const [q3, setResponse3] = useState('');
+  const [q4, setResponse4] = useState('');
+  const [q5, setResponse5] = useState('');
+  const [q6, setResponse6] = useState('');
+  const [q7, setResponse7] = useState('');
+  const [q8, setResponse8] = useState('');
+  const [q9, setResponse9] = useState('');
+  const [q10, setResponse10] = useState('');
 
-  const onSubmitForm = async (event: SyntheticEvent) => {
+  const onSubmitForm = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    console.info('Hit the function!');
     try {
       const body = {
-        firstName, lastName, email, password, profilePhotoUrl,
+        firstName,
+        lastName,
+        pronouns,
+        email,
+        password,
+        profilePhotoUrl,
+        q1,
+        q2,
+        q3,
+        q4,
+        q5,
+        q6,
+        q7,
+        q8,
+        q9,
+        q10,
       };
       const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/register`,
         {
@@ -98,11 +110,11 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
         });
 
       const parseRes = await response.json();
+
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
         setAuth(true);
-        toast.success('Registered successfullly!');
       } else {
         setAuth(false);
         toast.error(parseRes);
@@ -114,98 +126,36 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuthenticated, setAuth] }
 
   return (
     <>
-      <div className="container">
+      <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <form onSubmit={onSubmitForm}>
-            <div className="form-group align-center my-5">
-              <label htmlFor="first-name">
-                First Name
-                <input
-                  className="form-control my-3"
-                  type="text"
-                  name="first-name"
-                  placeholder="Enter your first name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                {errors.first_name && <div className="error">Enter Your First Name</div>}
-              </label>
-            </div>
-            <div className="form-group align-center">
-              <label htmlFor="last-name">
-                Last Name
-                <input
-                  className="form-control my-3"
-                  type="text"
-                  name="last-name"
-                  placeholder="Enter your last name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-                {errors.last_name && <div className="error">Enter Your Last Name</div>}
-              </label>
-            </div>
-            <div className="form-group align-center">
-              <label htmlFor="email">
-                Email
-                <input
-                  className="form-control my-3"
-                  type="text"
-                  name="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {errors.email && <div className="error">Enter Your Email</div>}
-              </label>
-            </div>
-            <div className="form-group align-center">
-              <label htmlFor="password">
-                Password
-                <input
-                  className="form-control my-3"
-                  type="password"
-                  name="password"
-                  placeholder="Create Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                {errors.password && <div className="error">Enter Your Password</div>}
-              </label>
-            </div>
-            {/* <div className="field"> */}
-            {/* <label htmlFor="verification-code">
-            Enter Verification Code
-            <input
-              type="text"
-              id="verification"
-              name="verification-code"
-              placeholder="Enter verification code"
-            />
-            {errors.name && <div className="error">Enter a valid verfication code</div>}
-          </label> */}
-            {/* </div> */}
-            <div className="form-group align-center">
-              <input
-                id="imageInput"
-                type="file"
-                name="image"
-                onChange={(e) => handleFileChange(e)}
-                value={fileInputState}
-              />
-            </div>
-            <div className="form-group align-center">
-              <button
-                className="btn btn-success btn-block"
-                type="submit"
-              >
-                Register
-              </button>
-              <br />
-              <a href="/">Already registered? Login here.</a>
-            </div>
-          </form>
+          <input
+            id="imageInput"
+            type="file"
+            name="image"
+            onChange={(e) => handleFileChange(e)}
+            value={fileInputState}
+          />
+          <UserFormFC
+            firstName={firstName}
+            lastName={lastName}
+            pronouns={pronouns}
+            email={email}
+            password={password}
+            q1={q1}
+            q2={q2}
+            q3={q3}
+            q4={q4}
+            q5={q5}
+            q6={q6}
+            q7={q7}
+            q8={q8}
+            q9={q9}
+            q10={q10}
+            onSubmitForm={onSubmitForm}
+          />
+          <br />
+          <a href="/">Already registered? Login here.</a>
         </div>
       </div>
     </>
