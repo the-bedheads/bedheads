@@ -7,7 +7,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { AppType, UserType } from 'goldilocksTypes';
-import { ThemeProvider } from 'styled-components';
 
 // Components
 import { toast } from 'react-toastify';
