@@ -35,23 +35,22 @@ const CreateListing: FC<BioProps> = (Props: BioProps): JSX.Element => {
     open,
   } = Props;
 
-  const uploadPhoto = async (photoString: any) => {
+  const uploadPhoto = (photoString: any) => {
     axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/image/newListingPhoto`, {
       data: photoString,
     })
-      .then((response) => response)
+      .then((response) => console.log(response))
       // TODO: GETTING A GOOD RESPONSE, NOW JUST NEED TO GET IT BACK TO THE DASHBOARD
       // IE URL IS SHOWING BACK UP ON CLIENT SIDE!!
       .catch((err) => console.warn(err));
   };
 
-  const handleFileChange = async (e: any) => {
+  const handleFileChange = (e: any) => {
     const image = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(image);
-    reader.onloadend = async () => {
-      const blah = await uploadPhoto(reader.result);
-      console.log(blah);
+    reader.onloadend = () => {
+      uploadPhoto(reader.result);
     };
   };
 
