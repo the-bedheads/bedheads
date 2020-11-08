@@ -1,19 +1,41 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import axios from 'axios';
+import { Grid, makeStyles } from '@material-ui/core';
 import MessageListEntry from './MessageListEntry';
 
-type ThreadType = {
-  thread: number,
-  message: string,
-};
+const useStyles = makeStyles({
+  sent: {
+    justifyContent: 'right',
+  },
+  received: {
+    justifyContent: 'left',
+  },
+});
 
 interface ThreadTypeInt {
-  thread: ThreadType,
+  thread: number,
+  userId: number,
 }
 
-const MessageList: FC<ThreadTypeInt> = ({ thread }): JSX.Element => (
-  <>
-    <MessageListEntry thread={thread} />
-  </>
-);
+const MessageList: FC<ThreadTypeInt> = ({ thread, userId }): JSX.Element => {
+  const [messages, setMessages] = useState([{ body: '', sender: true }]);
+  const classes = useStyles();
+
+  useEffect(() => {
+    const params = { thread, userId };
+    axios.get('message/getMessages', { params })
+      .then(({ data }) => setMessages(data));
+  }, [thread]);
+
+  const renderMessage = () => messages.map((message) => (
+    <MessageListEntry message={message} />
+  ));
+
+  return (
+    <>
+      {renderMessage()}
+    </>
+  );
+};
 
 export default MessageList;

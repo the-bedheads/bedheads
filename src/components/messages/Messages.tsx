@@ -1,5 +1,11 @@
-import React, { FC, useState } from 'react';
-import { Grid, makeStyles, Container } from '@material-ui/core';
+import React, { FC, useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  Grid, makeStyles, TextField, FormControl, InputAdornment,
+  InputLabel, Input, IconButton, Container,
+} from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import { UserProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
 
@@ -20,17 +26,53 @@ const useStyles = makeStyles({
   rightBorder: {
     borderStyle: 'none solid none none',
   },
+  scrollStyle: {
+    overflow: 'auto',
+    maxHeight: '90%',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+  },
+  messageListStyle: {
+    maxHeight: '100%',
+    position: 'relative',
+  },
+  newMessageStyle: {
+    position: 'absolute',
+    bottom: '0',
+    width: '100%',
+    maxHeight: '10%',
+    minHeight: '10%',
+    borderStyle: 'solid none none none',
+  },
 });
 
-const Messages: FC = (): JSX.Element => {
+const Messages: FC<UserProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
-  const [threads] = useState([
-    { thread: 1, message: 'thread one' },
-    { thread: 2, message: 'thread two' },
-    { thread: 3, message: 'thread three' },
-    { thread: 4, message: 'thread four' },
-  ]);
-  const [activeThread, setActiveThread] = useState(threads[0]);
+  const [threads, setThreads] = useState([]);
+  const [activeThread, setActiveThread] = useState(0);
+  const [newMessage, setNewMessage] = useState('');
+
+  useEffect(() => {
+    axios.get(`message/getThreads/${user.id}`)
+      .then(({ data }) => {
+        setThreads(data);
+        setActiveThread(data[0]);
+      });
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+  };
+
+  const sendMessage = () => {
+    const params = {
+      activeThread,
+      newMessage,
+      userId: user.id,
+    };
+    axios.post('message/newMessage', { params });
+    setNewMessage('');
+  };
 
   return (
     <Container className={classes.outer}>
@@ -40,14 +82,41 @@ const Messages: FC = (): JSX.Element => {
           xs={3}
           className={classes.rightBorder}
         >
-          <ThreadList threads={threads} setActiveThread={setActiveThread} />
+          <ThreadList threads={threads} setActiveThread={setActiveThread} userId={user.id} />
         </Grid>
-        <Grid item xs={9}>
-          <MessageList thread={activeThread} />
+        <Grid item xs={9} className={classes.messageListStyle}>
+          <Grid className={classes.scrollStyle}>
+            <Grid>
+              <MessageList thread={activeThread} userId={user.id} />
+            </Grid>
+          </Grid>
+          <Grid className={classes.newMessageStyle}>
+            <FormControl fullWidth>
+              <Input
+                id="message-box"
+                placeholder="Send a message"
+                type="text"
+                value={newMessage}
+                onChange={(e) => handleChange(e)}
+                disableUnderline
+                multiline
+                margin="dense"
+                endAdornment={(
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="send-message"
+                      onClick={sendMessage}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )}
+              />
+            </FormControl>
+          </Grid>
         </Grid>
       </Grid>
     </Container>
-
   );
 };
 

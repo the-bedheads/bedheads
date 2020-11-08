@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import axios from 'axios';
 import { Grid, makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -7,28 +8,28 @@ const useStyles = makeStyles({
   },
 });
 
-type ThreadType = {
-  thread: number,
-  message: string,
-};
-
 interface ThreadTypeInt {
-  thread: ThreadType,
-  setActiveThread: React.Dispatch<React.SetStateAction<{
-    thread: number,
-    message: string,
-  }>>,
+  thread: number,
+  userId: number,
+  setActiveThread: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const ThreadListEntry: FC<ThreadTypeInt> = ({ thread, setActiveThread }): JSX.Element => {
+const ThreadListEntry: FC<ThreadTypeInt> = ({ thread, userId, setActiveThread }): JSX.Element => {
   const classes = useStyles();
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const params = { thread, userId };
+    axios.get('message/getName/', { params })
+      .then(({ data }) => setName(data));
+  }, []);
 
   return (
     <Button
       onClick={() => setActiveThread(thread)}
     >
       <Grid>
-        {thread.message}
+        {name}
       </Grid>
     </Button>
 
