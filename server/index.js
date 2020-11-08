@@ -19,6 +19,7 @@ const { listingPhotosRouter } = require('./db/routes/listingPhotosRoutes.js');
 const { imageRouter } = require('./api/cloudinaryRoutes')
 const { socketRouter } = require('./socket/socketInit');
 const { personalityRouter } = require('./api/ibmPersonalityTraits');
+const { messageRouter } = require('./db/routes/messageRoutes');
 
 const app = express();
 app.use(express.json());
@@ -50,6 +51,7 @@ app.use('/map', mapRouter);
 app.use('/image', imageRouter);
 app.use('/personality', personalityRouter);
 app.use('/socket', socketRouter);
+app.use('/message', messageRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);
