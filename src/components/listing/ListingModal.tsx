@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import axios from 'axios';
 import {
   Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions,
   FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Container,
@@ -12,7 +13,7 @@ interface BioProps {
   ) => void,
   handleClickOff: (type: string) => void,
   handleTextChange: (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | string,
     string: string) => void,
   toggleSwitch: (string: string) => void,
   open: boolean,
@@ -34,11 +35,39 @@ const CreateListing: FC<BioProps> = (Props: BioProps): JSX.Element => {
     open,
   } = Props;
 
+  const uploadPhoto = async (photoString: any) => {
+    axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/image/newListingPhoto`, {
+      data: photoString,
+    })
+      .then((response) => response)
+      // TODO: GETTING A GOOD RESPONSE, NOW JUST NEED TO GET IT BACK TO THE DASHBOARD
+      // IE URL IS SHOWING BACK UP ON CLIENT SIDE!!
+      .catch((err) => console.warn(err));
+  };
+
+  const handleFileChange = async (e: any) => {
+    const image = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onloadend = async () => {
+      const blah = await uploadPhoto(reader.result);
+      console.log(blah);
+    };
+  };
+
   return (
     <Dialog open={open} onClose={() => handleClickOff('info')} fullWidth maxWidth="md" aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit your Information</DialogTitle>
-      <Button>
-        Upload a picture!
+      <Button
+        variant="contained"
+        component="label"
+      >
+        Upload Photos
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          onChange={(e) => handleFileChange(e)}
+        />
       </Button>
       <DialogContent>
         <TextField
