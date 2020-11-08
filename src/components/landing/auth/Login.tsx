@@ -12,7 +12,6 @@ interface AuthProps {
 }
 
 const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser }) => {
-
   const { errors } = useForm<LoginExistingUser>();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');

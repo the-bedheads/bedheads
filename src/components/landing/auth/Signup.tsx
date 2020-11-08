@@ -2,8 +2,8 @@ import React, { useState, SyntheticEvent } from 'react';
 import { toast } from 'react-toastify';
 import '../../../App.css';
 import axios from 'axios';
+import UserFormFC from './UserFormFC';
 
-// Declare the type of data that will be handled in onSubmit function
 type RegisterNewUser = {
   first_name: string;
   last_name: string;
@@ -83,7 +83,22 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
     console.info('Hit the function!');
     try {
       const body = {
-        firstName, lastName, pronouns, email, password, profilePhotoUrl, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+        firstName,
+        lastName,
+        pronouns,
+        email,
+        password,
+        profilePhotoUrl,
+        q1,
+        q2,
+        q3,
+        q4,
+        q5,
+        q6,
+        q7,
+        q8,
+        q9,
+        q10,
       };
       const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/register`,
         {
@@ -121,7 +136,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
             onChange={(e) => handleFileChange(e)}
             value={fileInputState}
           />
-          {/* <UserFormFC
+          <UserFormFC
             firstName={firstName}
             lastName={lastName}
             pronouns={pronouns}
@@ -138,7 +153,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
             q9={q9}
             q10={q10}
             onSubmitForm={onSubmitForm}
-          /> */}
+          />
           <br />
           <a href="/">Already registered? Login here.</a>
         </div>

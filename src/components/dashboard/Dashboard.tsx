@@ -16,7 +16,6 @@ const Dashboard: React.FC<AuthProps> = ({
   handleLogin: [isAuth, setAuth],
   user,
 }) => {
-
   const listingId = 1;
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
