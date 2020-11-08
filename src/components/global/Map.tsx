@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import ReactMapGL, { NavigationControl } from 'react-map-gl';
+import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import axios from 'axios';
 
 const Map = (props: any) => {
@@ -12,6 +12,26 @@ const Map = (props: any) => {
     pitch: 0,
   });
   const { locationQuery, listings } = props;
+  const [listingMarkers, setListingMarkers] = useState([]);
+
+  const getMarkers = useCallback(() => {
+    const markerCollector: any = [];
+    if (listings.length) {
+      listings.forEach((listing: any) => {
+        const { latitude, longitude } = listing;
+        const location = {
+          latitude: Number(latitude),
+          longitude: Number(longitude),
+        };
+        markerCollector.push(location);
+      });
+    }
+    setListingMarkers(markerCollector);
+  }, [listings]);
+
+  useEffect(() => {
+    getMarkers();
+  }, [listings, getMarkers]);
 
   const geocodeQuery = (query: string) => {
     axios.get(`/map/api/geocode/${query}`)
@@ -60,6 +80,10 @@ const Map = (props: any) => {
                 pitch: number; }>) => setViewport(nextViewport)}
             />
           </div>
+          {listingMarkers.map((listing) => {
+            const { latitude, longitude } = listing;
+            return <Marker className="map-marker" latitude={latitude} longitude={longitude} />;
+          })}
         </ReactMapGL>
       </div>
     );
