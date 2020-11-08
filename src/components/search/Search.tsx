@@ -1,18 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import moment, { isMoment } from 'moment';
+import moment from 'moment';
 import axios from 'axios';
 
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
 import ResultsList from './SearchResultsList';
-import DatePicker from './SearchDatePicker';
-
-type SearchProps = {
-  query: string
-};
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -55,8 +49,9 @@ const Search: React.FC = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <SearchBar
+            xs={6}
             onSubmit={(value: any) => setLocationQuery(value)}
             setDefaultView={setDefaultView}
             setUpdated={setUpdated}
@@ -67,8 +62,9 @@ const Search: React.FC = () => {
             setDateRange={setDateRange}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <ResultsList
+            // className={classes.results}
             dateRange={dateRange}
             locationQuery={locationQuery}
             setLocationQuery={setLocationQuery}

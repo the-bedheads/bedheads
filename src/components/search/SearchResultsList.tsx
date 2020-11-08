@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 
 import ResultsListEntry from './SearchResultsListEntry';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    width: '100%',
-    maxWidth: '36ch',
+    // width: '100%',
+    // maxWidth: '36ch',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    flexWrap: 'nowrap',
   },
   inline: {
     display: 'inline',
@@ -86,37 +95,40 @@ const ResultsList = (props: any) => {
   }, [listings, locationQuery]);
 
   return (
-    <List className={classes.root}>
-      {listings.map((listing: {
-        id: any; user_id: any; listingTitle: any;
-        listingCity: any; listingState: any; startAvail: any;
-        endAvail: any; availabilities: any; }) => {
-        const {
-          id, user_id: userId, listingTitle, listingCity, listingState,
-          startAvail, endAvail,
-        } = listing;
-        let defaultAvail = {
-          startDate: '',
-          endDate: '',
-        };
-        if (listing.availabilities) {
-          const { availabilities } = listing;
-          [defaultAvail] = availabilities;
-        }
-        return (
-          <ResultsListEntry
-            key={id}
-            user={userId}
-            title={listingTitle}
-            location={{ listingCity, listingState }}
-            avail={{ startAvail, endAvail }}
-            defaultView={defaultView}
-            updated={updated}
-            availForDefault={defaultAvail}
-          />
-        );
-      })}
-    </List>
+    <div className={classes.root}>
+      <GridList className={classes.gridList} cols={2.5}>
+        {listings.map((listing: {
+          id: any; user_id: any; listingTitle: any;
+          listingCity: any; listingState: any; startAvail: any;
+          endAvail: any; availabilities: any; }) => {
+          const {
+            id, user_id: userId, listingTitle, listingCity, listingState,
+            startAvail, endAvail,
+          } = listing;
+          let defaultAvail = {
+            startDate: '',
+            endDate: '',
+          };
+          if (listing.availabilities) {
+            const { availabilities } = listing;
+            [defaultAvail] = availabilities;
+          }
+          return (
+            <GridListTile key={id}>
+              <ResultsListEntry
+                user={userId}
+                title={listingTitle}
+                location={{ listingCity, listingState }}
+                avail={{ startAvail, endAvail }}
+                defaultView={defaultView}
+                updated={updated}
+                availForDefault={defaultAvail}
+              />
+            </GridListTile>
+          );
+        })}
+      </GridList>
+    </div>
   );
 };
 
