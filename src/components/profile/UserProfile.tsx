@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { UserProps } from 'goldilocksTypes';
-import UserProfileInfo from './UserProfileInfo';
 import UserSidebarInfo from './UserSidebarInfo';
+import UserProfileInfo from './UserProfileInfo';
 
 const useStyles = makeStyles({
   main: {

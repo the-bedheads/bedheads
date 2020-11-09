@@ -24,6 +24,7 @@ import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
 import BulletinBoard from './components/bulletin/BulletinBoard';
+import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
@@ -162,6 +163,11 @@ const App: FC = (): JSX.Element => {
             exact
             path="/bulletins"
             component={BulletinBoard}
+          />
+          <Route
+            exact
+            path="/writeReview"
+            component={WriteAReview}
           />
         </Switch>
       </BrowserRouter>
