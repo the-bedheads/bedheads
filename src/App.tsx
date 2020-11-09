@@ -23,6 +23,7 @@ import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
+import BulletinBoard from './components/bulletin/BulletinBoard';
 
 toast.configure();
 
@@ -156,6 +157,11 @@ const App: FC = (): JSX.Element => {
             exact
             path="/invite"
             component={Invite}
+          />
+          <Route
+            exact
+            path="/bulletins"
+            component={BulletinBoard}
           />
         </Switch>
       </BrowserRouter>

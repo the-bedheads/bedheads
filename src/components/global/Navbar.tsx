@@ -100,6 +100,9 @@ const Navbar: React.FC<AuthProps> = ({
             <MenuItem component={Link} to="/calendar" color="inherit" onClick={handleClose}>
               Set availability
             </MenuItem>
+            <MenuItem component={Link} to="/bulletins" color="inherit" onClick={handleClose}>
+              Bulletin board
+            </MenuItem>
             <MenuItem component={Link} to="/invite" color="inherit" onClick={handleClose}>
               Invite friends
             </MenuItem>

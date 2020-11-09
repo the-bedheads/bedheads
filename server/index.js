@@ -20,6 +20,7 @@ const { imageRouter } = require('./api/cloudinaryRoutes')
 const { socketRouter } = require('./socket/socketInit');
 const { personalityRouter } = require('./api/ibmPersonalityTraits');
 const { messageRouter } = require('./db/routes/messageRoutes');
+const { bulletinRouter } = require('./db/routes/bulletinRoutes')
 
 const app = express();
 app.use(express.json());
@@ -52,6 +53,7 @@ app.use('/image', imageRouter);
 app.use('/personality', personalityRouter);
 app.use('/socket', socketRouter);
 app.use('/message', messageRouter);
+app.use('/bulletin', bulletinRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);

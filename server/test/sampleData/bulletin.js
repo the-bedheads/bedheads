@@ -12,11 +12,19 @@ module.exports = [
     userId: 3,
   },
   {
-    body: 'BE THE 8th PERSON to text SHUT UP JOSH to 310-387-0945 and you could win a shiny new red bicycle.',
+    body: 'BE THE 8th PERSON to text SHUT UP UDAY to 310-387-0945 and you could win a shiny new red bicycle.',
     userId: 4,
   },
   {
     body: 'TIRED OF LISTENING to the same ol tunes? Wish someone could show you something you dont already know? I am not sure I can but I would love to try. DM @BHM_207 with a song or two you already like, and I will make you a mix.',
     userId: 5,
+  },
+  {
+    body: 'CITY PARK HANG POST FINAL PRESENTATIONS. be there or be square.',
+    userId: 2,
+  },
+  {
+    body: 'Life "Has" an Answer But in the Form of a Question. RIP Alex Trebek.',
+    userId: 3,
   },
 ];
