@@ -21,8 +21,8 @@ router.post('/register', async (req, res) => {
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo) 
-      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}');`);
+      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo, "userBio") 
+      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}', 'No bio created yet');`);
 
       const user = await User.findOne({
         where: {
