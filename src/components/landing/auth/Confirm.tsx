@@ -66,7 +66,7 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
       const body = {
         firstName, lastName, pronouns, email, password, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
       };
-      const response = await fetch('http://localhost:3000/auth/register',
+      const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/register`,
         {
           method: 'POST',
           headers: {
