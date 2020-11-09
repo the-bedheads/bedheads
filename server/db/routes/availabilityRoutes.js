@@ -3,7 +3,7 @@ const { Router } = require('express');
 const { Op } = require('sequelize');
 const { Availability, Request, Listing } = require('../index');
 
-const availabilityRouter = Router();W
+const availabilityRouter = Router();
 
 availabilityRouter
   .get('/', (req, res) => {
