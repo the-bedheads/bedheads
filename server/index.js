@@ -54,6 +54,7 @@ app.use('/personality', personalityRouter);
 app.use('/socket', socketRouter);
 app.use('/message', messageRouter);
 app.use('/bulletin', bulletinRouter);
+app.use('/listingPhotos', listingPhotosRouter);
 
 app.get('/*', (req, res) => {
   res.render(htmlFile);

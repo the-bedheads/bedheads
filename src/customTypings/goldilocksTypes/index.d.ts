@@ -65,6 +65,11 @@ declare module 'goldilocksTypes' {
     user: AppType,
   }
 
+  interface CalendarInterface {
+    user: AppType,
+    listingId: number,
+  }
+
   interface RegisterNewUser {
     firstName: string,
     lastName: string,
@@ -115,4 +120,5 @@ module.exports = {
   AppInterface,
   RegisterNewUser,
   ConfirmSignupProps,
+  CalendarInterface,
 };
