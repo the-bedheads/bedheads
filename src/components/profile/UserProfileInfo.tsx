@@ -60,11 +60,30 @@ const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   const [open, setOpen] = useState(false);
   const [bio, setBio] = useState(user.userBio);
   const [tempBio, setTempBio] = useState(bio);
-  const [listingPhoto] = useState('https://images.unsplash.com/photo-1520619831939-20749195c50f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=651&q=80');
+  const [hasListing, setHasListing] = useState(true);
+  const [listingPhoto, setListingPhoto] = useState('');
+
+  const getListingId = async () => {
+    const listingId = await axios.get(`listing/user/${user.id}`)
+      .then(({ data }) => {
+        if (!data) {
+          setHasListing(false);
+          return 0;
+        }
+        return data.id;
+      });
+    if (listingId > 0) {
+      await axios.get(`listingPhotos/${user.id}`)
+        .then(({ data }) => {
+          if (data) {
+            setListingPhoto(data.url);
+          }
+        });
+    }
+  };
 
   useEffect(() => {
-    axios.get(`user/oneUser/${user.id}`)
-      .then(({ data }) => setBio(data.userBio));
+    getListingId();
   }, []);
 
   const handleOpen = () => {
@@ -89,9 +108,33 @@ const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
     setTempBio(e.target.value);
   };
 
-  return (
-    <>
-      <Container className={classes.main}>
+  const listingCheck = () => {
+    if (!hasListing) {
+      return (
+        <>
+          <Grid>
+            It looks like you haven&apos;t made a listing one.
+          </Grid>
+          <Button>
+            Create a listing
+          </Button>
+        </>
+      );
+    }
+    if (!listingPhoto) {
+      return (
+        <>
+          <Grid>
+            It looks like there aren&apos;t any photos of your place yet.
+          </Grid>
+          <Button>
+            Upload a photo
+          </Button>
+        </>
+      );
+    }
+    return (
+      <>
         <Grid container justify="center" item xs={12}>
           <img
             src={listingPhoto}
@@ -109,6 +152,14 @@ const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
             </Button>
           </Box>
         </Grid>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <Container className={classes.main}>
+        {listingCheck()}
         <Grid item xs={12}>
           <Container className={classes.infoStyle}>
             {bio}
