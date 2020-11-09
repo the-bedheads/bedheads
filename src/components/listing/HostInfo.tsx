@@ -1,9 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Button, Box, Typography, Card, CardActions, CardContent,
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
 const HostInfo = (props: any) => {
+  const classes = useStyles();
   const {
     hostId,
     userId,
@@ -55,33 +76,37 @@ const HostInfo = (props: any) => {
 
   return (
     <div className="host-info">
-      <h3>host info</h3>
-      <Button
-        component={Link}
-        to={
-          {
-            pathname: '/hostProfile',
-            state: { hostData },
+      <Box textAlign="center" color="inherited" margin="normal">
+        <Button
+          component={Link}
+          to={
+            {
+              pathname: '/hostProfile',
+              state: { hostData },
+            }
           }
-        }
-      >
-        <img
-          src="https://i.ibb.co/ZMtTcsm/bettythedog.jpg"
-          alt="dog portrait"
-          width="150"
-        />
-      </Button>
-      {hostData.firstName}
-      {' '}
-      {hostData.lastName}
-      {' '}
-      (
-      {hostData.pronouns}
-      )
+          variant="contained"
+        >
+          <img
+            src="https://i.ibb.co/ZMtTcsm/bettythedog.jpg"
+            alt="dog portrait"
+            width="150"
+          />
+        </Button>
+      </Box>
       <br />
-      host rating:
-      {' '}
-      {hostData.hostRating}
+      <Typography>
+        Host:
+        {' '}
+        {hostData.firstName}
+        {' '}
+        {hostData.lastName}
+      </Typography>
+      <Typography>
+        Rating:
+        {' '}
+        {hostData.hostRating}
+      </Typography>
       <br />
       <Button variant="outlined" color="secondary">
         message host

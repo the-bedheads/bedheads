@@ -61,7 +61,7 @@ const UserReviews: FC<UserProps> = (Props: UserProps): JSX.Element => {
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
       <Grid item xs={12}>
-        <Typography align="center" variant="h5">{`${localStorage.firstName}'s Reviews`}</Typography>
+        <Typography align="center" variant="h5">Reviews</Typography>
         <Paper className={classes.root}>
           <AppBar position="static" color="default">
             <Tabs
