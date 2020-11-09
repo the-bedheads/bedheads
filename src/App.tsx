@@ -24,6 +24,7 @@ import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
 import BulletinBoard from './components/bulletin/BulletinBoard';
+import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
@@ -96,7 +97,7 @@ const App: FC = (): JSX.Element => {
             render={() => (!isAuth ? (
               <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
                 <Redirect to="/dashboard" />
-            ))}
+              ))}
           />
           <Route
             exact
@@ -105,7 +106,7 @@ const App: FC = (): JSX.Element => {
             render={() => (!isAuth ? (
               <SignUp handleLogin={[isAuth, setAuth]} />) : (
                 <Redirect to="/dashboard" />
-            ))}
+              ))}
           />
           <Route
             exact
@@ -114,7 +115,7 @@ const App: FC = (): JSX.Element => {
             render={() => (isAuth ? (
               <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
                 <Redirect to="/" />
-            ))}
+              ))}
           />
           <Route
             exact
@@ -162,6 +163,11 @@ const App: FC = (): JSX.Element => {
             exact
             path="/bulletins"
             component={BulletinBoard}
+          />
+          <Route
+            exact
+            path="/writeReview"
+            component={WriteAReview}
           />
         </Switch>
       </BrowserRouter>
