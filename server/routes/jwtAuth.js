@@ -12,20 +12,15 @@ router.post('/register', async (req, res) => {
     q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
   } = req.body;
   const compiledResponse = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10].join(' ');
-  // console.info('compiled response:', compiledResponse);
   try {
-    // TODO: Confirm values are being passed through (for debugging)
-    // console.info("Entered variables", firstName, lastName, pronouns, email, password, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10);
     const existingUser = await User.findOne({
       where: {
         email,
       },
     });
-    console.log('tried to find a user');
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      console.log('now awaiting user creation');
       await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo) 
       VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}');`);
 
@@ -35,13 +30,7 @@ router.post('/register', async (req, res) => {
         },
       });
 
-      console.log('just got back a user. new user\'s id: ', user.id);
-      // console.info('responses:', q1.length, q2.length, q3.length, q4.length, q5.length, q6.length, q7.length, q8.length, q9.length, q10.length);
-      // await db.query(`INSERT INTO surveys (q1response, q2response, q3response, q4response,
-      //    q5response, q6response, q7response, q8response, q9response, q10response, user_id)
-      // VALUES ('${q1}', '${q2}', '${q3}', '${q4}', '${q5}', '${q6}',
-      //  '${q7}', '${q8}', '${q9}', '${q10}', '${user.id}');`);
-      const survey = await Survey.create({
+      await Survey.create({
         user_id: user.id,
         q1response: q1,
         q2response: q2,
@@ -53,15 +42,28 @@ router.post('/register', async (req, res) => {
         q8response: q8,
         q9response: q9,
         q10response: q10,
-      })
-        .then(() => console.info('survey added to db'))
-        .catch((err) => err);
+      });
 
-      console.log('now making a post request to axios personality route');
       await axios.post(`http://${process.env.HOST}:${process.env.PORT}/personality`, {
         body: compiledResponse,
       })
-        .then((ha) => console.info('getting data back from IBM API call:', ha.data))
+        .then(({ data }) => {
+          const {
+            openness,
+            conscientiousness,
+            extraversion,
+            agreeableness,
+            neuroticism,
+          } = data;
+          PersonalityScale.create({
+            user_id: user.id,
+            openness,
+            conscientiousness,
+            extraversion,
+            agreeableness,
+            neuroticism,
+          });
+        })
         .catch((err) => console.warn('error from IBM API Call. line 43 in jwtauth'));
 
       const jwtToken = generateToken(user.id);

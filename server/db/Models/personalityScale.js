@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    openness: DataTypes.FLOAT,
-    conscientiousness: DataTypes.FLOAT,
-    extraversion: DataTypes.FLOAT,
-    agreeableness: DataTypes.FLOAT,
-    neuroticism: DataTypes.FLOAT,
+    openness: DataTypes.FLOAT(3),
+    conscientiousness: DataTypes.FLOAT(3),
+    extraversion: DataTypes.FLOAT(3),
+    agreeableness: DataTypes.FLOAT(3),
+    neuroticism: DataTypes.FLOAT(3),
   });
 
   PersonalityScale.associate = (models) => {

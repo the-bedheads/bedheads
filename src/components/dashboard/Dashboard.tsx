@@ -39,6 +39,7 @@ const Dashboard: React.FC<AuthProps> = ({
   const [roommates, setRoommates] = useState(false);
   const [internet, setInternet] = useState(false);
   const [privateBath, setPrivateBath] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState('');
 
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -79,6 +80,7 @@ const Dashboard: React.FC<AuthProps> = ({
         internet,
         privateBath,
         userId,
+        photoUrl,
       });
       // save changes to DB
       // update field on screen
