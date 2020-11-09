@@ -89,7 +89,7 @@ listingRouter
     axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
       .then((geocoded => {
         Listing.create({
-          userId,
+          user_id: userId,
           listingAddress,
           listingCity,
           listingState,
