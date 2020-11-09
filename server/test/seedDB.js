@@ -7,6 +7,7 @@ const listingPhotosData = require('./sampleData/listingPhotos');
 const personalityData = require('./sampleData/personalityScales');
 const messageData = require('./sampleData/message');
 const threadData = require('./sampleData/thread');
+const bulletinData = require('./sampleData/bulletin');
 
 const {
   User,
@@ -19,6 +20,7 @@ const {
   PersonalityScale,
   Message,
   Thread,
+  Bulletin,
 } = require('../db/index');
 
 const seed = async () => {
@@ -84,6 +86,14 @@ const seed = async () => {
         console.info(`✅🎃✅ ${length} messages successfully added to DB`);
       } else {
         console.warn('❌☠️❌ MESSAGES NOT ADDED');
+      }
+    });
+  await Bulletin.bulkCreate(bulletinData)
+    .then(({ length }) => {
+      if (length) {
+        console.info(`✅🎃✅ ${length} bulletins successfully added to DB`);
+      } else {
+        console.warn('❌☠️❌ BULLETINGS NOT ADDED');
       }
     });
 };

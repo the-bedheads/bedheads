@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasMany(models.Thread);
     User.hasMany(models.Message);
+    User.hasMany(models.Bulletin);
   };
 
   return User;
