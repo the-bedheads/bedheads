@@ -1,9 +1,9 @@
 import React, { useState, FC, useEffect } from 'react';
 import axios from 'axios';
-import { UserProps, Availability } from 'goldilocksTypes';
+import { AppInterface, Availability } from 'goldilocksTypes';
 import SwapList from './SwapList';
 
-const Swaps: FC<UserProps> = ({ user }) => {
+const Swaps: FC<AppInterface> = ({ user }) => {
   const [newUser] = useState(user);
   const [accSwaps, setAccSwaps] = useState<Array<Availability>>([]);
   const [pendingSwaps, setPendingSwaps] = useState<Array<Availability>>([]);

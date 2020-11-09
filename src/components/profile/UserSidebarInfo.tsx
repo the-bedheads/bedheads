@@ -3,7 +3,7 @@ import {
   Grid, Container, Box, makeStyles, IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import { UserProps } from 'goldilocksTypes';
+import { AppInterface } from 'goldilocksTypes';
 import EditProfilePic from './EditProfilePic';
 import EditUserInfo from './EditUserInfo';
 
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
   },
 });
 
-const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element => {
+const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [picOpen, setPicOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);

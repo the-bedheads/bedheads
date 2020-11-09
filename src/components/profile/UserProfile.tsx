@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { UserProps } from 'goldilocksTypes';
+import { AppInterface } from 'goldilocksTypes';
 import UserSidebarInfo from './UserSidebarInfo';
 import UserProfileInfo from './UserProfileInfo';
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const UserProfile: FC<UserProps> = ({ user }): JSX.Element => {
+const UserProfile: FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
 
   return (

@@ -5,7 +5,7 @@ import {
   InputLabel, Input, IconButton, Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { UserProps } from 'goldilocksTypes';
+import { AppInterface } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Messages: FC<UserProps> = ({ user }): JSX.Element => {
+const Messages: FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [threads, setThreads] = useState([]);
   const [activeThread, setActiveThread] = useState(0);

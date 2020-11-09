@@ -5,15 +5,11 @@ import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
-import { UserProps, AppInterface } from 'goldilocksTypes';
+import { UserProps, CalendarInterface } from 'goldilocksTypes';
 
-const UserCalendar: React.FC<AppInterface> = ({ user }): JSX.Element => {
+const UserCalendar: React.FC<CalendarInterface> = ({ user, listingId }): JSX.Element => {
   const [userId] = useState(user.id);
-  const [listingId, setListingId] = useState(1);
   const [avbs, setAvbs] = useState([]);
-
-  const getListingId = () => axios.get(`listing/user/${userId}`)
-    .then(({ data }) => setListingId(data.id));
 
   const getAvailabilities = () => axios.get(`availability/allAvailabilities/${listingId}`)
     .then(({ data }) => {
@@ -21,8 +17,7 @@ const UserCalendar: React.FC<AppInterface> = ({ user }): JSX.Element => {
     });
 
   useEffect(() => {
-    getListingId()
-      .then(() => getAvailabilities());
+    getAvailabilities();
   }, [userId]);
 
   // select function

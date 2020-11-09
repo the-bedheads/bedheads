@@ -28,24 +28,9 @@ import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
-const initUser = {
-  dob: '1',
-  email: '1',
-  firstName: '1',
-  guestRating: 1,
-  hostRating: 1,
-  id: 1,
-  inviteCount: 1,
-  lastName: '1',
-  password: '1',
-  profilePhoto: '1',
-  pronouns: '1',
-  swapCount: 1,
-  userBio: '1',
-};
 const App: FC = (): JSX.Element => {
   const [isAuth, setAuth] = useState(false);
-  const [testUser, setTestUser] = useState(initUser);
+  const [listingId, setListingId] = useState(0);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
     firstName: localStorage.firstName,
@@ -78,11 +63,8 @@ const App: FC = (): JSX.Element => {
 
   useEffect(() => {
     checkAuth();
-    axios.get('user/')
-      .then(({ data }) => {
-        const userList = data.filter((tempUser: UserType) => tempUser.id === 1);
-        setTestUser(userList[0]);
-      });
+    axios.get(`listing/user/${user.id}`)
+      .then(({ data }) => setListingId(data.id));
   }, [user]);
 
   return (
@@ -132,12 +114,12 @@ const App: FC = (): JSX.Element => {
             exact
             strict
             path="/messages"
-            component={() => <Messages user={testUser} />}
+            component={() => <Messages user={user} />}
           />
           <Route
             exact
             path="/profile"
-            component={() => <UserProfile user={testUser} />}
+            component={() => <UserProfile user={user} />}
           />
           <Route
             exact
@@ -147,12 +129,12 @@ const App: FC = (): JSX.Element => {
           <Route
             exact
             path="/calendar"
-            component={() => <UserCalendar user={testUser} />}
+            component={() => <UserCalendar user={user} listingId={listingId} />}
           />
           <Route
             exact
             path="/swaps"
-            component={() => <Swaps user={testUser} />}
+            component={() => <Swaps user={user} />}
           />
           <Route
             exact
