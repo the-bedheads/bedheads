@@ -3,6 +3,7 @@ import {
   Grid, Container, Box, makeStyles, IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import PersonIcon from '@material-ui/icons/Person';
 import { AppInterface } from 'goldilocksTypes';
 import EditProfilePic from './EditProfilePic';
 import EditUserInfo from './EditUserInfo';
@@ -118,6 +119,21 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
     }
   };
 
+  const renderImage = () => {
+    if (pic === 'undefined') {
+      return (
+        <PersonIcon className={classes.imgStyle} />
+      );
+    }
+    return (
+      <img
+        src={pic}
+        alt="ya dun goofed"
+        className={classes.imgStyle}
+      />
+    );
+  };
+
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     type: string,
@@ -136,11 +152,7 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   return (
     <Container className={classes.main}>
       <Grid item xs={12} className={classes.picOverlayStyle}>
-        <img
-          src={pic}
-          alt="ya dun goofed"
-          className={classes.imgStyle}
-        />
+        {renderImage()}
         <IconButton className={classes.editStyle} onClick={() => handleOpen('pic')}>
           <EditIcon className={classes.overlayStyle} />
         </IconButton>
