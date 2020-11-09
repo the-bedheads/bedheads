@@ -6,20 +6,24 @@ const { config } = require('../utils/personalityTraits');
 const personalityRouter = Router();
 
 personalityRouter.post('/', async (req, res) => {
-  const { text } = req.body;
-  config.data = text;
+  const { body } = req.body;
+  config.data = body;
   const obj = {};
   await axios(config)
     .then((response) => {
       const { personality } = response.data;
       personality.forEach(trait => {
-        obj[trait.name] = trait.percentile;
+        if (trait.name === 'Emotional range') {
+          obj.neuroticism = trait.percentile;
+        } else {
+          obj[trait.name.toLowerCase()] = trait.percentile;
+        }
       });
     })
     .catch((error) => console.warn(error));
   res.send(obj);
 });
 
-module.exports = { 
-  personalityRouter
+module.exports = {
+  personalityRouter,
 };

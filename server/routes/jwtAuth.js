@@ -1,21 +1,23 @@
 const router = require('express').Router();
-const { db, User } = require('../db/index.js');
 const bcrypt = require('bcryptjs');
+const { db, User, PersonalityScale, Survey } = require('../db/index.js');
 const validEmail = require('../utils/validEmail');
 const generateToken = require('../utils/jsonWebToken');
 const authorize = require('../utils/authorize');
+const axios = require('axios');
 
-router.post("/register", async (req, res) => {
-
-  const { firstName, lastName, pronouns, email, password, profilePhotoUrl: pic, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10 } = req.body;
+router.post('/register', async (req, res) => {
+  const {
+    firstName, lastName, pronouns, email, password, profilePhotoUrl: pic,
+    q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+  } = req.body;
+  const compiledResponse = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10].join(' ');
   try {
-    // TODO: Confirm values are being passed through (for debugging)
-    console.info("Entered variables", firstName, lastName, pronouns, email, password, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10);
     const existingUser = await User.findOne({
       where: {
         email,
       },
-    })
+    });
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -28,21 +30,54 @@ router.post("/register", async (req, res) => {
         },
       });
 
-      await db.query(`INSERT INTO surveys (q1response, q2response, q3response, q4response, q5response, q6response, q7response, q8response, q9response, q10response, user_id)
-      VALUES ('${q1}', '${q2}', '${q3}', '${q4}', '${q5}', '${q6}', '${q7}', '${q8}', '${q9}', '${q10}', '${user.id}');`);
+      await Survey.create({
+        user_id: user.id,
+        q1response: q1,
+        q2response: q2,
+        q3response: q3,
+        q4response: q4,
+        q5response: q5,
+        q6response: q6,
+        q7response: q7,
+        q8response: q8,
+        q9response: q9,
+        q10response: q10,
+      });
+
+      await axios.post(`http://${process.env.HOST}:${process.env.PORT}/personality`, {
+        body: compiledResponse,
+      })
+        .then(({ data }) => {
+          const {
+            openness,
+            conscientiousness,
+            extraversion,
+            agreeableness,
+            neuroticism,
+          } = data;
+          PersonalityScale.create({
+            user_id: user.id,
+            openness,
+            conscientiousness,
+            extraversion,
+            agreeableness,
+            neuroticism,
+          });
+        })
+        .catch((err) => console.warn('error from IBM API Call. line 43 in jwtauth'));
 
       const jwtToken = generateToken(user.id);
       res.json({ jwtToken });
     } else {
-      res.status(401).json("User already exists, try again!");
+      res.status(401).json('User already exists, try again!');
     }
   } catch (err) {
     console.warn(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 });
 
-router.post("/login", validEmail, async (req, res) => {
+router.post('/login', validEmail, async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({
@@ -51,21 +86,21 @@ router.post("/login", validEmail, async (req, res) => {
       },
     });
     if (user === null) {
-      return res.status(401).json("User not found!");
+      return res.status(401).json('User not found!');
     }
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      return res.status(401).json("Please provide a valid password.");
+      return res.status(401).json('Please provide a valid password.');
     }
     const jwtToken = generateToken(user.id);
 
-    //TODO: Verify token is being created
+    // TODO: Verify token is being created
     console.info({ jwtToken });
     res.json({ jwtToken });
   } catch (err) {
     console.warn(err.message);
-    res.status(500).send("Server error!");
+    res.status(500).send('Server error!');
   }
 });
 
@@ -74,25 +109,25 @@ router.post('/verify', authorize, (req, res) => {
     res.json(true);
   } catch (err) {
     console.warn(err.message);
-    res.status(500).send("Error verifying user token.");
+    res.status(500).send('Error verifying user token.');
   }
 });
 
-router.post("/invite", (req, res) => {
+router.post('/invite', (req, res) => {
   const { email, newUserEmail, verificationCode } = req.body;
   User.findOne({
     where: {
-      email: email,
+      email,
     },
   })
     .then((results) => {
       const senderId = results.id;
       const query = db.query(`INSERT INTO invites (verificationCode, newUserEmail, sender_id) 
       VALUES ('${verificationCode}', '${newUserEmail}', '${senderId}');`);
-      res.status(200).send("Invited friend to Goldilocks!");
+      res.status(200).send('Invited friend to Goldilocks!');
     })
     .catch((err) => {
-      res.status(500).send("Error inviting friend");
+      res.status(500).send('Error inviting friend');
     });
 });
 

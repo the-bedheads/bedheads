@@ -15,6 +15,15 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
   res.send(uploadedImage.url);
 });
 
+imageRouter.post('/newListingPhoto', async (req, res) => {
+  const { data } = req.body;
+  const uploadedImage = await cloudinary.uploader
+    .upload(data);
+  // TODO: finish getting image url to db
+  // console.info('uploaded image:', uploadedImage.url);
+  res.send(uploadedImage.url);
+});
+
 imageRouter.post('/profile', async (req, res) => {
   try {
     const fileString = req.body.data;

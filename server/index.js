@@ -61,12 +61,12 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.on('connection', (socket) => {
-  console.log('we have a new connection');
+  console.info('we have a new connection');
   socket.on('disconnect', () => {
-    console.log('user has left');
+    console.info('user has left');
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`Listening on port :${PORT}!`);
+  console.info(`Listening on port :${PORT}!`);
 });

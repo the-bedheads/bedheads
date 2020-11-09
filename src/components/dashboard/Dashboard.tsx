@@ -39,6 +39,7 @@ const Dashboard: React.FC<AuthProps> = ({
   const [roommates, setRoommates] = useState(false);
   const [internet, setInternet] = useState(false);
   const [privateBath, setPrivateBath] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState('');
 
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -56,6 +57,10 @@ const Dashboard: React.FC<AuthProps> = ({
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
       setListingTitle(e.target.value);
+    } else if (string === 'listingPhoto') {
+      const target = e.target as HTMLInputElement;
+      const file: File = (target.files as FileList)[0];
+      console.log(file);
     }
   };
 
@@ -79,6 +84,7 @@ const Dashboard: React.FC<AuthProps> = ({
         internet,
         privateBath,
         userId,
+        photoUrl,
       });
       // save changes to DB
       // update field on screen
