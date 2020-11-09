@@ -7,10 +7,8 @@ const personalityRouter = Router();
 
 personalityRouter.post('/', async (req, res) => {
   const { body } = req.body;
-  console.log('incoming body on personality post route:', body.length);
   config.data = body;
   const obj = {};
-  console.log(config);
   await axios(config)
     .then((response) => {
       const { personality } = response.data;
@@ -26,6 +24,6 @@ personalityRouter.post('/', async (req, res) => {
   res.send(obj);
 });
 
-module.exports = { 
-  personalityRouter
+module.exports = {
+  personalityRouter,
 };
