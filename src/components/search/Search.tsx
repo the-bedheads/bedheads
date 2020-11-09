@@ -7,6 +7,7 @@ import axios from 'axios';
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
 import ResultsList from './SearchResultsList';
+import SearchDefaultList from './SearchDefaultList';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -32,27 +33,13 @@ const Search: React.FC = () => {
   const [defaultView, setDefaultView] = useState(true);
   const [updated, setUpdated] = useState(false);
 
-  // view all listings in default search view
-  // pass the setter to resultsList; will be updated via search there
-  const getListings = () => {
-    axios.get('/listing')
-      .then((results) => {
-        setListings(results.data);
-      })
-      .catch((err) => err);
-  };
-
-  useEffect(() => {
-    if (defaultView) getListings();
-  }, []);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <SearchBar
             xs={6}
-            onSubmit={(value: any) => setLocationQuery(value)}
+            onSubmit={(value: string) => setLocationQuery(value)}
             setDefaultView={setDefaultView}
             setUpdated={setUpdated}
             startDate={startDate}
@@ -62,22 +49,22 @@ const Search: React.FC = () => {
             setDateRange={setDateRange}
           />
         </Grid>
-        <Grid item xs={12}>
-          <ResultsList
-            // className={classes.results}
-            dateRange={dateRange}
-            locationQuery={locationQuery}
-            setLocationQuery={setLocationQuery}
-            listings={listings}
-            setListings={setListings}
-            defaultView={defaultView}
-            updated={updated}
-            setUpdated={setUpdated}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Map locationQuery={locationQuery} listings={listings} />
-        </Grid>
+        {defaultView ? <SearchDefaultList />
+          : (
+            <>
+              <Grid item xs={12}>
+                <ResultsList
+              // className={classes.results}
+                  dateRange={dateRange}
+                  locationQuery={locationQuery}
+                  handleUpdate={[updated, setUpdated]}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Map locationQuery={locationQuery} listings={listings} />
+              </Grid>
+            </>
+          )}
       </Grid>
     </div>
   );
