@@ -116,6 +116,20 @@ const HostInfo = (props: any) => {
       <Button variant="outlined" color="secondary" onClick={requestSwap}>
         request swap
       </Button>
+      <br />
+      <br />
+      <Button
+        variant="outlined"
+        color="secondary"
+        component={Link}
+        to={
+          {
+            pathname: '/writeReview',
+          }
+        }
+      >
+        write review
+      </Button>
     </div>
   );
 };

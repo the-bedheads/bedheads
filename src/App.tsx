@@ -23,6 +23,7 @@ import UserCalendar from './components/dashboard/availability/Calendar';
 import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
+import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
@@ -156,6 +157,11 @@ const App: FC = (): JSX.Element => {
             exact
             path="/invite"
             component={Invite}
+          />
+          <Route
+            exact
+            path="/writeReview"
+            component={WriteAReview}
           />
         </Switch>
       </BrowserRouter>
