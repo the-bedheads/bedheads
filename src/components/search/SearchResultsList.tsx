@@ -26,62 +26,68 @@ interface SearchProps {
   dateRange: any
   locationQuery: string
   handleUpdate: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  handleAvailListings: [[], React.Dispatch<React.SetStateAction<[]>>]
 }
 
 const ResultsList: React.FC<SearchProps> = ({
   dateRange, locationQuery, handleUpdate: [updated, setUpdated],
+  handleAvailListings: [availListings, setAvailListings],
 }) => {
   const classes = useStyles();
-  const [availListings, setAvailListings] = useState([] as any);
   const [message, setMessage] = useState('');
 
   const getAvailListingInfo = (listingIds: any) => {
-    const availListingsHolder: AxiosResponse<any>[] = [];
+    const availListingsHolder = [] as any;
     const listingIdsToLookup = Object.keys(listingIds);
     listingIdsToLookup.map((id: any) => axios.get(`/listing/fullSearch/${id}/${locationQuery}`)
       .then((listingInfo) => {
         const listingWithAvail = listingInfo.data;
-        listingWithAvail.startAvail = listingIds[id].startDate;
-        listingWithAvail.endAvail = listingIds[id].endDate;
-        availListingsHolder.push(listingWithAvail);
+        if (!listingWithAvail) {
+          setMessage('sorry :/ nothing is avail here.');
+          setAvailListings([]);
+        } else {
+          listingWithAvail.startAvail = listingIds[id].startDate;
+          listingWithAvail.endAvail = listingIds[id].endDate;
+          availListingsHolder.push(listingWithAvail);
+        }
       })
       .then(() => {
         if (availListingsHolder.length === listingIdsToLookup.length) {
+          setMessage('');
           setAvailListings(availListingsHolder);
         }
       })
       .catch((err) => err));
-    // }
   };
 
   const getAvailListings = () => {
-    const { start, end } = dateRange;
-    const listingsToRender: any = {};
-    axios.get(`/availability/listings/:${start}/:${end}`)
-      .then((results) => {
-        const availableListings = results.data;
-        if (!availableListings.length) {
-          setMessage(`sorry :/ there doesn't seem to be any available listings in ${locationQuery} from ${start} to ${end}`);
-        } else {
-          availableListings.forEach((availBlock: any) => {
-            const { startDate, endDate } = availBlock;
-            const listingId = availBlock.listing.id;
-            if (!listingsToRender[listingId]) {
-              listingsToRender[listingId] = { startDate, endDate };
-            }
-          });
-          getAvailListingInfo(listingsToRender);
-        }
-      })
-      .catch((err) => err);
+    if (locationQuery) {
+      const { start, end } = dateRange;
+      const listingsToRender: any = {};
+      axios.get(`/availability/listings/:${start}/:${end}`)
+        .then((results) => {
+          const availableListings = results.data;
+          if (!availableListings.length) {
+            setMessage('sorry :/ nothing is avail here.');
+            setAvailListings([]);
+          } else {
+            availableListings.forEach((availBlock: any) => {
+              const { startDate, endDate } = availBlock;
+              const listingId = availBlock.listing.id;
+              if (!listingsToRender[listingId]) {
+                listingsToRender[listingId] = { startDate, endDate };
+              }
+            });
+            getAvailListingInfo(listingsToRender);
+          }
+        })
+        .catch((err) => err);
+    }
   };
 
   useEffect(() => {
-    if (locationQuery && !updated) {
-      getAvailListings();
-      setUpdated(true);
-    }
-  }, [locationQuery]);
+    getAvailListings();
+  }, [locationQuery, dateRange]);
 
   return (
     <div className={classes.root}>

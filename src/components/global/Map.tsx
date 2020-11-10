@@ -52,39 +52,45 @@ const Map = (props: any) => {
     }
   }, [locationQuery]);
 
+  if (listings.length) {
+    return (
+      <div className="mapbox-react">
+        <ReactMapGL
+          latitude={viewport.latitude}
+          longitude={viewport.longitude}
+          zoom={viewport.zoom}
+          width="500px"
+          height="500px"
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+          onViewportChange={(nextViewport: React.SetStateAction<
+          { latitude: number;
+            longitude: number;
+            zoom: number;
+            bearing: number;
+            pitch: number; }>) => setViewport(nextViewport)}
+        >
+          <div style={{ position: 'absolute', right: 10, top: 10 }}>
+            <NavigationControl
+              onViewportChange={(nextViewport: React.SetStateAction<
+              { latitude: number;
+                longitude: number;
+                zoom: number;
+                bearing: number;
+                pitch: number; }>) => setViewport(nextViewport)}
+            />
+          </div>
+          {listingMarkers.map((listing) => {
+            const { latitude, longitude } = listing;
+            return <Marker className="map-marker" latitude={latitude} longitude={longitude} />;
+          })}
+        </ReactMapGL>
+      </div>
+    );
+  }
   return (
-    <div className="mapbox-react">
-      <ReactMapGL
-        latitude={viewport.latitude}
-        longitude={viewport.longitude}
-        zoom={viewport.zoom}
-        width="500px"
-        height="500px"
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        onViewportChange={(nextViewport: React.SetStateAction<
-        { latitude: number;
-          longitude: number;
-          zoom: number;
-          bearing: number;
-          pitch: number; }>) => setViewport(nextViewport)}
-      >
-        <div style={{ position: 'absolute', right: 10, top: 10 }}>
-          <NavigationControl
-            onViewportChange={(nextViewport: React.SetStateAction<
-            { latitude: number;
-              longitude: number;
-              zoom: number;
-              bearing: number;
-              pitch: number; }>) => setViewport(nextViewport)}
-          />
-        </div>
-        {listingMarkers.map((listing) => {
-          const { latitude, longitude } = listing;
-          return <Marker className="map-marker" latitude={latitude} longitude={longitude} />;
-        })}
-      </ReactMapGL>
-    </div>
+    <>
+    </>
   );
 };
 

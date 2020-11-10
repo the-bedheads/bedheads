@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 const Search: React.FC = () => {
   const classes = useStyles();
   const [locationQuery, setLocationQuery] = useState('');
-  const [listings, setListings] = useState([] as any);
+  const [availListings, setAvailListings] = useState([] as any);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [dateRange, setDateRange] = useState({
@@ -55,13 +55,14 @@ const Search: React.FC = () => {
               <Grid item xs={12}>
                 <ResultsList
               // className={classes.results}
-                  dateRange={dateRange}
-                  locationQuery={locationQuery}
-                  handleUpdate={[updated, setUpdated]}
+                  dateRange={dateRange} // necessary for error message
+                  locationQuery={locationQuery} // necessary for error message
+                  handleUpdate={[updated, setUpdated]} // not sure what this is for
+                  handleAvailListings={[availListings, setAvailListings]}
                 />
               </Grid>
               <Grid item xs={6}>
-                <Map locationQuery={locationQuery} listings={listings} />
+                <Map locationQuery={locationQuery} listings={availListings} />
               </Grid>
             </>
           )}
