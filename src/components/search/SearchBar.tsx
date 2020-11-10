@@ -18,8 +18,9 @@ const SearchBar = (props: any) => {
   const onSubmit = (data: Search) => {
     if (data.locationQuery && startDate && endDate) {
       props.onSubmit(data.locationQuery);
-      // setDefaultView(false);
+      setDefaultView(false);
     } else if (!data.locationQuery && !startDate && !endDate) {
+      // TODO: render these as messages
       console.error('sorry, that didn\'t work. please complete a new query.');
     } else if (!data.locationQuery) {
       console.error('please enter a destination.');

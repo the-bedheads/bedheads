@@ -52,7 +52,7 @@ const Map = (props: any) => {
     }
   }, [locationQuery]);
 
-  if (locationQuery.length) {
+  if (listings.length) {
     return (
       <div className="mapbox-react">
         <ReactMapGL
