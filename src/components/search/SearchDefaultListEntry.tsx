@@ -33,7 +33,7 @@ interface DefaultListProps {
   title: string;
   city: string;
   state: string;
-  avail: [];
+  avail: Date;
 }
 
 const DefaultListEntry: React.FC<DefaultListProps> = ({
@@ -41,6 +41,7 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
 }) => {
   const classes = useStyles();
   const location = `${city}, ${state}`;
+  const availMessage = `available as soon as ${avail}!`;
 
   return (
     <div className={classes.root}>
@@ -55,7 +56,9 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
           {location}
         </Typography>
       </Grid>
-      {avail}
+      <Typography variant="overline" display="block">
+        {availMessage}
+      </Typography>
     </div>
   );
 };

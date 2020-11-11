@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     ListingPhotos.belongsTo(models.User, {
       foreignKey: 'user_id',
     });
+    ListingPhotos.belongsTo(models.Listing, {
+      foreignKey: 'listingId',
+    });
   };
 
   return ListingPhotos;

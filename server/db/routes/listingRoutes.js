@@ -19,9 +19,13 @@ const listingRouter = Router();
 listingRouter
   .get('/', async (req, res) => {
     await Listing.findAll({
-      include: {
+      include: [{
+        model: ListingPhotos,
+      },
+      {
         model: Availability,
       },
+      ],
       order: [
         [Availability, 'startDate', 'ASC'],
         [Sequelize.literal('random()')],
