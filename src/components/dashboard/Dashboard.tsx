@@ -4,6 +4,7 @@ import { createGenerateClassName, Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
+import { Link } from 'react-router-dom';
 import Navbar from '../global/Navbar';
 import ListingModal from '../listing/ListingModal';
 
@@ -21,6 +22,7 @@ const Dashboard: React.FC<AuthProps> = ({
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
+  const [randomLink, setRandomLink] = useState('');
 
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
@@ -52,12 +54,18 @@ const Dashboard: React.FC<AuthProps> = ({
         userId: localStorage.userId,
       },
     })
-      .then((results) => {
-        const { data } = results;
-        setSwapCount(data.confirmedSwapCount);
-        setPendingRequestCount(data.pendingRequests.count);
-        setRandomListings(data.openAvailabilities);
-        setShownIndex(getRandomAvlb());
+      .then(({ data }) => {
+        const {
+          confirmedSwapCount,
+          pendingRequests,
+          openAvailabilities,
+        } = data;
+        setSwapCount(confirmedSwapCount);
+        setPendingRequestCount(pendingRequests.count);
+        setRandomListings(openAvailabilities);
+        const randIndex = Math.floor(Math.random() * openAvailabilities.length);
+        setShownIndex(randIndex);
+        setRandomLink(randomListings[randIndex].listing_id);
       });
   };
 
@@ -80,7 +88,6 @@ const Dashboard: React.FC<AuthProps> = ({
     } else if (string === 'listingPhoto') {
       const target = e.target as HTMLInputElement;
       const file: File = (target.files as FileList)[0];
-      console.log(file);
     }
   };
 
@@ -171,6 +178,8 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
+    setRandomLink(randomListings[shownIndex].listing_id);
+    console.log(randomListings[shownIndex]);
   };
 
   const postUserInfo = () => {
@@ -216,7 +225,11 @@ const Dashboard: React.FC<AuthProps> = ({
               </div>
             )
           }
-          <button type="submit">View Listing!</button>
+          <Link to={`/listing/${randomLink}`}>
+            <Button type="button">
+              View Listing!
+            </Button>
+          </Link>
           <button type="submit" onClick={getNewListing}>Show me another!</button>
         </div>
       );
