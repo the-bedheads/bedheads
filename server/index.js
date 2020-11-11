@@ -21,6 +21,7 @@ const { socketRouter } = require('./socket/socketInit');
 const { personalityRouter } = require('./api/ibmPersonalityTraits');
 const { messageRouter } = require('./db/routes/messageRoutes');
 const { bulletinRouter } = require('./db/routes/bulletinRoutes')
+const { reviewRouter } = require('./db/routes/reviewRoutes');
 
 const app = express();
 app.use(express.json());
@@ -42,7 +43,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 
 app.use('/auth', require('./routes/jwtAuth'));
 app.use('/dashboard', require('./routes/dashboard'));
-
+app.use('/reviews', reviewRouter);
 app.use('/listing', listingRouter);
 app.use('/user', userRouter);
 app.use('/availability', availabilityRouter);

@@ -4,16 +4,14 @@
   box-sizing: border-box;
 } */
 
-.login-container {
-  /* background-color: black; */
-}
+
 
 form {
   max-width: 800px;
   margin: 0 auto;
 }
 
-input {
+/* input {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -22,7 +20,7 @@ input {
   padding: 10px 15px;
   margin-bottom: 10px;
   font-size: 14px;
-}
+} */
 
 label {
   line-height: 2;

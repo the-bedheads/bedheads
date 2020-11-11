@@ -108,7 +108,7 @@ const App: FC = (): JSX.Element => {
           <Route
             exact
             path="/listing/:id"
-            component={Listing}
+            component={() => <Listing user={user} />}
           />
           <Route
             exact
@@ -149,7 +149,7 @@ const App: FC = (): JSX.Element => {
           <Route
             exact
             path="/writeReview"
-            component={WriteAReview}
+            component={() => <WriteAReview user={user} />}
           />
         </Switch>
       </BrowserRouter>

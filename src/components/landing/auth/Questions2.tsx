@@ -54,6 +54,7 @@ const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
+          required
           defaultValue={q6}
           onChange={(e) => handleResponse(e, 'response6')}
         />
@@ -69,6 +70,7 @@ const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
+          required
           defaultValue={q7}
           onChange={(e) => handleResponse(e, 'response7')}
         />
@@ -84,6 +86,7 @@ const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
+          required
           defaultValue={q8}
           onChange={(e) => handleResponse(e, 'response8')}
         />
@@ -99,6 +102,7 @@ const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
+          required
           defaultValue={q9}
           onChange={(e) => handleResponse(e, 'response9')}
         />
@@ -114,6 +118,7 @@ const Questions2: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           rows={2}
           variant="outlined"
           fullWidth
+          required
           defaultValue={q10}
           onChange={(e) => handleResponse(e, 'response10')}
         />
