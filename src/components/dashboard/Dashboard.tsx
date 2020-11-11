@@ -4,6 +4,7 @@ import { createGenerateClassName, Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
+import { Link } from 'react-router-dom';
 import Navbar from '../global/Navbar';
 import ListingModal from '../listing/ListingModal';
 
@@ -21,6 +22,7 @@ const Dashboard: React.FC<AuthProps> = ({
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
+  const [randomLink, setRandomLink] = useState('');
 
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
@@ -41,6 +43,32 @@ const Dashboard: React.FC<AuthProps> = ({
   const [privateBath, setPrivateBath] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
 
+  const getRandomAvlb = () => {
+    const len = randomListings.length;
+    return Math.floor(Math.random() * len);
+  };
+
+  const getDashboardInfo = () => {
+    axios.get('/dashboardInfo', {
+      params: {
+        userId: localStorage.userId,
+      },
+    })
+      .then(({ data }) => {
+        const {
+          confirmedSwapCount,
+          pendingRequests,
+          openAvailabilities,
+        } = data;
+        setSwapCount(confirmedSwapCount);
+        setPendingRequestCount(pendingRequests.count);
+        setRandomListings(openAvailabilities);
+        const randIndex = Math.floor(Math.random() * openAvailabilities.length);
+        setShownIndex(randIndex);
+        setRandomLink(randomListings[randIndex].listing_id);
+      });
+  };
+
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     string: string,
@@ -60,7 +88,6 @@ const Dashboard: React.FC<AuthProps> = ({
     } else if (string === 'listingPhoto') {
       const target = e.target as HTMLInputElement;
       const file: File = (target.files as FileList)[0];
-      console.log(file);
     }
   };
 
@@ -85,7 +112,9 @@ const Dashboard: React.FC<AuthProps> = ({
         privateBath,
         userId,
         photoUrl,
-      });
+      })
+        .then(() => getDashboardInfo())
+        .catch((err) => console.warn(err));
       // save changes to DB
       // update field on screen
     }
@@ -147,13 +176,10 @@ const Dashboard: React.FC<AuthProps> = ({
     }
   };
 
-  const getRandomAvlb = () => {
-    const len = randomListings.length;
-    return Math.floor(Math.random() * len);
-  };
-
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
+    setRandomLink(randomListings[shownIndex].listing_id);
+    console.log(randomListings[shownIndex]);
   };
 
   const postUserInfo = () => {
@@ -165,21 +191,6 @@ const Dashboard: React.FC<AuthProps> = ({
       .then((results) => {
         const { data } = results;
         console.warn('hit post User info');
-      });
-  };
-  const getDashboardInfo = () => {
-    axios.get('/dashboardInfo', {
-      params: {
-        userId,
-        listingId,
-      },
-    })
-      .then((results) => {
-        const { data } = results;
-        setSwapCount(data.confirmedSwapCount);
-        setPendingRequestCount(data.pendingRequests.count);
-        setRandomListings(data.openAvailabilities);
-        setShownIndex(getRandomAvlb());
       });
   };
 
@@ -214,14 +225,18 @@ const Dashboard: React.FC<AuthProps> = ({
               </div>
             )
           }
-          <button type="submit">View Listing!</button>
+          <Link to={`/listing/${randomLink}`}>
+            <Button type="button">
+              View Listing!
+            </Button>
+          </Link>
           <button type="submit" onClick={getNewListing}>Show me another!</button>
         </div>
       );
     }
     return (
       <div>
-        It looks like you don&apos;t have a listing yet. Lets fix that!
+        It looks like you don&apos;t have a listing yet. Let&apos;s fix that!
         <Button onClick={handleOpen}>
           Create Listing
         </Button>
