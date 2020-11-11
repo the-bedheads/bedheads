@@ -7,7 +7,12 @@ import {
   Box,
 } from '@material-ui/core';
 import axios from 'axios';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  Theme,
+  makeStyles,
+  withStyles,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Rating } from '@material-ui/lab';
 import { AppInterface } from 'goldilocksTypes';
@@ -48,13 +53,15 @@ const gLabels: { [index: string]: string } = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
-    marginTop: '10px',
-    marginBottom: '10px',
+    marginTop: '20px',
+    marginBottom: '20px',
   },
   root: {
-    width: 200,
+    width: 400,
     display: 'flex',
     alignItems: 'center',
+    marginTop: '10px',
+    marginBottom: '10px',
   },
 }));
 
@@ -67,8 +74,8 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const [hostReview, setHReview] = useState<string>('Enter review here');
   const [guestReview, setGReview] = useState<string>('Enter review here');
   const [isComplete, setIsComplete] = useState<boolean>(true);
-  // const { user } = props;
-  // console.info('this is the user', user, user.id);
+  const [hostId, setHostId] = useState<number>();
+  const [avyId, setAvyId] = useState<number>();
 
   const handleHostReview = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -87,7 +94,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const submitReview = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    // TODO: ratingValue will the value I want to set to the DB for the host rating
     e.preventDefault();
     const params = {
       guestRating,
@@ -96,6 +102,8 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
       guestReview,
       isComplete,
       userId: user.id,
+      hostId,
+      avyId,
     };
 
     axios.post('reviews/newReview', { params })
@@ -104,10 +112,43 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   };
 
   return (
-    <Grid container className={classes.main} spacing={2} direction="row" alignItems="center" justify="center" item xs={9}>
-      <Typography variant="h3" align="center">Tell us about your swap.</Typography>
-      <Grid item xs={9} justify="center" alignItems="center">
-        <Typography component="legend">How would you rate your swapmate as a host?</Typography>
+    <Grid
+      container
+      className={classes.main}
+      spacing={1}
+      direction="row"
+      alignItems="center"
+      justify="center"
+      item
+      xl={9}
+    >
+      <Grid
+        item
+        xl={6}
+        justify="center"
+        alignItems="center"
+      >
+        <Typography
+          className={classes.root}
+          variant="h3"
+          align="center"
+        >
+          Tell us about your swap.
+        </Typography>
+      </Grid>
+      <Grid
+        item
+        xl={6}
+        justify="center"
+        alignItems="center"
+      >
+        <Typography
+          component="legend"
+          className={classes.root}
+          align="center"
+        >
+          How would you rate your swapmate as a host?
+        </Typography>
         <StyledRating
           name="host-rating"
           defaultValue={3}
@@ -124,9 +165,15 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           }}
         />
         {hostRating !== null && <Box ml={2}>{hLabels[hHover !== -1 ? hHover : hostRating]}</Box>}
-        <br />
-        <Typography component="legend">Comments?</Typography>
-        <br />
+        {/* <br /> */}
+        <Typography
+          component="legend"
+          align="center"
+          className={classes.root}
+        >
+          Comments?
+        </Typography>
+        {/* <br /> */}
         <TextField
           name="host-review"
           autoFocus
@@ -136,8 +183,14 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           fullWidth
           onChange={(e) => handleHostReview(e, hostReview)}
         />
-        <br />
-        <Typography component="legend">How would you rate your swapmate as a guest?</Typography>
+        {/* <br /> */}
+        <Typography
+          component="legend"
+          className={classes.root}
+          align="center"
+        >
+          How would you rate your swapmate as a guest?
+        </Typography>
         <StyledRating
           name="guest-rating"
           defaultValue={3}
@@ -154,9 +207,14 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           }}
         />
         {guestRating !== null && <Box ml={2}>{gLabels[gHover !== -1 ? gHover : guestRating]}</Box>}
-        <br />
-        <Typography component="legend">Comments?</Typography>
-        <br />
+        {/* <br /> */}
+        <Typography
+          component="legend"
+          className={classes.root}
+        >
+          Comments?
+        </Typography>
+        {/* <br /> */}
         <TextField
           name="guest-review"
           autoFocus
@@ -166,7 +224,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           fullWidth
           onChange={(e) => handleGuestReview(e, guestReview)}
         />
-        <br />
+        {/* <br /> */}
         <Button
           variant="outlined"
           color="secondary"

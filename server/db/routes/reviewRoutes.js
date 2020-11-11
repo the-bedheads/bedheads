@@ -1,47 +1,42 @@
 const { Router } = require('express');
-
 const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
   Availability,
   Reviews
 } = require('../index');
-
 const reviewRouter = Router();
 
-// TODO: Get all reviews for a user's listing profile
+// TODO: GET ALL REVIEWS: Get all of a user's reviews about them as a GUEST or HOST
+
 reviewRouter
-  .get('/:userId', async (req, res) => {
-    const { userId } = req.params;
-    const test = await Reviews.findAll({
+  .get('/allReviews/:userId', async (req, res) => {
+    const { userId } = req.body.params;
+    await Reviews.findAll({
       order: [
         ['updatedAt', 'DESC'],
       ],
-    },
-      {
-        where: {
-          user_id: userId,
-        },
+      where: {
+        revieweeId: userId,
+      },
+    })
+      .then((dataValues) => {
+        res.send(dataValues);
       })
-      .then((allReviews) => res.send(allReviews))
       .catch(err => console.warn('Error loading reviews...'))
   })
 
 // TODO: Write a review
 reviewRouter
   .post('/newReview', async (req, res) => {
-    // TODO: Availability.findOne
-    const { guestRating, hostRating, guestReview, hostReview, isComplete, userId } = req.body;
+    let { guestRating, hostRating, guestReview, hostReview, isComplete, userId, hostId, avyId } = req.body.params;
     await Availability.findOne({
       where: {
-        guest_id: userId
+        guest_id: Number(userId)
       }
     })
       .then(({ dataValues }) => {
+        hostId = dataValues.host_id;
+        avyId = dataValues.id;
+
         Reviews.create({
           guestRating: guestRating,
           hostRating: hostRating,
@@ -49,10 +44,10 @@ reviewRouter
           guestComments: guestReview,
           completed: isComplete,
           reviewerId: userId,
-          revieweeId: dataValues.host_id,
-          availabilityId: dataValues.id,
+          revieweeId: hostId,
+          availabilityId: avyId,
         })
-          .then((review) => {
+          .then(() => {
             res.status(200).send('Review submitted');
           })
           .catch(err => {
@@ -62,23 +57,6 @@ reviewRouter
       .catch(err => res.send(err.message));
 
   });
-// const { ratingValue, review, isComplete } = req.body;
-
-
-// User.findOne({
-//   where: {
-//     email,
-//   },
-// })
-//   .then((results) => {
-//     const revieweeId = results.id;
-//     await db.query(`INSERT INTO reviews (host_rating, host_comments, completed) 
-//     VALUES ('${ratingValue}', '${review}', '${isComplete}');`);
-//     res.status(200).send('Review submitted!');
-//   })
-//   .catch((err) => {
-//     res.status(500).send('Trouble submitting review...');
-//   });
 
 module.exports = {
   reviewRouter,
