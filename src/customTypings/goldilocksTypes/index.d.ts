@@ -109,6 +109,42 @@ declare module 'goldilocksTypes' {
     prevStep: () => void,
   }
 
+  interface TestProps {
+    firstName: string,
+    lastName: string,
+    pronouns: string,
+    dob: string,
+    email: string,
+    password: string,
+    q1: string,
+    q2: string,
+    q3: string,
+    q4: string,
+    q5: string,
+    q6: string,
+    q7: string,
+    q8: string,
+    q9: string,
+    q10: string,
+    nextStep: () => void,
+    prevStep: () => void,
+    onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  }
+
+  interface MyProps {
+    firstName: string,
+    lastName: string,
+    pronouns: string,
+    dob: string,
+    email: string,
+    password: string,
+    nextStep: () => void,
+    handleChange: (
+      e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+      type: string
+    ) => void,
+  }
+
 }
 
 module.exports = {
@@ -121,4 +157,6 @@ module.exports = {
   RegisterNewUser,
   ConfirmSignupProps,
   CalendarInterface,
+  TestProps,
+  MyProps,
 };

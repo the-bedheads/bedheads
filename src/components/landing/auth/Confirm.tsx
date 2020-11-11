@@ -5,28 +5,29 @@ import {
 } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
+import { TestProps } from 'goldilocksTypes';
 
-interface TestProps {
-  firstName: string,
-  lastName: string,
-  pronouns: string,
-  dob: string,
-  email: string,
-  password: string,
-  q1: string,
-  q2: string,
-  q3: string,
-  q4: string,
-  q5: string,
-  q6: string,
-  q7: string,
-  q8: string,
-  q9: string,
-  q10: string,
-  nextStep: () => void,
-  prevStep: () => void,
-  onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-}
+// interface TestProps {
+//   firstName: string,
+//   lastName: string,
+//   pronouns: string,
+//   dob: string,
+//   email: string,
+//   password: string,
+//   q1: string,
+//   q2: string,
+//   q3: string,
+//   q4: string,
+//   q5: string,
+//   q6: string,
+//   q7: string,
+//   q8: string,
+//   q9: string,
+//   q10: string,
+//   nextStep: () => void,
+//   prevStep: () => void,
+//   onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+// }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
