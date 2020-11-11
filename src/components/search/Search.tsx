@@ -34,40 +34,42 @@ const Search: React.FC = () => {
   const [updated, setUpdated] = useState(false);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <SearchBar
-            xs={6}
-            onSubmit={(value: string) => setLocationQuery(value)}
-            setDefaultView={setDefaultView}
-            setUpdated={setUpdated}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            setDateRange={setDateRange}
-          />
-        </Grid>
-        {defaultView ? <SearchDefaultList />
-          : (
-            <>
-              <Grid item xs={12}>
-                <ResultsList
+    <>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <SearchBar
+              xs={6}
+              onSubmit={(value: string) => setLocationQuery(value)}
+              setDefaultView={setDefaultView}
+              setUpdated={setUpdated}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              setDateRange={setDateRange}
+            />
+          </Grid>
+          {defaultView ? <Grid container spacing={4}><SearchDefaultList /></Grid>
+            : (
+              <>
+                <Grid item xs={12}>
+                  <ResultsList
               // className={classes.results}
-                  dateRange={dateRange} // necessary for error message
-                  locationQuery={locationQuery} // necessary for error message
-                  handleUpdate={[updated, setUpdated]} // not sure what this is for
-                  handleAvailListings={[availListings, setAvailListings]}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Map locationQuery={locationQuery} listings={availListings} />
-              </Grid>
-            </>
-          )}
-      </Grid>
-    </div>
+                    dateRange={dateRange} // necessary for error message
+                    locationQuery={locationQuery} // necessary for error message
+                    handleUpdate={[updated, setUpdated]} // not sure what this is for
+                    handleAvailListings={[availListings, setAvailListings]}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Map locationQuery={locationQuery} listings={availListings} />
+                </Grid>
+              </>
+            )}
+        </Grid>
+      </div>
+    </>
   );
 };
 
