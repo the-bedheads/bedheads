@@ -1,11 +1,17 @@
 import React, { FC, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Grid, makeStyles, TextField, FormControl, InputAdornment,
-  InputLabel, Input, IconButton, Container,
+  Grid,
+  makeStyles,
+  FormControl,
+  InputAdornment,
+  Input,
+  IconButton,
+  Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { AppInterface } from 'goldilocksTypes';
+import { MessageProps, LocationProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
 
@@ -46,18 +52,31 @@ const useStyles = makeStyles({
   },
 });
 
-const Messages: FC<AppInterface> = ({ user }): JSX.Element => {
+const Messages: FC<MessageProps> = (props): JSX.Element => {
+  const { user } = props;
+  const location: LocationProps = useLocation();
   const classes = useStyles();
   const [threads, setThreads] = useState([]);
   const [activeThread, setActiveThread] = useState(0);
   const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    axios.get(`message/getThreads/${user.id}`)
+  const onLoad = async () => {
+    if (location.state) {
+      const params = {
+        userId: user.id,
+        hostId: location.state.hostData.id,
+      };
+      await axios.post('/message/thread', { params });
+    }
+    axios.get(`/message/getThreads/${user.id}`)
       .then(({ data }) => {
         setThreads(data);
         setActiveThread(data[0]);
       });
+  };
+
+  useEffect(() => {
+    onLoad();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -70,7 +89,7 @@ const Messages: FC<AppInterface> = ({ user }): JSX.Element => {
       newMessage,
       userId: user.id,
     };
-    axios.post('message/newMessage', { params });
+    axios.post('/message/newMessage', { params });
     setNewMessage('');
   };
 

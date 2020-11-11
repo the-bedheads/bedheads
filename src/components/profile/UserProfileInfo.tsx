@@ -54,7 +54,6 @@ const useStyles = makeStyles({
   },
 });
 
-// eslint-disable-next-line max-len
 const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -92,9 +91,7 @@ const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
 
   const handleClose = (i: React.MouseEvent<HTMLButtonElement, MouseEvent>, check: boolean) => {
     if (check) {
-      // save changes to DB
       axios.patch(`user/bio/${user.id}`, { params: { newBio: tempBio } });
-      // update field on screen
       setBio(tempBio);
     }
     setOpen(false);

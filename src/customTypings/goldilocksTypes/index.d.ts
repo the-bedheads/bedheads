@@ -33,7 +33,13 @@ declare module 'goldilocksTypes' {
   };
 
   interface ProfileProps {
-    location: LocationProps
+    location: LocationProps,
+    user: AppType,
+  }
+
+  interface MessageProps {
+    location?: LocationProps,
+    user: AppType,
   }
 
   interface LocationProps {
@@ -41,7 +47,8 @@ declare module 'goldilocksTypes' {
   }
 
   interface StateProps {
-    hostData: UserType
+    hostData: UserType,
+    userId: string,
   }
 
   interface AppProps {
@@ -145,6 +152,26 @@ declare module 'goldilocksTypes' {
     ) => void,
   }
 
+  type HostDataType = {
+    firstName: string,
+    lastName: string,
+    pronouns: string,
+    hostRating: number,
+    id: number,
+    profilePhoto: string,
+    userBio: string,
+  };
+
+  interface ProfileSidebarInterface {
+    host: HostDataType,
+    userId: string,
+  }
+
+  interface HostInfoInterface {
+    hostId: string,
+    userId: string,
+    avbId: number,
+  }
 }
 
 module.exports = {
@@ -159,4 +186,8 @@ module.exports = {
   CalendarInterface,
   TestProps,
   MyProps,
+  MessageProps,
+  HostDataType,
+  ProfileSidebarInterface,
+  HostInfoInterface,
 };
