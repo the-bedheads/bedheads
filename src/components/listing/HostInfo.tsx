@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Button, Box, Typography, Card, CardActions, CardContent,
+  Button,
+  Box,
+  Typography,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { HostInfoInterface } from 'goldilocksTypes';
+import MessageModal from '../messages/MessageModal';
 
 const useStyles = makeStyles({
   root: {
@@ -19,11 +23,11 @@ const useStyles = makeStyles({
     fontSize: 14,
   },
   pos: {
-    marginBottom: 12,
+    marginBottom: '20px',
   },
 });
 
-const HostInfo = (props: any) => {
+const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
   const classes = useStyles();
   const {
     hostId,
@@ -39,6 +43,8 @@ const HostInfo = (props: any) => {
     profilePhoto: '',
     userBio: '',
   });
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   const getHost = () => {
     axios.get(`/user/${hostId}`)
@@ -74,50 +80,93 @@ const HostInfo = (props: any) => {
     getHost();
   }, []);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = async (
+    i: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    check: boolean,
+  ) => {
+    if (check) {
+      const params = {
+        userId,
+        hostId: hostData.id,
+        newMessage: message,
+        activeThread: 0,
+      };
+      const threadId = await axios.get('/message/thread', { params })
+        .then(({ data }) => data.id);
+      params.activeThread = threadId;
+      await axios.post('/message/newMessage', { params });
+      setMessage('');
+    }
+    setOpen(false);
+  };
+
+  const handleClickOff = () => {
+    setOpen(false);
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+
   return (
     <div className="host-info">
-      <Box textAlign="center" color="inherited" margin="normal">
+      <Box
+        textAlign="center"
+        color="inherited"
+        margin="normal"
+        className={classes.pos}
+      >
         <Button
           component={Link}
           to={
             {
               pathname: '/hostProfile',
-              state: { hostData },
+              state: { hostData, userId },
             }
           }
           variant="contained"
         >
           <img
-            src="https://i.ibb.co/ZMtTcsm/bettythedog.jpg"
+            src={hostData.profilePhoto}
             alt="dog portrait"
-            width="150"
+            width="100%"
           />
         </Button>
       </Box>
-      <br />
       <Typography>
-        Host:
-        {' '}
-        {hostData.firstName}
-        {' '}
-        {hostData.lastName}
+        {`Host: ${hostData.firstName} ${hostData.lastName}`}
       </Typography>
-      <Typography>
-        Rating:
-        {' '}
-        {hostData.hostRating}
+      <Typography className={classes.pos}>
+        {`Rating: ${hostData.hostRating}`}
       </Typography>
-      <br />
-      <Button variant="outlined" color="secondary">
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleOpen}
+        className={classes.pos}
+      >
         message host
       </Button>
-      <br />
-      <br />
-      <Button variant="outlined" color="secondary" onClick={requestSwap}>
+      <MessageModal
+        handleClose={handleClose}
+        handleClickOff={handleClickOff}
+        handleTextChange={handleTextChange}
+        message={message}
+        open={open}
+        name={hostData.firstName}
+      />
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={requestSwap}
+        className={classes.pos}
+      >
         request swap
       </Button>
-      <br />
-      <br />
       <Button
         variant="outlined"
         color="secondary"
