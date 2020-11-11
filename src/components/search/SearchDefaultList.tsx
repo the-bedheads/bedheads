@@ -64,11 +64,16 @@ const SearchDefaultList: React.FC = () => {
             availabilities: [{
               startDate: Date,
             }];
+            listingPhoto: {
+              url: string;
+            }
           }) => {
             const {
-              id, user_id: userId, listingTitle, listingCity, listingState, availabilities,
+              id, user_id: userId, listingTitle, listingCity,
+              listingState, availabilities, listingPhoto,
             } = random;
             const earliestAvail = availabilities[0].startDate;
+            const { url } = listingPhoto;
             return (
               <Grid key={id} item>
                 <Paper className={classes.paper}>
@@ -79,6 +84,7 @@ const SearchDefaultList: React.FC = () => {
                     city={listingCity}
                     state={listingState}
                     avail={earliestAvail}
+                    photo={url}
                   />
                 </Paper>
               </Grid>

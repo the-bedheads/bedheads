@@ -34,19 +34,20 @@ interface DefaultListProps {
   city: string;
   state: string;
   avail: Date;
+  photo: string;
 }
 
 const DefaultListEntry: React.FC<DefaultListProps> = ({
-  listingId, user, title, city, state, avail,
+  listingId, user, title, city, state, avail, photo,
 }) => {
   const classes = useStyles();
   const location = `${city}, ${state}`;
-  const availMessage = `available as soon as ${avail}!`;
+  const availMessage = `available ${avail}`;
 
   return (
     <div className={classes.root}>
       <ButtonBase className={classes.image} component={Link} to={`/listing/${user}`}>
-        <img className={classes.img} alt="complex" src="https://ak.picdn.net/shutterstock/videos/6643253/thumb/1.jpg" />
+        <img className={classes.img} alt="complex" src={photo} />
       </ButtonBase>
       <Grid item xs component={Link} to={`/listing/${user}`}>
         <Typography variant="h6">
