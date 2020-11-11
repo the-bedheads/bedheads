@@ -41,6 +41,26 @@ const Dashboard: React.FC<AuthProps> = ({
   const [privateBath, setPrivateBath] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
 
+  const getRandomAvlb = () => {
+    const len = randomListings.length;
+    return Math.floor(Math.random() * len);
+  };
+
+  const getDashboardInfo = () => {
+    axios.get('/dashboardInfo', {
+      params: {
+        userId: localStorage.userId,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+        setSwapCount(data.confirmedSwapCount);
+        setPendingRequestCount(data.pendingRequests.count);
+        setRandomListings(data.openAvailabilities);
+        setShownIndex(getRandomAvlb());
+      });
+  };
+
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     string: string,
@@ -85,7 +105,9 @@ const Dashboard: React.FC<AuthProps> = ({
         privateBath,
         userId,
         photoUrl,
-      });
+      })
+        .then(() => getDashboardInfo())
+        .catch((err) => console.warn(err));
       // save changes to DB
       // update field on screen
     }
@@ -147,11 +169,6 @@ const Dashboard: React.FC<AuthProps> = ({
     }
   };
 
-  const getRandomAvlb = () => {
-    const len = randomListings.length;
-    return Math.floor(Math.random() * len);
-  };
-
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
   };
@@ -165,21 +182,6 @@ const Dashboard: React.FC<AuthProps> = ({
       .then((results) => {
         const { data } = results;
         console.warn('hit post User info');
-      });
-  };
-  const getDashboardInfo = () => {
-    axios.get('/dashboardInfo', {
-      params: {
-        userId,
-        listingId,
-      },
-    })
-      .then((results) => {
-        const { data } = results;
-        setSwapCount(data.confirmedSwapCount);
-        setPendingRequestCount(data.pendingRequests.count);
-        setRandomListings(data.openAvailabilities);
-        setShownIndex(getRandomAvlb());
       });
   };
 
@@ -221,7 +223,7 @@ const Dashboard: React.FC<AuthProps> = ({
     }
     return (
       <div>
-        It looks like you don&apos;t have a listing yet. Lets fix that!
+        It looks like you don&apos;t have a listing yet. Let&apos;s fix that!
         <Button onClick={handleOpen}>
           Create Listing
         </Button>
