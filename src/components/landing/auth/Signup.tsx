@@ -132,13 +132,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
       <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <input
-            id="imageInput"
-            type="file"
-            name="image"
-            onChange={(e) => handleFileChange(e)}
-            value={fileInputState}
-          />
           <UserFormFC
             firstName={firstName}
             lastName={lastName}
