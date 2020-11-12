@@ -70,7 +70,8 @@ const App: FC = (): JSX.Element => {
   return (
     <div className={darkMode ? 'dark-mode' : 'light-mode'}>
       <BrowserRouter>
-        <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />
+        {isAuth
+          && <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />}
         <Switch>
           <Route
             exact
