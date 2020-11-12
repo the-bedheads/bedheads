@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from 'moment';
-import axios from 'axios';
 
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
@@ -31,7 +30,6 @@ const Search: React.FC = () => {
     end: moment().add(7, 'days').format('YYYY-MM-DD'),
   });
   const [defaultView, setDefaultView] = useState(true);
-  const [updated, setUpdated] = useState(false);
 
   return (
     <>
@@ -42,7 +40,6 @@ const Search: React.FC = () => {
               xs={6}
               onSubmit={(value: string) => setLocationQuery(value)}
               setDefaultView={setDefaultView}
-              setUpdated={setUpdated}
               startDate={startDate}
               setStartDate={setStartDate}
               endDate={endDate}
@@ -53,16 +50,12 @@ const Search: React.FC = () => {
           {defaultView ? <Grid container spacing={4}><SearchDefaultList /></Grid>
             : (
               <>
-                <Grid item xs={12}>
+                <Grid container justify="center" xs={12} spacing={3}>
                   <ResultsList
-              // className={classes.results}
                     dateRange={dateRange} // necessary for error message
                     locationQuery={locationQuery} // necessary for error message
-                    handleUpdate={[updated, setUpdated]} // not sure what this is for
                     handleAvailListings={[availListings, setAvailListings]}
                   />
-                </Grid>
-                <Grid item xs={6}>
                   <Map locationQuery={locationQuery} listings={availListings} />
                 </Grid>
               </>

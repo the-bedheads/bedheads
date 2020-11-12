@@ -69,6 +69,9 @@ listingRouter
         id: listingId,
         listingCity: location,
       },
+      include: {
+        model: ListingPhotos,
+      },
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
@@ -91,7 +94,7 @@ listingRouter
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
     axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
-      .then((geocoded => {
+      .then(((geocoded) => {
         Listing.create({
           user_id: userId,
           listingAddress,
@@ -108,7 +111,7 @@ listingRouter
           privateBath,
           latitude: geocoded.data[1],
           longitude: geocoded.data[0],
-        })
+        });
       }))
       .catch((err) => res.send(err));
   });

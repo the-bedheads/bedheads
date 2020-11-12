@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    listing_id: DataTypes.INTEGER,
     url: DataTypes.STRING,
   });
 
