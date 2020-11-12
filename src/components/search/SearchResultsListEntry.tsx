@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     padding: theme.spacing(2),
     margin: 'auto',
     maxWidth: 500,
+    alignItems: 'center',
   },
   inline: {
     display: 'inline',
@@ -19,18 +20,22 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     alignItems: 'center',
   },
   image: {
-
     width: '100px',
     height: '100px',
     overflow: 'hidden',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
   },
   img: {
-
     width: '100%',
     height: '100%',
     position: 'absolute',
     'object-fit': 'cover',
+  },
+  info: {
+    display: 'flex',
+    justify: 'center',
   },
 }));
 
@@ -40,10 +45,11 @@ interface SearchListProps {
   location: { listingCity: string, listingState: string },
   listingAvail: { startAvail: string, endAvail: string },
   queriedDates: { start: string, end: string },
+  photo: string,
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates,
+  user, title, location, listingAvail, queriedDates, photo,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
@@ -53,8 +59,6 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
   const locationStr = `${listingCity}, ${listingState}`;
 
   const getAvailMessage = () => {
-    // listing avail is the avail for each listing
-    // queriedDates is what the user entered
     if (start !== startAvail || end !== endAvail) {
       setAvailMessage(`flexible? this is available from ${startAvail} to ${endAvail}`);
     } else {
@@ -71,24 +75,30 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
       <Grid container spacing={2}>
         <Grid item>
           <ButtonBase className={classes.image} component={Link} to={`/listing/${user}`}>
-            <img className={classes.img} alt="listing" src="https://files.botsin.space/media_attachments/files/105/118/139/304/664/858/small/bb8fc2614d1d6a45.png" />
+            <img className={classes.img} alt="listing" src={photo} />
           </ButtonBase>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm container component={Link} to={`/listing/${user}`}>
-        <Grid item xs container direction="column" spacing={2}>
-          <Grid item xs>
-            <Typography variant="body1">
-              {title}
-            </Typography>
-            <Typography variant="body2">
-              {locationStr}
-            </Typography>
-          </Grid>
-          <Typography variant="overline" display="block">
-            {availMessage}
+      <Grid
+        item
+        container
+        className={classes.info}
+        xs={12}
+        direction="column"
+        component={Link}
+        to={`/listing/${user}`}
+      >
+        <Grid item xs>
+          <Typography variant="body1">
+            {title}
+          </Typography>
+          <Typography variant="body2">
+            {locationStr}
           </Typography>
         </Grid>
+        <Typography variant="overline" display="block">
+          {availMessage}
+        </Typography>
       </Grid>
     </div>
   );

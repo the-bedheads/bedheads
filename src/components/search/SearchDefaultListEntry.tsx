@@ -16,14 +16,21 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     display: 'inline',
   },
   image: {
-    width: 220,
-    height: 128,
+    width: '240px',
+    height: '128px',
+    margin: 'auto',
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
   },
   img: {
     margin: 'auto',
     display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    position: 'absolute',
+    'object-fit': 'cover',
+    width: '100%',
+    height: '100%',
   },
 }));
 

@@ -4,11 +4,16 @@ import axios from 'axios';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(() => createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     position: '-webkit-sticky',
     // position: 'sticky',
     maxWidth: '400px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -22,8 +27,6 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
     latitude: 29.959021,
     longitude: -90.065285,
     zoom: 12,
-    width: 400,
-    height: 600,
     bearing: 0,
     pitch: 0,
   });
@@ -56,8 +59,6 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
         setViewport({
           latitude: response.data.features[0].center[1],
           longitude: response.data.features[0].center[0],
-          width: 400,
-          height: 600,
           zoom: 12,
           bearing: 0,
           pitch: 0,
@@ -73,7 +74,7 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
 
   if (listings.length) {
     return (
-      <Grid className={classes.root} item xs={4}>
+      <Grid className={classes.root} item xs={5}>
         <ReactMapGL
           latitude={viewport.latitude}
           longitude={viewport.longitude}
@@ -84,8 +85,6 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           onViewportChange={(nextViewport: React.SetStateAction<
           { latitude: number;
-            width: number;
-            height: number;
             longitude: number;
             zoom: number;
             bearing: number;
@@ -96,8 +95,6 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
               onViewportChange={(nextViewport: React.SetStateAction<
               { latitude: number;
                 longitude: number;
-                width: number;
-                height: number;
                 zoom: number;
                 bearing: number;
                 pitch: number; }>) => setViewport(nextViewport)}
@@ -105,9 +102,7 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
           </div>
           {listingMarkers.map((listing) => {
             const { latitude, longitude } = listing;
-            return (
-              <Marker className="map-markers" latitude={latitude} longitude={longitude} />
-            );
+            return <Marker className="map-marker" latitude={latitude} longitude={longitude} />;
           })}
         </ReactMapGL>
       </Grid>

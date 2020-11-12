@@ -88,21 +88,14 @@ const ResultsList: React.FC<SearchProps> = ({
       <Grid className={classes.paper} item xs={7}>
         {message}
         {availListings.map((listing: {
-          id: any; user_id: any; listingTitle: any;
-          listingCity: any; listingState: any; startAvail: any;
-          endAvail: any; availabilities: any; }) => {
+          user_id: number; listingTitle: string;
+          listingCity: string; listingState: string; startAvail: string;
+          endAvail: string; listingPhoto: { url: string } }) => {
           const {
-            id, user_id: userId, listingTitle, listingCity, listingState,
-            startAvail, endAvail,
+            user_id: userId, listingTitle, listingCity, listingState,
+            startAvail, endAvail, listingPhoto,
           } = listing;
-          let defaultAvail = {
-            startDate: '',
-            endDate: '',
-          };
-          if (listing.availabilities) {
-            const { availabilities } = listing;
-            [defaultAvail] = availabilities;
-          }
+          const { url } = listingPhoto;
           return (
             <ResultsListEntry
               user={userId}
@@ -110,6 +103,7 @@ const ResultsList: React.FC<SearchProps> = ({
               location={{ listingCity, listingState }}
               listingAvail={{ startAvail, endAvail }}
               queriedDates={dateRange}
+              photo={url}
             />
           );
         })}
