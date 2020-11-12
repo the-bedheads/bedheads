@@ -199,6 +199,34 @@ declare module 'goldilocksTypes' {
   interface ListingLocationInterface {
     state: ListingLocationState,
   }
+
+  interface MyQ1Props {
+    q1: string,
+    q2: string,
+    q3: string,
+    q4: string,
+    q5: string,
+    nextStep: () => void,
+    prevStep: () => void,
+    handleResponse: (
+      e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+      type: string
+    ) => void,
+  }
+
+  interface MyQ2Props {
+    q6: string,
+    q7: string,
+    q8: string,
+    q9: string,
+    q10: string,
+    nextStep: () => void,
+    prevStep: () => void,
+    handleResponse: (
+      event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+      type: string
+    ) => void,
+  }
 }
 
 module.exports = {
@@ -220,4 +248,6 @@ module.exports = {
   ProfileInfoInterface,
   SwapListEntryInterface,
   ListingLocationInterface,
+  MyQ1Props,
+  MyQ2Props,
 };
