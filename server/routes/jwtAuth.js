@@ -33,7 +33,6 @@ router.post('/register', async (req, res) => {
     q9,
     q10,
   } = req.body;
-  console.log('pic at the auth/register route: ', pic);
   const compiledResponse = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10].join(' ');
   try {
     const existingUser = await User.findOne({
