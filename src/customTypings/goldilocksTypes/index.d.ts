@@ -227,6 +227,11 @@ declare module 'goldilocksTypes' {
       type: string
     ) => void,
   }
+
+  interface MyUploadPhotoProps {
+    nextStep: () => void,
+    prevStep: () => void,
+  }
 }
 
 module.exports = {
