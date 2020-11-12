@@ -63,9 +63,11 @@ const Dashboard: React.FC<AuthProps> = ({
         setSwapCount(confirmedSwapCount);
         setPendingRequestCount(pendingRequests.count);
         setRandomListings(openAvailabilities);
-        const randIndex = Math.floor(Math.random() * openAvailabilities.length);
-        setShownIndex(randIndex);
-        setRandomLink(randomListings[randIndex].listing_id);
+        const i = 0;
+        setShownIndex(i);
+        if (randomListings.length) {
+          setRandomLink(randomListings[i].listing_id);
+        }
       });
   };
 
@@ -85,9 +87,6 @@ const Dashboard: React.FC<AuthProps> = ({
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
       setListingTitle(e.target.value);
-    } else if (string === 'listingPhoto') {
-      const target = e.target as HTMLInputElement;
-      const file: File = (target.files as FileList)[0];
     }
   };
 
@@ -113,7 +112,10 @@ const Dashboard: React.FC<AuthProps> = ({
         userId,
         photoUrl,
       })
-        .then(() => getDashboardInfo())
+        .then(() => {
+          getDashboardInfo();
+          setHasListing(true);
+        })
         .catch((err) => console.warn(err));
       // save changes to DB
       // update field on screen
@@ -179,7 +181,6 @@ const Dashboard: React.FC<AuthProps> = ({
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
     setRandomLink(randomListings[shownIndex].listing_id);
-    console.log(randomListings[shownIndex]);
   };
 
   const postUserInfo = () => {
@@ -245,6 +246,7 @@ const Dashboard: React.FC<AuthProps> = ({
           handleClickOff={handleClickOff}
           handleTextChange={handleTextChange}
           toggleSwitch={toggleSwitch}
+          setPhotoUrl={setPhotoUrl}
           open={open}
         />
       </div>

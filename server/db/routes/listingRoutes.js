@@ -82,8 +82,20 @@ listingRouter.get('/geocode', (req, res) => {
 listingRouter
   .post('/', (req, res) => {
     const {
-      listingAddress, listingCity, listingState, listingZipCode, listingTitle,
-      listingDescription, pets, ada, smoking, roommates, internet, privateBath, userId,
+      listingAddress,
+      listingCity,
+      listingState,
+      listingZipCode,
+      listingTitle,
+      listingDescription,
+      pets,
+      ada,
+      smoking,
+      roommates,
+      internet,
+      privateBath,
+      userId,
+      photoUrl,
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
     axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
@@ -105,6 +117,16 @@ listingRouter
           latitude: geocoded.data[1],
           longitude: geocoded.data[0],
         })
+          .then(({ dataValues }) => {
+            console.log(dataValues);
+            const { id } = dataValues;
+            ListingPhotos.create({
+              url: photoUrl,
+              user_id: userId,
+              listingId: id,
+            });
+          })
+          .catch((err) => res.send(err));
       }))
       .catch((err) => res.send(err));
   });
