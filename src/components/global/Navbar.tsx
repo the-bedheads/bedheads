@@ -14,7 +14,7 @@ import {
 import { toast } from 'react-toastify';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -106,14 +106,6 @@ const Navbar: React.FC<AuthProps> = ({
           >
             <MenuItem
               component={Link}
-              to="/profile"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              component={Link}
               to="/messages"
               color="inherit"
               onClick={handleClose}
@@ -164,11 +156,15 @@ const Navbar: React.FC<AuthProps> = ({
               Logout
             </MenuItem>
           </Menu>
-          <Avatar
-            className={classes.avatar}
-            alt={int}
-            src={pic}
-          />
+          <NavLink
+            to="/profile"
+          >
+            <Avatar
+              className={classes.avatar}
+              alt={int}
+              src={pic}
+            />
+          </NavLink>
         </Toolbar>
       </AppBar>
     </div>
