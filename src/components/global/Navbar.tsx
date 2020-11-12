@@ -24,6 +24,9 @@ const useStyles = makeStyles({
   avatar: {
     marginLeft: '7px',
   },
+  grow: {
+    flexGrow: 1,
+  },
 });
 
 interface AuthProps {
@@ -80,6 +83,7 @@ const Navbar: React.FC<AuthProps> = ({
             name="toggleMode"
             inputProps={{ 'aria-label': 'toggle between light and dark mode' }}
           />
+          <div className={classes.grow} />
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
