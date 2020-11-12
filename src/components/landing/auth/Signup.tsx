@@ -83,7 +83,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
 
   const onSubmitForm = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    console.info('Hit the function!');
     try {
       const body = {
         firstName,
