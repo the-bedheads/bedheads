@@ -38,6 +38,8 @@ const Navbar: React.FC<AuthProps> = ({
   const classes = useStyles();
   const [isUserAuthenticated, setIsAuthenticated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [pic] = useState(localStorage.profilePhoto);
+  const [int] = useState(localStorage.firstName[0]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -68,7 +70,7 @@ const Navbar: React.FC<AuthProps> = ({
           <Typography component={Link} to="/dashboard" variant="h3" color="inherit">
             🛏
           </Typography>
-          <Button component={Link} to="/" color="inherit">HOME</Button>
+          <Button component={Link} to="/" color="inherit">Dashboard</Button>
           <IconButton component={Link} to="/search" color="inherit">
             <SearchIcon />
           </IconButton>
@@ -162,9 +164,11 @@ const Navbar: React.FC<AuthProps> = ({
               Logout
             </MenuItem>
           </Menu>
-          <Avatar className={classes.avatar}>
-            BH
-          </Avatar>
+          <Avatar
+            className={classes.avatar}
+            alt={int}
+            src={pic}
+          />
         </Toolbar>
       </AppBar>
     </div>
