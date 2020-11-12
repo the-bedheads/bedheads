@@ -1,7 +1,17 @@
 import React, { SyntheticEvent, useState } from 'react';
 import {
-  makeStyles, Typography, AppBar, Toolbar, Button, MenuItem, Menu, IconButton, Avatar, Switch,
+  makeStyles,
+  Typography,
+  AppBar,
+  Toolbar,
+  Button,
+  MenuItem,
+  Menu,
+  IconButton,
+  Avatar,
+  Switch,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
@@ -22,8 +32,9 @@ interface AuthProps {
 }
 
 const Navbar: React.FC<AuthProps> = ({
-  handleLogin: [isAuth, setAuth], toggleMode: [darkMode, setDarkMode],
-}):JSX.Element => {
+  handleLogin: [isAuth, setAuth],
+  toggleMode: [darkMode, setDarkMode],
+}): JSX.Element => {
   const classes = useStyles();
   const [isUserAuthenticated, setIsAuthenticated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -36,10 +47,16 @@ const Navbar: React.FC<AuthProps> = ({
     setAnchorEl(null);
   };
 
-  const logoutUser = (event: SyntheticEvent) => {
+  const logout = async (event: SyntheticEvent) => {
     event.preventDefault();
-    localStorage.removeItem('token');
-    setAuth(false);
+    try {
+      localStorage.clear();
+      handleClose();
+      setAuth(false);
+      toast.success('Successfully logged out!');
+    } catch (err) {
+      console.warn(err.message);
+    }
   };
 
   // TODO: give the dark mode toggle a label; reformat nav bar -- formgroup?}
@@ -85,26 +102,64 @@ const Navbar: React.FC<AuthProps> = ({
               horizontal: 'center',
             }}
           >
-            <MenuItem component={Link} to="/profile" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/profile"
+              color="inherit"
+              onClick={handleClose}
+            >
               Profile
             </MenuItem>
-            <MenuItem component={Link} to="/messages" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/messages"
+              color="inherit"
+              onClick={handleClose}
+            >
               Messages
             </MenuItem>
             <MenuItem>
               Manage Listing
             </MenuItem>
-            <MenuItem component={Link} to="/swaps" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/swaps"
+              color="inherit"
+              onClick={handleClose}
+            >
               View swaps
             </MenuItem>
-            <MenuItem component={Link} to="/calendar" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/calendar"
+              color="inherit"
+              onClick={handleClose}
+            >
               Set availability
             </MenuItem>
-            <MenuItem component={Link} to="/bulletins" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/bulletins"
+              color="inherit"
+              onClick={handleClose}
+            >
               Bulletin board
             </MenuItem>
-            <MenuItem component={Link} to="/invite" color="inherit" onClick={handleClose}>
+            <MenuItem
+              component={Link}
+              to="/invite"
+              color="inherit"
+              onClick={handleClose}
+            >
               Invite friends
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/invite"
+              color="inherit"
+              onClick={(e: React.SyntheticEvent<Element, Event>) => logout(e)}
+            >
+              Logout
             </MenuItem>
           </Menu>
           <Avatar className={classes.avatar}>

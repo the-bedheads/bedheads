@@ -276,13 +276,6 @@ const Dashboard: React.FC<AuthProps> = ({
         </p>
       </div>
       {listingCheck()}
-      <button
-        className="btn btn-success btn-block"
-        type="submit"
-        onClick={(e) => logout(e)}
-      >
-        Logout
-      </button>
     </>
   );
 };
