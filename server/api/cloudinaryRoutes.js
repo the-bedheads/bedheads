@@ -17,6 +17,7 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
 });
 
 imageRouter.post('/newPhoto', async (req, res) => {
+  console.log('hitting the /newPhoto route on the server and trying to ping cloudinary now');
   const { data } = req.body;
   const uploadedImage = await cloudinary.uploader
     .upload(data);
