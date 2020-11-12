@@ -93,6 +93,8 @@ declare module 'goldilocksTypes' {
     q8: string,
     q9: string,
     q10: string,
+    profilePhotoUrl: string,
+    setProfilePhotoUrl: React.Dispatch<React.SetStateAction<string>>,
     onSubmitForm: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   }
 
@@ -123,6 +125,7 @@ declare module 'goldilocksTypes' {
     dob: string,
     email: string,
     password: string,
+    profilePhotoUrl: string,
     q1: string,
     q2: string,
     q3: string,
