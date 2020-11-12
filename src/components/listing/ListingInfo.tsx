@@ -68,8 +68,15 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
     axios.get(`/listing/user/${listingId}`)
       .then((listingInfo) => {
         const {
-          listingTitle, listingDescription, listingAddress, ada,
-          internet, pets, privateBath, roommates, smoking,
+          listingTitle,
+          listingDescription,
+          listingAddress,
+          ada,
+          internet,
+          pets,
+          privateBath,
+          roommates,
+          smoking,
         } = listingInfo.data;
         setListingData({
           listingTitle,

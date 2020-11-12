@@ -1,9 +1,7 @@
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
 import { Availability } from 'goldilocksTypes';
-import {
-  Grid, Box, makeStyles,
-} from '@material-ui/core';
+import { Grid, Box, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   main: {
