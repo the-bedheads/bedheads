@@ -10,8 +10,15 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  Box,
 } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  Theme,
+  createStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import Filter1Icon from '@material-ui/icons/Filter1';
 import Filter2Icon from '@material-ui/icons/Filter2';
 import Filter3Icon from '@material-ui/icons/Filter3';
@@ -36,6 +43,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+const theme = createMuiTheme({
+  overrides: {
+    MuiTypography: {
+      root: {
+        alignItems: 'left',
+      },
+    },
+  },
+});
+
 const Questions: React.FC<MyQ1Props> = (Props: MyQ1Props): JSX.Element => {
   const classes = useStyles();
   const {
@@ -58,14 +75,14 @@ const Questions: React.FC<MyQ1Props> = (Props: MyQ1Props): JSX.Element => {
         <AppBar title="New User Questionnaire" />
         <DialogTitle id="form-dialog-title">Step 2: Fill Out Survey (1/2)</DialogTitle>
         <Grid container alignContent="center" justify="center">
-          <Typography>
+          <Typography component="h6">
             <Filter1Icon />
-            Finish this sentence:
-            <br />
-            &ldquo;Strangers would describe me as ____,
-            <br />
-            but I know that I am ____.&ldquo;
-          </Typography>
+              Finish this sentence:
+              <br />
+              &ldquo;Strangers would describe me as ____,
+              <br />
+              but I know that I am ____.&ldquo;
+            </Typography>
           <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
             <InputLabel htmlFor="response1">Question 1</InputLabel>
             <OutlinedInput

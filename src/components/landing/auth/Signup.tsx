@@ -2,6 +2,7 @@ import React, { useState, SyntheticEvent } from 'react';
 import { toast } from 'react-toastify';
 import '../../../App.css';
 import axios from 'axios';
+import { Grid } from '@material-ui/core';
 import UserFormFC from './UserFormFC';
 
 const rh = process.env.REACT_APP_HOST;
@@ -137,28 +138,30 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
       <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <UserFormFC
-            firstName={firstName}
-            lastName={lastName}
-            pronouns={pronouns}
-            email={email}
-            password={password}
-            q1={q1}
-            q2={q2}
-            q3={q3}
-            q4={q4}
-            q5={q5}
-            q6={q6}
-            q7={q7}
-            q8={q8}
-            q9={q9}
-            q10={q10}
-            profilePhotoUrl={profilePhotoUrl}
-            setProfilePhotoUrl={setProfilePhotoUrl}
-            onSubmitForm={onSubmitForm}
-          />
-          <br />
-          <a href="/">Already registered? Login here.</a>
+          <Grid>
+            <UserFormFC
+              firstName={firstName}
+              lastName={lastName}
+              pronouns={pronouns}
+              email={email}
+              password={password}
+              q1={q1}
+              q2={q2}
+              q3={q3}
+              q4={q4}
+              q5={q5}
+              q6={q6}
+              q7={q7}
+              q8={q8}
+              q9={q9}
+              q10={q10}
+              profilePhotoUrl={profilePhotoUrl}
+              setProfilePhotoUrl={setProfilePhotoUrl}
+              onSubmitForm={onSubmitForm}
+            />
+            <br />
+            <a href="/">Already registered? Login here.</a>
+          </Grid>
         </div>
       </div>
     </>
