@@ -108,7 +108,7 @@ const App: FC = (): JSX.Element => {
           />
           <Route
             exact
-            path="/listing/:id"
+            path="/listing/:id/:avbId"
             component={() => <Listing user={user} />}
           />
           <Route

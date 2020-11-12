@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 interface SearchListProps {
   user: number,
+  avbId: number,
+  listingId: number,
   title: string,
   location: { listingCity: string, listingState: string },
   listingAvail: { startAvail: string, endAvail: string },
@@ -49,7 +51,7 @@ interface SearchListProps {
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates, photo,
+  user, title, location, listingAvail, queriedDates, photo, avbId, listingId,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
@@ -74,7 +76,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item>
-          <ButtonBase className={classes.image} component={Link} to={`/listing/${user}`}>
+          <ButtonBase className={classes.image} component={Link} to={`/listing/${listingId}/${avbId}`}>
             <img className={classes.img} alt="listing" src={photo} />
           </ButtonBase>
         </Grid>
@@ -86,7 +88,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
         xs={12}
         direction="column"
         component={Link}
-        to={`/listing/${user}`}
+        to={`/listing/${user}/${avbId}`}
       >
         <Grid item xs>
           <Typography variant="body1">

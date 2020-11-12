@@ -23,7 +23,9 @@ const Listing: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [userId] = useState(localStorage.userId);
   const { id } = useParams<{ id: any }>();
-  const [avbId] = useState(3);
+  const { avbId } = useParams<{ avbId: any }>();
+
+  // const [avbId] = useState(3);
 
   return (
     <div className={classes.root}>

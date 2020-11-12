@@ -42,6 +42,7 @@ const ResultsList: React.FC<SearchProps> = ({
         } else {
           listingWithAvail.startAvail = listingIds[id].startDate;
           listingWithAvail.endAvail = listingIds[id].endDate;
+          listingWithAvail.avbId = listingIds[id].avlbId;
           availListingsHolder.push(listingWithAvail);
         }
       })
@@ -68,8 +69,9 @@ const ResultsList: React.FC<SearchProps> = ({
             availableListings.forEach((availBlock: any) => {
               const { startDate, endDate } = availBlock;
               const listingId = availBlock.listing.id;
+              const avlbId = availBlock.id;
               if (!listingsToRender[listingId]) {
-                listingsToRender[listingId] = { startDate, endDate };
+                listingsToRender[listingId] = { startDate, endDate, avlbId };
               }
             });
             getAvailListingInfo(listingsToRender);
@@ -88,21 +90,23 @@ const ResultsList: React.FC<SearchProps> = ({
       <Grid className={classes.paper} item xs={7}>
         {message}
         {availListings.map((listing: {
-          user_id: number; listingTitle: string;
+          user_id: number; listingId: number; avbId: number; listingTitle: string;
           listingCity: string; listingState: string; startAvail: string;
           endAvail: string; listingPhoto: { url: string } }) => {
           const {
-            user_id: userId, listingTitle, listingCity, listingState,
-            startAvail, endAvail, listingPhoto,
+            user_id: userId, listingId, listingTitle, listingCity, listingState,
+            startAvail, endAvail, listingPhoto, avbId,
           } = listing;
           const { url } = listingPhoto;
           return (
             <ResultsListEntry
               user={userId}
+              listingId={listingId}
               title={listingTitle}
               location={{ listingCity, listingState }}
               listingAvail={{ startAvail, endAvail }}
               queriedDates={dateRange}
+              avbId={avbId}
               photo={url}
             />
           );
