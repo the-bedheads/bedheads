@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import moment from 'moment';
-import axios from 'axios';
 
 import Map from '../global/Map';
 import SearchBar from './SearchBar';
@@ -31,43 +30,39 @@ const Search: React.FC = () => {
     end: moment().add(7, 'days').format('YYYY-MM-DD'),
   });
   const [defaultView, setDefaultView] = useState(true);
-  const [updated, setUpdated] = useState(false);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <SearchBar
-            xs={6}
-            onSubmit={(value: string) => setLocationQuery(value)}
-            setDefaultView={setDefaultView}
-            setUpdated={setUpdated}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            setDateRange={setDateRange}
-          />
+    <>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <SearchBar
+              xs={6}
+              onSubmit={(value: string) => setLocationQuery(value)}
+              setDefaultView={setDefaultView}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              setDateRange={setDateRange}
+            />
+          </Grid>
+          {defaultView ? <Grid container spacing={4}><SearchDefaultList /></Grid>
+            : (
+              <>
+                <Grid container justify="center" xs={12} spacing={3}>
+                  <ResultsList
+                    dateRange={dateRange} // necessary for error message
+                    locationQuery={locationQuery} // necessary for error message
+                    handleAvailListings={[availListings, setAvailListings]}
+                  />
+                  <Map locationQuery={locationQuery} listings={availListings} />
+                </Grid>
+              </>
+            )}
         </Grid>
-        {defaultView ? <SearchDefaultList />
-          : (
-            <>
-              <Grid item xs={12}>
-                <ResultsList
-              // className={classes.results}
-                  dateRange={dateRange} // necessary for error message
-                  locationQuery={locationQuery} // necessary for error message
-                  handleUpdate={[updated, setUpdated]} // not sure what this is for
-                  handleAvailListings={[availListings, setAvailListings]}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Map locationQuery={locationQuery} listings={availListings} />
-              </Grid>
-            </>
-          )}
-      </Grid>
-    </div>
+      </div>
+    </>
   );
 };
 

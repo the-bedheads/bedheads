@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import axios from 'axios';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-
+import Grid from '@material-ui/core/Grid';
 import ResultsListEntry from './SearchResultsListEntry';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -14,24 +12,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
   },
-  gridList: {
-    flexWrap: 'nowrap',
-  },
-  inline: {
-    display: 'inline',
+  paper: {
+    padding: theme.spacing(2),
+    margin: 'auto',
   },
 }));
 
 interface SearchProps {
-  dateRange: any
+  dateRange: { start: string, end: string }
   locationQuery: string
-  handleUpdate: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
   handleAvailListings: [[], React.Dispatch<React.SetStateAction<[]>>]
 }
 
 const ResultsList: React.FC<SearchProps> = ({
-  dateRange, locationQuery, handleUpdate: [updated, setUpdated],
-  handleAvailListings: [availListings, setAvailListings],
+  dateRange, locationQuery, handleAvailListings: [availListings, setAvailListings],
 }) => {
   const classes = useStyles();
   const [message, setMessage] = useState('');
@@ -91,38 +85,29 @@ const ResultsList: React.FC<SearchProps> = ({
 
   return (
     <div className={classes.root}>
-      {message}
-      <GridList className={classes.gridList} cols={2.5}>
+      <Grid className={classes.paper} item xs={7}>
+        {message}
         {availListings.map((listing: {
-          id: any; user_id: any; listingTitle: any;
-          listingCity: any; listingState: any; startAvail: any;
-          endAvail: any; availabilities: any; }) => {
+          user_id: number; listingTitle: string;
+          listingCity: string; listingState: string; startAvail: string;
+          endAvail: string; listingPhoto: { url: string } }) => {
           const {
-            id, user_id: userId, listingTitle, listingCity, listingState,
-            startAvail, endAvail,
+            user_id: userId, listingTitle, listingCity, listingState,
+            startAvail, endAvail, listingPhoto,
           } = listing;
-          let defaultAvail = {
-            startDate: '',
-            endDate: '',
-          };
-          if (listing.availabilities) {
-            const { availabilities } = listing;
-            [defaultAvail] = availabilities;
-          }
+          const { url } = listingPhoto;
           return (
-            <GridListTile key={id}>
-              <ResultsListEntry
-                user={userId}
-                title={listingTitle}
-                location={{ listingCity, listingState }}
-                avail={{ startAvail, endAvail }}
-                updated={updated}
-                availForDefault={defaultAvail}
-              />
-            </GridListTile>
+            <ResultsListEntry
+              user={userId}
+              title={listingTitle}
+              location={{ listingCity, listingState }}
+              listingAvail={{ startAvail, endAvail }}
+              queriedDates={dateRange}
+              photo={url}
+            />
           );
         })}
-      </GridList>
+      </Grid>
     </div>
   );
 };

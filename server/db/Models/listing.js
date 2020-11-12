@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Listing.hasMany(models.Availability);
     Listing.hasMany(models.Reviews);
+    Listing.hasOne(models.ListingPhotos);
   };
 
   return Listing;
