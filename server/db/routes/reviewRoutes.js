@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const {
+  Listing,
   Availability,
   Reviews
 } = require('../index');
@@ -8,20 +9,30 @@ const reviewRouter = Router();
 // TODO: GET ALL REVIEWS: Get all of a user's reviews about them as a GUEST or HOST
 
 reviewRouter
-  .get('/allReviews/:userId', async (req, res) => {
-    const { userId } = req.body.params;
-    await Reviews.findAll({
-      order: [
-        ['updatedAt', 'DESC'],
-      ],
+  .get('/getReviews', async (req, res) => {
+    const { listingId } = req.body.params;
+    const reviews = await Listing.findAll({
       where: {
-        revieweeId: userId,
-      },
+        id: listingId,
+      }
     })
-      .then((dataValues) => {
-        res.send(dataValues);
+      .then(results => {
+        const userId = results.map(info => {
+          return info.dataValues.user_id;
+        })
+        const result = Reviews.findAll({
+          order: [
+            ['updatedAt', 'DESC'],
+          ],
+          where: {
+            revieweeId: userId,
+          },
+        })
+        return result;
       })
-      .catch(err => console.warn('Error loading reviews...'))
+      .catch(err => console.warn(err.message))
+    console.info(reviews);
+    res.send(reviews);
   })
 
 // TODO: Write a review

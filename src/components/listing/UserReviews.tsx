@@ -13,11 +13,16 @@ import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Hotel, Home } from '@material-ui/icons';
 import { UserProps, AppInterface } from 'goldilocksTypes';
 import axios from 'axios';
+import ReviewList from './ReviewList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
+}
+
+interface ListingProps {
+  listingId: number
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -55,31 +60,39 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserReviews: FC<AppInterface> = ({ user }): JSX.Element => {
+const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [guestReviews, setGuestReviews] = useState([]);
   const [hostReviews, setHostReviews] = useState([]);
-  const [allReviews, setAllReviews] = useState<any>();
-  const [userId] = useState(user.id);
+  const [allReviews, setAllReviews] = useState([]);
+  // const [userId] = useState(user.id);
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
 
   const userAsHostReviews = () => {
-    axios.get(`reviews/allReviews/${userId}`)
-      .then((data) => {
-        console.info(data);
-        setAllReviews(data);
-      });
+    const params = { listingId };
+    axios.get('/reviews/getReviews', { params })
+      .then((reviewInfo) => {
+        axios.post('/reviews/getReviews');
+        setAllReviews(reviewInfo.data);
+        console.info(reviewInfo.data);
+        // setAllReviews(reviewInfo.data);
+      })
+      .catch((err) => err.message);
+  };
+
+  const renderReviews = () => {
+    allReviews.map((review) => <ReviewList review={review} />);
   };
 
   const userAsGuestReviews = () => { };
 
   // TODO: Working on this code
-  // useEffect(() => {
-  //   userAsHostReviews();
-  // }, []);
+  useEffect(() => {
+    userAsHostReviews();
+  }, []);
 
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
