@@ -110,7 +110,7 @@ const UserProfileInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
       return (
         <>
           <Grid>
-            It looks like you haven&apos;t made a listing one.
+            It looks like you haven&apos;t made a listing yet.
           </Grid>
           <Button>
             Create a listing

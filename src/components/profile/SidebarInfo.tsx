@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     borderRadius: 2,
     borderStyle: 'solid',
     justifyContent: 'center',
-    width: '50%',
+    width: '75%',
     paddingTop: '5px',
     paddingBottom: '5px',
   },
@@ -84,7 +84,7 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
       <Grid item xs={12}>
         <img
           src={host.profilePhoto}
-          alt="ya dun goofed"
+          alt="Not found"
           className={classes.imgStyle}
         />
       </Grid>

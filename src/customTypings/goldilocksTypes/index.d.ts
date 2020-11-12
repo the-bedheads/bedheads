@@ -172,6 +172,10 @@ declare module 'goldilocksTypes' {
     userId: string,
     avbId: number,
   }
+
+  interface ProfileInfoInterface {
+    host: HostDataType
+  }
 }
 
 module.exports = {
@@ -190,4 +194,5 @@ module.exports = {
   HostDataType,
   ProfileSidebarInterface,
   HostInfoInterface,
+  ProfileInfoInterface,
 };
