@@ -22,19 +22,16 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
   const rp = process.env.REACT_APP_PORT;
 
   const uploadPhoto = (photoString: any) => {
-    console.log('hitting the uploadPhoto function');
     axios.post(`http://${rh}:${rp}/image/newPhoto`, {
       data: photoString,
     })
       .then(({ data }) => {
-        console.log('returned string after axios request and cloudinary uploader:', data);
         setProfilePhotoUrl(data);
       })
       .catch((err) => console.warn(err));
   };
 
   const handleFileChange = (e: any) => {
-    console.log('hitting the handleFileChange function');
     const image = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(image);
