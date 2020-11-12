@@ -10,9 +10,24 @@ const { Listing } = require('../index');
 
 router.post('/register', async (req, res) => {
   const {
-    firstName, lastName, pronouns, email, password, profilePhotoUrl: pic,
-    q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+    firstName,
+    lastName,
+    pronouns,
+    email,
+    password,
+    profilePhotoUrl: pic,
+    q1,
+    q2,
+    q3,
+    q4,
+    q5,
+    q6,
+    q7,
+    q8,
+    q9,
+    q10,
   } = req.body;
+  console.log('pic at the auth/register route: ', pic);
   const compiledResponse = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10].join(' ');
   try {
     const existingUser = await User.findOne({
@@ -23,6 +38,7 @@ router.post('/register', async (req, res) => {
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
+      // TODO: refactor to use User.create
       await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo, "userBio") 
       VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}', 'No bio created yet');`);
 
