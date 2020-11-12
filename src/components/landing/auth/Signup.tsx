@@ -155,6 +155,8 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
             q8={q8}
             q9={q9}
             q10={q10}
+            profilePhotoUrl={profilePhotoUrl}
+            setProfilePhotoUrl={setProfilePhotoUrl}
             onSubmitForm={onSubmitForm}
           />
           <br />
