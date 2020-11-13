@@ -7,10 +7,9 @@ const {
 const reviewRouter = Router();
 
 // TODO: GET ALL REVIEWS: Get all of a user's reviews about them as a GUEST or HOST
-
 reviewRouter
-  .get('/getReviews', async (req, res) => {
-    const { listingId } = req.body.params;
+  .get('/getReviews/:listingId', async (req, res) => {
+    const { listingId } = req.params;
     const reviews = await Listing.findAll({
       where: {
         id: listingId,
@@ -21,17 +20,15 @@ reviewRouter
           return info.dataValues.user_id;
         })
         const result = Reviews.findAll({
-          order: [
-            ['updatedAt', 'DESC'],
-          ],
           where: {
             revieweeId: userId,
           },
+          order: [
+            ['updatedAt', 'DESC'],
+          ],
         })
         return result;
       })
-      .catch(err => console.warn(err.message))
-    console.info(reviews);
     res.send(reviews);
   })
 
@@ -68,6 +65,9 @@ reviewRouter
       .catch(err => res.send(err.message));
 
   });
+
+// TODO: Find the author or a review
+
 
 module.exports = {
   reviewRouter,

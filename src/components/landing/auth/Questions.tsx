@@ -74,15 +74,15 @@ const Questions: React.FC<MyQ1Props> = (Props: MyQ1Props): JSX.Element => {
       <Dialog open fullWidth>
         <AppBar title="New User Questionnaire" />
         <DialogTitle id="form-dialog-title">Step 2: Fill Out Survey (1/2)</DialogTitle>
-        <Grid container alignContent="center" justify="center">
-          <Typography component="h6">
+        <Grid container justify="center">
+          <Typography component="h6" align="left">
             <Filter1Icon />
-              Finish this sentence:
-              <br />
-              &ldquo;Strangers would describe me as ____,
-              <br />
-              but I know that I am ____.&ldquo;
-            </Typography>
+            Finish this sentence:
+            <br />
+            &ldquo;Strangers would describe me as ____,
+            <br />
+            but I know that I am ____.&ldquo;
+          </Typography>
           <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
             <InputLabel htmlFor="response1">Question 1</InputLabel>
             <OutlinedInput

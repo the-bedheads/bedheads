@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Typography,
+} from '@material-ui/core';
 
-type ReviewType = {
-  hostComments: string,
-  guestComments: string,
-  author: string,
-};
-
-interface ReviewInt {
-  review: ReviewType;
+interface ReviewProps {
+  data: Array<number>,
 }
 
-const ReviewList: React.FC<ReviewInt> = ({ review }): JSX.Element => {
-  const [allReviews] = useState(review);
-
-  useEffect(() => {
-
-  }, [allReviews]);
-
-  return (
-    <Box>{review.guestComments}</Box>
-  );
-};
+const ReviewList: React.FC<ReviewProps> = ({ data }): JSX.Element => (
+  <Grid />
+);
 
 export default ReviewList;
