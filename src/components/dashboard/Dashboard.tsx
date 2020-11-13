@@ -1,6 +1,10 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
 import axios from 'axios';
-import { createGenerateClassName, Button } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Grid,
+} from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
@@ -207,25 +211,19 @@ const Dashboard: React.FC<AuthProps> = ({
   const listingCheck = () => {
     if (hasListing) {
       return (
-        <div id="random-listing">
+        <Grid id="random-listing">
           <p>Need a weekend getaway?</p>
           {
             randomListings.length > 0
             && (
-              <div>
+              <Grid>
                 <p>
-                  {randomListings[shownIndex].hostName}
-                  {' '}
-                  has a room open in
-                  {' '}
-                  {randomListings[shownIndex].city}
+                  {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
                 </p>
                 <p>
-                  {randomListings[shownIndex].startDate}
-                  {' to '}
-                  {randomListings[shownIndex].endDate}
+                  {`${randomListings[shownIndex].startDate} to ${randomListings[shownIndex].endDate}`}
                 </p>
-              </div>
+              </Grid>
             )
           }
           <Link to={`/view-listing/${randomLink}`}>
@@ -234,53 +232,52 @@ const Dashboard: React.FC<AuthProps> = ({
             </Button>
           </Link>
           <button type="submit" onClick={getNewListing}>Show me another!</button>
-        </div>
+        </Grid>
       );
     }
     return (
-      <div>
-        It looks like you don&apos;t have a listing yet. Let&apos;s fix that!
-        <Button onClick={handleOpen}>
-          Create Listing
-        </Button>
-        <ListingModal
-          handleClose={handleClose}
-          handleClickOff={handleClickOff}
-          handleTextChange={handleTextChange}
-          toggleSwitch={toggleSwitch}
-          setPhotoUrl={setPhotoUrl}
-          open={open}
-        />
-      </div>
+      <>
+        <Grid>
+          It looks like you don&apos;t have a listing yet.
+        </Grid>
+        <Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpen}
+          >
+            Let&apos;s fix that!
+          </Button>
+          <ListingModal
+            handleClose={handleClose}
+            handleClickOff={handleClickOff}
+            handleTextChange={handleTextChange}
+            toggleSwitch={toggleSwitch}
+            setPhotoUrl={setPhotoUrl}
+            open={open}
+          />
+        </Grid>
+      </>
     );
   };
 
   return (
-    <>
-      <h4>
-        Hello,
-        {' '}
-        {user.firstName}
-        !!
-      </h4>
-      <div id="user-notifications">
+    <Container>
+      <Grid>
+        <h4>
+          {`Hello, ${user.firstName}!!`}
+        </h4>
+      </Grid>
+      <Grid id="user-notifications">
         <p>
-          You have
-          {' '}
-          {swapCount}
-          {' '}
-          upcoming trips.
+          {`You have ${swapCount} upcoming trips`}
         </p>
         <p>
-          You have
-          {' '}
-          {pendingRequestCount}
-          {' '}
-          requests to swap rooms
+          {`You have ${pendingRequestCount} requests to swap rooms`}
         </p>
-      </div>
+      </Grid>
       {listingCheck()}
-    </>
+    </Container>
   );
 };
 

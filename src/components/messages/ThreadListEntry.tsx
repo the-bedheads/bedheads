@@ -12,9 +12,15 @@ interface ThreadTypeInt {
   thread: number,
   userId: number,
   setActiveThread: React.Dispatch<React.SetStateAction<number>>,
+  setThreadName: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const ThreadListEntry: FC<ThreadTypeInt> = ({ thread, userId, setActiveThread }): JSX.Element => {
+const ThreadListEntry: FC<ThreadTypeInt> = ({
+  thread,
+  userId,
+  setActiveThread,
+  setThreadName,
+}): JSX.Element => {
   const classes = useStyles();
   const [name, setName] = useState('');
 
@@ -24,9 +30,14 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({ thread, userId, setActiveThread })
       .then(({ data }) => setName(data));
   }, []);
 
+  const threadSetter = (selectedThread: number) => {
+    setThreadName(name);
+    setActiveThread(selectedThread);
+  };
+
   return (
     <Button
-      onClick={() => setActiveThread(thread)}
+      onClick={() => threadSetter(thread)}
     >
       <Grid>
         {name}

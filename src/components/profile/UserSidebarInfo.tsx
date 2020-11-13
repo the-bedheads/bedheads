@@ -14,6 +14,7 @@ const useStyles = makeStyles({
     borderRadius: 2,
     borderStyle: 'solid',
     justifyContent: 'center',
+    maxWidth: '100%',
   },
   imgStyle: {
     height: '100%',
@@ -21,11 +22,7 @@ const useStyles = makeStyles({
     padding: '10px 10px 5px',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
     justifyContent: 'center',
-    width: '50%',
     marginTop: '5px',
     marginBottom: '5px',
   },
@@ -150,7 +147,7 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   };
 
   return (
-    <Container className={classes.main}>
+    <Container className={classes.main} disableGutters>
       <Grid item xs={12} className={classes.picOverlayStyle}>
         {renderImage()}
         <IconButton className={classes.editStyle} onClick={() => handleOpen('pic')}>
@@ -165,16 +162,31 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
         />
       </Grid>
       <Grid item xs={12} className={classes.picOverlayStyle}>
-        <Container className={classes.infoStyle}>
-          <Box className={classes.textStyle}>
-            {name}
-          </Box>
-          <Box className={classes.textStyle}>
-            {pronouns}
-          </Box>
-          <Box className={classes.textStyle}>
-            {location}
-          </Box>
+        <Container className={classes.infoStyle} disableGutters>
+          <Grid container className={classes.textStyle}>
+            <Grid item xs={3}>
+              Name:
+            </Grid>
+            <Grid item xs={9}>
+              {name}
+            </Grid>
+          </Grid>
+          <Grid container className={classes.textStyle}>
+            <Grid item xs={3}>
+              Pronouns:
+            </Grid>
+            <Grid item xs={9}>
+              {pronouns}
+            </Grid>
+          </Grid>
+          <Grid container className={classes.textStyle}>
+            <Grid item xs={3}>
+              Location:
+            </Grid>
+            <Grid item xs={9}>
+              {location}
+            </Grid>
+          </Grid>
           <IconButton className={classes.editStyle} onClick={() => handleOpen('info')}>
             <EditIcon className={classes.overlayStyle} />
           </IconButton>

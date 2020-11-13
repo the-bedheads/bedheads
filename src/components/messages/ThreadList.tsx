@@ -13,14 +13,25 @@ interface ThreadProps {
   threads: Array<number>,
   userId: number,
   setActiveThread: React.Dispatch<React.SetStateAction<number>>,
+  setName: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const ThreadList: FC<ThreadProps> = ({ threads, userId, setActiveThread }): JSX.Element => {
+const ThreadList: FC<ThreadProps> = ({
+  threads,
+  userId,
+  setActiveThread,
+  setName,
+}): JSX.Element => {
   const classes = useStyles();
 
   const renderThreads = () => threads.map((thread) => (
     <Grid className={classes.main}>
-      <ThreadListEntry thread={thread} setActiveThread={setActiveThread} userId={userId} />
+      <ThreadListEntry
+        thread={thread}
+        setActiveThread={setActiveThread}
+        setThreadName={setName}
+        userId={userId}
+      />
     </Grid>
   ));
 

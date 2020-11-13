@@ -43,7 +43,7 @@ const MessageModal: FC<MessageProps> = (props): JSX.Element => {
           Cancel
         </Button>
         <Button onClick={(i) => handleClose(i, true)} color="primary">
-          Save
+          Send
         </Button>
       </DialogActions>
     </Dialog>

@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
   scrollStyle: {
     overflow: 'auto',
-    maxHeight: '90%',
+    maxHeight: '85%',
     display: 'flex',
     flexDirection: 'column-reverse',
   },
@@ -50,29 +50,42 @@ const useStyles = makeStyles({
     minHeight: '10%',
     borderStyle: 'solid none none none',
   },
+  currentThreadStyle: {
+    width: '100%',
+    maxHeight: '5%',
+    minHeight: '5%',
+    borderStyle: 'none none solid none',
+    textAlign: 'center',
+  },
 });
 
 const Messages: FC<MessageProps> = (props): JSX.Element => {
   const { user } = props;
-  const location: LocationProps = useLocation();
+  // const location: LocationProps = useLocation();
   const classes = useStyles();
   const [threads, setThreads] = useState([]);
   const [activeThread, setActiveThread] = useState(0);
   const [newMessage, setNewMessage] = useState('');
+  const [name, setName] = useState('');
 
   const onLoad = async () => {
-    if (location.state) {
-      const params = {
-        userId: user.id,
-        hostId: location.state.hostData.id,
-      };
-      await axios.post('/message/thread', { params });
-    }
-    axios.get(`/message/getThreads/${user.id}`)
+    // if (location.state) {
+    //   const params = {
+    //     userId: user.id,
+    //     hostId: location.state.hostData.id,
+    //   };
+    //   await axios.post('/message/thread', { params });
+    // }
+    const params = { thread: activeThread, userId: user.id };
+    await axios.get(`/message/getThreads/${user.id}`)
       .then(({ data }) => {
         setThreads(data);
         setActiveThread(data[0]);
+        const num = data[0];
+        params.thread = num;
       });
+    await axios.get('message/getName/', { params })
+      .then(({ data }) => setName(data));
   };
 
   useEffect(() => {
@@ -101,9 +114,17 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
           xs={3}
           className={classes.rightBorder}
         >
-          <ThreadList threads={threads} setActiveThread={setActiveThread} userId={user.id} />
+          <ThreadList
+            threads={threads}
+            setActiveThread={setActiveThread}
+            setName={setName}
+            userId={user.id}
+          />
         </Grid>
         <Grid item xs={9} className={classes.messageListStyle}>
+          <Grid className={classes.currentThreadStyle}>
+            {`Your message history with ${name}`}
+          </Grid>
           <Grid className={classes.scrollStyle}>
             <Grid>
               <MessageList thread={activeThread} userId={user.id} />
