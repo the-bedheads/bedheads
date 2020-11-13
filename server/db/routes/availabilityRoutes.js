@@ -76,9 +76,11 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
     .catch((err) => res.status(500).send(err));
   // create new availability
   Availability.create({
-    listing_id: listingId,
+    listingId,
     startDate: start,
     endDate: end,
+    host_id: userId,
+    accepted: false,
   })
     .then(() => {
       res.status(201).send('complete');
@@ -91,7 +93,7 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
   const { listingId } = req.params;
   Availability.findAll({
     where: {
-      listing_id: listingId,
+      listingId,
     },
   })
     .then(async (availabilities) => {
@@ -104,7 +106,7 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
             title: 'Availability',
             backgroundColor: 'green',
             id,
-            listingId: item.dataValues.listing_id,
+            listingId: item.dataValues.listingId,
             type: 'avb',
           };
         }
@@ -114,7 +116,7 @@ availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
           title: 'Swap Confirmed',
           backgroundColor: 'purple',
           id,
-          listingId: item.dataValues.listing_id,
+          listingId: item.dataValues.listingId,
           guestId: item.dataValues.guest_id,
           type: 'swap',
         };
@@ -173,7 +175,7 @@ availabilityRouter.delete('/', (req, res) => {
   const { startDate, endDate, listingId } = req.query;
   Availability.findOne({
     where: {
-      listing_id: listingId,
+      listingId,
       startDate,
       endDate,
     },
