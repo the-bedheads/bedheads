@@ -28,6 +28,11 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
       swapCount: localStorage.swapCount,
       userBio: localStorage.userBio,
       email: localStorage.email,
+      openness: localStorage.openness,
+      conscientiousness: localStorage.conscientiousness,
+      extraversion: localStorage.extraversion,
+      agreeableness: localStorage.agreeableness,
+      neuroticism: localStorage.neuroticism,
     });
     setAuth(true);
   };
@@ -39,6 +44,9 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
   const getUserProfile = async () => {
     await axios.get(`user/email/${email}`)
       .then(({ data }) => {
+        const { personalityScale } = data;
+        console.log('data getting back: ', data);
+        console.log('personality scale derived from data: ', personalityScale);
         localStorage.setItem('userId', data.id);
         localStorage.setItem('firstName', data.firstName);
         localStorage.setItem('pronouns', data.pronouns);
@@ -49,6 +57,11 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
         localStorage.setItem('hostRating', data.hostRating);
         localStorage.setItem('inviteCount', data.inviteCount);
         localStorage.setItem('userBio', data.userBio);
+        localStorage.setItem('openness', personalityScale.openness);
+        localStorage.setItem('conscientiousness', personalityScale.conscientiousness);
+        localStorage.setItem('extraversion', personalityScale.extraversion);
+        localStorage.setItem('agreeableness', personalityScale.agreeableness);
+        localStorage.setItem('neuroticism', personalityScale.neuroticism);
       });
   };
 

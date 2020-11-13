@@ -42,6 +42,11 @@ const App: FC = (): JSX.Element => {
     swapCount: localStorage.swapCount,
     userBio: localStorage.userBio,
     email: localStorage.email,
+    openness: localStorage.openness,
+    conscientiousness: localStorage.conscientiousness,
+    extraversion: localStorage.extraversion,
+    agreeableness: localStorage.agreeableness,
+    neuroticism: localStorage.neuroticism,
   });
   const [darkMode, setDarkMode] = useState(false);
 

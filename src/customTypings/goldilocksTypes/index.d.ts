@@ -66,6 +66,11 @@ declare module 'goldilocksTypes' {
     pronouns: localStorage,
     swapCount: localStorage,
     userBio: localStorage,
+    openness: localStorage,
+    conscientiousness: localStorage,
+    extraversion: localStorage,
+    agreeableness: localStorage,
+    neuroticism: localStorage,
   };
 
   interface AppInterface {
