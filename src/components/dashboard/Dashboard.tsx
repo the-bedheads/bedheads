@@ -17,13 +17,12 @@ const Dashboard: React.FC<AuthProps> = ({
   handleLogin: [isAuth, setAuth],
   user,
 }) => {
-  const listingId = 1;
+  // const listingId = 1;
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
   const [randomLink, setRandomLink] = useState('');
-
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(user.id);
@@ -66,7 +65,8 @@ const Dashboard: React.FC<AuthProps> = ({
         const i = 0;
         setShownIndex(i);
         if (randomListings.length) {
-          setRandomLink(randomListings[i].listing_id);
+          const { id, listingId } = randomListings[shownIndex];
+          setRandomLink(`${listingId}/${id}`);
         }
       });
   };
@@ -180,7 +180,9 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
-    setRandomLink(randomListings[shownIndex].listing_id);
+    // setRandomLink(randomListings[shownIndex].listingId);
+    const { id, listingId } = randomListings[shownIndex];
+    setRandomLink(`${listingId}/${id}`);
   };
 
   const postUserInfo = () => {
