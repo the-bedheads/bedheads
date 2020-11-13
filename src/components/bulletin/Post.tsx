@@ -29,6 +29,7 @@ const bulletinTheme = createMuiTheme({
     },
     overline: {
       color: 'black',
+      lineHeight: 0.25,
     },
   },
 });
@@ -113,7 +114,7 @@ const Post: React.FC<BulletinProps> = ({
         <Grid item xs={12}><Typography variant="subtitle1">{body}</Typography></Grid>
         <Grid
           item
-          xs={12}
+          xs={6}
         >
           <Typography
             variant="overline"
@@ -127,9 +128,8 @@ const Post: React.FC<BulletinProps> = ({
           >
             {author}
           </Typography>
-          <Typography variant="overline">{location}</Typography>
         </Grid>
-
+        <Grid item xs={12}><Typography variant="overline">{location}</Typography></Grid>
       </Paper>
     </MuiThemeProvider>
   );

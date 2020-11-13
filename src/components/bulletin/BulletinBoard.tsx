@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   sidebar: {
     backgroundColor: 'green',
+    display: 'flex',
   },
   bulletins: {
     backgroundColor: 'yellow',
@@ -59,7 +60,7 @@ const BulletinBoard: React.FC = (): JSX.Element => {
         <Grid container item className={classes.sidebar} xs={3}>
           <CreatePost />
         </Grid>
-        <Grid container item className={classes.bulletins} xs={9}>
+        <Grid container item className={classes.bulletins} xs={8}>
           {posts.map((post, idx) => {
             const user = post.user.first_name;
             const userCity = post.user.listing.listingCity;
