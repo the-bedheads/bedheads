@@ -79,7 +79,7 @@ router.post('/register', async (req, res) => {
             neuroticism,
           } = data;
           PersonalityScale.create({
-            user_id: user.id,
+            userId: user.id,
             openness,
             conscientiousness,
             extraversion,
@@ -153,7 +153,5 @@ router.post('/invite', (req, res) => {
       res.status(500).send('Error inviting friend');
     });
 });
-
-
 
 module.exports = router;
