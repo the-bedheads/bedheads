@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { User } = require('../index');
+const { User, PersonalityScale } = require('../index');
 
 const userRouter = Router();
 
@@ -46,8 +46,9 @@ userRouter
       where: {
         email: address,
       },
+      include: { model: PersonalityScale },
     })
-      .then((response) => {
+      .then(({ dataValues }) => {
         const {
           id,
           pronouns,
@@ -58,20 +59,22 @@ userRouter
           hostRating,
           inviteCount,
           userBio,
-        } = response.dataValues;
+          personalityScale,
+        } = dataValues;
         const result = {
           id,
           pronouns,
           dob,
           email,
-          profilePhoto: response.dataValues.profile_photo,
+          profilePhoto: dataValues.profile_photo,
           swapCount,
           guestRating,
           hostRating,
           inviteCount,
           userBio,
-          firstName: response.dataValues.first_name,
-          lastName: response.dataValues.last_name,
+          firstName: dataValues.first_name,
+          lastName: dataValues.last_name,
+          personalityScale,
         };
         res.send(result);
       })

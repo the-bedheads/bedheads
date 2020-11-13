@@ -12,6 +12,7 @@ const {
   Availability,
   Geolocation,
   models,
+  PersonalityScale,
 } = require('../index');
 
 const listingRouter = Router();
@@ -62,16 +63,22 @@ listingRouter
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
   })
-  .get('/fullSearch/:listingId/:location', (req, res) => {
+  .get('/fullSearch/:listingId/:location', async (req, res) => {
     const { listingId, location } = req.params;
     Listing.findOne({
       where: {
         id: listingId,
         listingCity: location,
       },
-      include: {
-        model: ListingPhotos,
-      },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
+      ],
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
