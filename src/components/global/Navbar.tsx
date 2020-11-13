@@ -74,7 +74,7 @@ const Navbar: React.FC<AuthProps> = ({
             🛏
           </Typography>
           <Button component={Link} to="/" color="inherit">Dashboard</Button>
-          <IconButton component={Link} to="/search" color="inherit">
+          <IconButton component={Link} to="/view-searches" color="inherit">
             <SearchIcon />
           </IconButton>
           <Switch
@@ -110,7 +110,7 @@ const Navbar: React.FC<AuthProps> = ({
           >
             <MenuItem
               component={Link}
-              to="/messages"
+              to="/view-messages"
               color="inherit"
               onClick={handleClose}
             >
@@ -121,7 +121,7 @@ const Navbar: React.FC<AuthProps> = ({
             </MenuItem>
             <MenuItem
               component={Link}
-              to="/swaps"
+              to="/view-swaps"
               color="inherit"
               onClick={handleClose}
             >
@@ -129,7 +129,7 @@ const Navbar: React.FC<AuthProps> = ({
             </MenuItem>
             <MenuItem
               component={Link}
-              to="/calendar"
+              to="/view-calendar"
               color="inherit"
               onClick={handleClose}
             >
@@ -137,7 +137,7 @@ const Navbar: React.FC<AuthProps> = ({
             </MenuItem>
             <MenuItem
               component={Link}
-              to="/bulletins"
+              to="/view-bulletins"
               color="inherit"
               onClick={handleClose}
             >
@@ -145,7 +145,7 @@ const Navbar: React.FC<AuthProps> = ({
             </MenuItem>
             <MenuItem
               component={Link}
-              to="/invite"
+              to="/view-invites"
               color="inherit"
               onClick={handleClose}
             >
@@ -161,7 +161,7 @@ const Navbar: React.FC<AuthProps> = ({
             </MenuItem>
           </Menu>
           <NavLink
-            to="/profile"
+            to="/view-profile"
           >
             <Avatar
               className={classes.avatar}

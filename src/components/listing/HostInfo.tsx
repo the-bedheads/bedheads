@@ -124,7 +124,7 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
           component={Link}
           to={
             {
-              pathname: '/hostProfile',
+              pathname: '/view-hostProfile',
               state: { hostData, userId },
             }
           }
