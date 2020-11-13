@@ -103,48 +103,48 @@ const App: FC = (): JSX.Element => {
           <Route
             exact
             strict
-            path="/search"
+            path="/view-searches"
             component={Search}
           />
           <Route
             exact
-            path="/listing/:id/:avbId"
+            path="/view-listing/:id/:avbId"
             component={() => <Listing user={user} />}
           />
           <Route
             exact
             strict
-            path="/messages"
+            path="/view-messages"
             component={() => <Messages user={user} />}
           />
           <Route
             exact
-            path="/profile"
+            path="/view-profile"
             component={() => <UserProfile user={user} />}
           />
           <Route
             exact
-            path="/hostProfile"
+            path="/view-hostProfile"
             component={Profile}
           />
           <Route
             exact
-            path="/calendar"
+            path="/view-calendar"
             component={() => <UserCalendar user={user} listingId={listingId} />}
           />
           <Route
             exact
-            path="/swaps"
+            path="/view-swaps"
             component={() => <Swaps user={user} />}
           />
           <Route
             exact
-            path="/invite"
+            path="/view-invites"
             component={Invite}
           />
           <Route
             exact
-            path="/bulletins"
+            path="/view-bulletins"
             component={BulletinBoard}
           />
           <Route

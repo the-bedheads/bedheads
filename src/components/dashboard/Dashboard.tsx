@@ -228,7 +228,7 @@ const Dashboard: React.FC<AuthProps> = ({
               </div>
             )
           }
-          <Link to={`/listing/${randomLink}`}>
+          <Link to={`/view-listing/${randomLink}`}>
             <Button type="button">
               View Listing!
             </Button>
