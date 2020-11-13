@@ -1,15 +1,37 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const { db, User, PersonalityScale, Survey } = require('../db/index.js');
+const {
+  db,
+  User,
+  PersonalityScale,
+  Survey,
+  Reviews
+} = require('../db/index.js');
 const validEmail = require('../utils/validEmail');
 const generateToken = require('../utils/jsonWebToken');
 const authorize = require('../utils/authorize');
 const axios = require('axios');
+const { listingRouter } = require('../db/routes/listingRoutes');
+const { Listing } = require('../index');
 
 router.post('/register', async (req, res) => {
   const {
-    firstName, lastName, pronouns, email, password, profilePhotoUrl: pic,
-    q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+    firstName,
+    lastName,
+    pronouns,
+    email,
+    password,
+    profilePhotoUrl: pic,
+    q1,
+    q2,
+    q3,
+    q4,
+    q5,
+    q6,
+    q7,
+    q8,
+    q9,
+    q10,
   } = req.body;
   const compiledResponse = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10].join(' ');
   try {
@@ -21,8 +43,9 @@ router.post('/register', async (req, res) => {
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo) 
-      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}');`);
+      // TODO: refactor to use User.create
+      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo, "userBio") 
+      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}', 'No bio created yet');`);
 
       const user = await User.findOne({
         where: {
@@ -64,7 +87,7 @@ router.post('/register', async (req, res) => {
             neuroticism,
           });
         })
-        .catch((err) => console.warn('error from IBM API Call. line 43 in jwtauth'));
+        .catch((err) => console.warn('error from IBM API Call'));
 
       const jwtToken = generateToken(user.id);
       res.json({ jwtToken });
@@ -130,5 +153,7 @@ router.post('/invite', (req, res) => {
       res.status(500).send('Error inviting friend');
     });
 });
+
+
 
 module.exports = router;

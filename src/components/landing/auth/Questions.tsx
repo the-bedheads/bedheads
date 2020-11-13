@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Button, Dialog, DialogTitle, DialogContent, Typography, AppBar, TextField, DialogActions,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Typography,
+  AppBar,
+  TextField,
+  DialogActions,
 } from '@material-ui/core';
 import Filter1Icon from '@material-ui/icons/Filter1';
 import Filter2Icon from '@material-ui/icons/Filter2';
@@ -51,8 +58,9 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           autoFocus
           multiline
           rows={2}
-          variant="outlined"
+          variant="filled"
           fullWidth
+          required
           defaultValue={q1}
           onChange={(e) => handleResponse(e, 'response1')}
         />
@@ -66,8 +74,9 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           autoFocus
           multiline
           rows={2}
-          variant="outlined"
+          variant="filled"
           fullWidth
+          required
           defaultValue={q2}
           onChange={(e) => handleResponse(e, 'response2')}
         />
@@ -81,8 +90,9 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           autoFocus
           multiline
           rows={2}
-          variant="outlined"
+          variant="filled"
           fullWidth
+          required
           defaultValue={q3}
           onChange={(e) => handleResponse(e, 'response3')}
         />
@@ -96,8 +106,9 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           autoFocus
           multiline
           rows={2}
-          variant="outlined"
+          variant="filled"
           fullWidth
+          required
           defaultValue={q4}
           onChange={(e) => handleResponse(e, 'response4')}
         />
@@ -111,8 +122,9 @@ const Questions: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
           autoFocus
           multiline
           rows={2}
-          variant="outlined"
+          variant="filled"
           fullWidth
+          required
           defaultValue={q5}
           onChange={(e) => handleResponse(e, 'response5')}
         />

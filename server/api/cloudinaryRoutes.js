@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { Router } = require('express');
 const { cloudinary } = require('../utils/cloudinary');
+// const { multerUploads, dataUri } = require('../middleware/multer');
 
 const imageRouter = Router();
 
@@ -15,12 +16,10 @@ imageRouter.get('/newProfilePicture', async (req, res) => {
   res.send(uploadedImage.url);
 });
 
-imageRouter.post('/newListingPhoto', async (req, res) => {
+imageRouter.post('/newPhoto', async (req, res) => {
   const { data } = req.body;
   const uploadedImage = await cloudinary.uploader
     .upload(data);
-  // TODO: finish getting image url to db
-  // console.info('uploaded image:', uploadedImage.url);
   res.send(uploadedImage.url);
 });
 

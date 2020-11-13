@@ -1,22 +1,14 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC, useState } from 'react';
+import axios from 'axios';
 import {
-  Grid, Container, Box, makeStyles, Button,
+  Grid,
+  Container,
+  Box,
+  makeStyles,
+  Button,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-
-type HostDataType = {
-  firstName: string,
-  hostRating: number,
-  lastName: string,
-  pronouns: string,
-  id: number,
-  profilePhoto: string,
-  userBio: string,
-};
-
-interface ProfileProps {
-  host: HostDataType,
-}
+import { ProfileSidebarInterface } from 'goldilocksTypes';
+import MessageModal from '../messages/MessageModal';
 
 const useStyles = makeStyles({
   main: {
@@ -35,7 +27,7 @@ const useStyles = makeStyles({
     borderRadius: 2,
     borderStyle: 'solid',
     justifyContent: 'center',
-    width: '50%',
+    width: '75%',
     paddingTop: '5px',
     paddingBottom: '5px',
   },
@@ -50,14 +42,49 @@ const useStyles = makeStyles({
   },
 });
 
-const Sidebar: FunctionComponent<ProfileProps> = ({ host }): JSX.Element => {
+const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = async (
+    i: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    check: boolean,
+  ) => {
+    if (check) {
+      const params = {
+        userId,
+        hostId: host.id,
+        newMessage: message,
+        activeThread: 0,
+      };
+      const threadId = await axios.get('/message/thread', { params })
+        .then(({ data }) => data.id);
+      params.activeThread = threadId;
+      await axios.post('/message/newMessage', { params });
+      setMessage('');
+    }
+    setOpen(false);
+  };
+
+  const handleClickOff = () => {
+    setOpen(false);
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+
   return (
     <Container className={classes.main}>
       <Grid item xs={12}>
         <img
           src={host.profilePhoto}
-          alt="ya dun goofed"
+          alt="Not found"
           className={classes.imgStyle}
         />
       </Grid>
@@ -79,13 +106,18 @@ const Sidebar: FunctionComponent<ProfileProps> = ({ host }): JSX.Element => {
           <Button
             variant="contained"
             color="primary"
-            component={Link}
-            to="/messages"
+            onClick={handleOpen}
           >
-            Message
-            {' '}
-            {host.firstName}
+            {`Message ${host.firstName}`}
           </Button>
+          <MessageModal
+            handleClose={handleClose}
+            handleClickOff={handleClickOff}
+            handleTextChange={handleTextChange}
+            message={message}
+            open={open}
+            name={host.firstName}
+          />
         </Box>
       </Grid>
       {/* <Grid item xs={12}>

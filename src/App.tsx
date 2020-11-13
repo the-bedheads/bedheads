@@ -28,24 +28,9 @@ import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
-const initUser = {
-  dob: '1',
-  email: '1',
-  firstName: '1',
-  guestRating: 1,
-  hostRating: 1,
-  id: 1,
-  inviteCount: 1,
-  lastName: '1',
-  password: '1',
-  profilePhoto: '1',
-  pronouns: '1',
-  swapCount: 1,
-  userBio: '1',
-};
 const App: FC = (): JSX.Element => {
   const [isAuth, setAuth] = useState(false);
-  const [testUser, setTestUser] = useState(initUser);
+  const [listingId, setListingId] = useState(0);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
     firstName: localStorage.firstName,
@@ -78,17 +63,15 @@ const App: FC = (): JSX.Element => {
 
   useEffect(() => {
     checkAuth();
-    axios.get('user/')
-      .then(({ data }) => {
-        const userList = data.filter((tempUser: UserType) => tempUser.id === 1);
-        setTestUser(userList[0]);
-      });
+    axios.get(`listing/user/${user.id}`)
+      .then(({ data }) => setListingId(data.id));
   }, [user]);
 
   return (
     <div className={darkMode ? 'dark-mode' : 'light-mode'}>
       <BrowserRouter>
-        <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />
+        {isAuth
+          && <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />}
         <Switch>
           <Route
             exact
@@ -120,54 +103,54 @@ const App: FC = (): JSX.Element => {
           <Route
             exact
             strict
-            path="/search"
+            path="/view-searches"
             component={Search}
           />
           <Route
             exact
-            path="/listing/:id"
-            component={Listing}
+            path="/view-listing/:id/:avbId"
+            component={() => <Listing user={user} />}
           />
           <Route
             exact
             strict
-            path="/messages"
-            component={() => <Messages user={testUser} />}
+            path="/view-messages"
+            component={() => <Messages user={user} />}
           />
           <Route
             exact
-            path="/profile"
-            component={() => <UserProfile user={testUser} />}
+            path="/view-profile"
+            component={() => <UserProfile user={user} />}
           />
           <Route
             exact
-            path="/hostProfile"
+            path="/view-hostProfile"
             component={Profile}
           />
           <Route
             exact
-            path="/calendar"
-            component={() => <UserCalendar user={testUser} />}
+            path="/view-calendar"
+            component={() => <UserCalendar user={user} listingId={listingId} />}
           />
           <Route
             exact
-            path="/swaps"
-            component={() => <Swaps user={testUser} />}
+            path="/view-swaps"
+            component={() => <Swaps user={user} />}
           />
           <Route
             exact
-            path="/invite"
+            path="/view-invites"
             component={Invite}
           />
           <Route
             exact
-            path="/bulletins"
+            path="/view-bulletins"
             component={BulletinBoard}
           />
           <Route
             exact
             path="/writeReview"
-            component={WriteAReview}
+            component={() => <WriteAReview user={user} />}
           />
         </Switch>
       </BrowserRouter>

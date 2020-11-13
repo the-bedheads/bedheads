@@ -1,11 +1,18 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Grid, Typography, Paper, Tabs, Tab, AppBar, Box,
+  Grid,
+  Typography,
+  Paper,
+  Tabs,
+  Tab,
+  AppBar,
+  Box,
 } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Hotel, Home } from '@material-ui/icons';
-import { UserProps } from 'goldilocksTypes';
+import { UserProps, AppInterface } from 'goldilocksTypes';
+import axios from 'axios';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,15 +55,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserReviews: FC<UserProps> = (Props: UserProps): JSX.Element => {
+const UserReviews: FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  // TODO: Will change to not use localStorage **POLISH WEEK**
-  const [userId] = useState(localStorage.userId);
-  const { user } = Props;
+  const [guestReviews, setGuestReviews] = useState([]);
+  const [hostReviews, setHostReviews] = useState([]);
+  const [allReviews, setAllReviews] = useState<any>();
+  const [userId] = useState(user.id);
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
+
+  const userAsHostReviews = () => {
+    axios.get(`reviews/allReviews/${userId}`)
+      .then((data) => {
+        console.info(data);
+        setAllReviews(data);
+      });
+  };
+
+  const userAsGuestReviews = () => { };
+
+  // TODO: Working on this code
+  // useEffect(() => {
+  //   userAsHostReviews();
+  // }, []);
 
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
@@ -79,7 +102,7 @@ const UserReviews: FC<UserProps> = (Props: UserProps): JSX.Element => {
             Reviews left by users about User as a Host.
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Reviews left by users about User as a Guest.
+            {allReviews}
           </TabPanel>
         </Paper>
       </Grid>

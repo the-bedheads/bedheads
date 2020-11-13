@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'user_id',
     });
     Listing.hasMany(models.Availability);
+    Listing.hasMany(models.Reviews);
+    Listing.hasOne(models.ListingPhotos);
   };
 
   return Listing;

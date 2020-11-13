@@ -24,6 +24,7 @@ const PersonalityScaleModel = require('./Models/personalityScale');
 const MessageModel = require('./Models/message');
 const ThreadModel = require('./Models/thread');
 const BulletinModel = require('./Models/bulletin')
+const ReviewsModel = require('./Models/review');
 
 const User = UserModel(db, Sequelize);
 const Survey = SurveyModel(db, Sequelize);
@@ -36,6 +37,7 @@ const PersonalityScale = PersonalityScaleModel(db, Sequelize);
 const Message = MessageModel(db, Sequelize);
 const Thread = ThreadModel(db, Sequelize);
 const Bulletin = BulletinModel(db, Sequelize);
+const Reviews = ReviewsModel(db, Sequelize);
 
 const models = {
   User,
@@ -49,6 +51,7 @@ const models = {
   Message,
   Thread,
   Bulletin,
+  Reviews
 };
 
 Object.keys(models).forEach((model) => {
@@ -75,4 +78,5 @@ module.exports = {
   Thread,
   Message,
   Bulletin,
+  Reviews
 };

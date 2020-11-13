@@ -4,6 +4,9 @@ import '../../../App.css';
 import axios from 'axios';
 import UserFormFC from './UserFormFC';
 
+const rh = process.env.REACT_APP_HOST;
+const rp = process.env.REACT_APP_PORT;
+
 type RegisterNewUser = {
   first_name: string;
   last_name: string;
@@ -25,9 +28,19 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   const [fileInputState, setFileInputState] = useState('');
   const [selectedFile, setSelectedFile] = useState<any>();
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
+  const [q1, setResponse1] = useState('');
+  const [q2, setResponse2] = useState('');
+  const [q3, setResponse3] = useState('');
+  const [q4, setResponse4] = useState('');
+  const [q5, setResponse5] = useState('');
+  const [q6, setResponse6] = useState('');
+  const [q7, setResponse7] = useState('');
+  const [q8, setResponse8] = useState('');
+  const [q9, setResponse9] = useState('');
+  const [q10, setResponse10] = useState('');
 
   const uploadImage = async (encodedImage: any) => {
-    await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/image/newProfilePicture`, {
+    await axios.get(`http://${rh}:${rp}/image/newProfilePicture`, {
       params: {
         image: encodedImage,
       },
@@ -67,20 +80,9 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
       console.warn('reader experienced an error');
     };
   };
-  const [q1, setResponse1] = useState('');
-  const [q2, setResponse2] = useState('');
-  const [q3, setResponse3] = useState('');
-  const [q4, setResponse4] = useState('');
-  const [q5, setResponse5] = useState('');
-  const [q6, setResponse6] = useState('');
-  const [q7, setResponse7] = useState('');
-  const [q8, setResponse8] = useState('');
-  const [q9, setResponse9] = useState('');
-  const [q10, setResponse10] = useState('');
 
   const onSubmitForm = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    console.info('Hit the function!');
     try {
       const body = {
         firstName,
@@ -100,7 +102,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         q9,
         q10,
       };
-      const response = await fetch(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/auth/register`,
+      const response = await fetch(`http://${rh}:${rp}/auth/register`,
         {
           method: 'POST',
           headers: {
@@ -129,13 +131,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
       <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <input
-            id="imageInput"
-            type="file"
-            name="image"
-            onChange={(e) => handleFileChange(e)}
-            value={fileInputState}
-          />
           <UserFormFC
             firstName={firstName}
             lastName={lastName}
@@ -152,6 +147,8 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
             q8={q8}
             q9={q9}
             q10={q10}
+            profilePhotoUrl={profilePhotoUrl}
+            setProfilePhotoUrl={setProfilePhotoUrl}
             onSubmitForm={onSubmitForm}
           />
           <br />

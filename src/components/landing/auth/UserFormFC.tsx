@@ -10,7 +10,12 @@ import Success from './Success';
 
 const UserFormAsFC: React.FC<RegisterNewUser> = (Props: RegisterNewUser): JSX.Element => {
   const {
-    onSubmitForm, firstName, lastName, pronouns, email, password,
+    onSubmitForm,
+    firstName,
+    lastName,
+    pronouns,
+    email,
+    password,
   } = Props;
   const [step, setStep] = useState(1);
   const [firstname, setFirstName] = useState('');
@@ -19,6 +24,7 @@ const UserFormAsFC: React.FC<RegisterNewUser> = (Props: RegisterNewUser): JSX.El
   const [birthday, setDob] = useState('');
   const [emailaddress, setEmail] = useState('');
   const [pword, setPassword] = useState('');
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string>('');
   const [q1, setResponse1] = useState('');
   const [q2, setResponse2] = useState('');
   const [q3, setResponse3] = useState('');
@@ -127,6 +133,8 @@ const UserFormAsFC: React.FC<RegisterNewUser> = (Props: RegisterNewUser): JSX.El
     case 4:
       return (
         <UploadProfilePhoto
+          profilePhotoUrl={profilePhotoUrl}
+          setProfilePhotoUrl={setProfilePhotoUrl}
           nextStep={nextStep}
           prevStep={prevStep}
         />
@@ -140,6 +148,7 @@ const UserFormAsFC: React.FC<RegisterNewUser> = (Props: RegisterNewUser): JSX.El
           email={emailaddress}
           dob={birthday}
           password={pword}
+          profilePhotoUrl={profilePhotoUrl}
           q1={q1}
           q2={q2}
           q3={q3}

@@ -1,21 +1,13 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import axios from 'axios';
+import { ProfileInfoInterface } from 'goldilocksTypes';
 import {
-  Grid, Container, Box, Button, makeStyles,
+  Grid,
+  Container,
+  Box,
+  Button,
+  makeStyles,
 } from '@material-ui/core';
-
-type HostDataType = {
-  firstName: string,
-  hostRating: number,
-  lastName: string,
-  pronouns: string,
-  id: number,
-  profilePhoto: string,
-  userBio: string,
-};
-
-interface ProfileProps {
-  host: HostDataType,
-}
 
 const useStyles = makeStyles({
   main: {
@@ -52,28 +44,34 @@ const useStyles = makeStyles({
   },
 });
 
-const ProfileInfo: FunctionComponent<ProfileProps> = ({ host }): JSX.Element => {
+const ProfileInfo: FC<ProfileInfoInterface> = ({ host }): JSX.Element => {
   const classes = useStyles();
   const [bio] = useState(host.userBio);
+  const [listingPic, setListingPic] = useState('');
+
+  useEffect(() => {
+    axios.get(`/listingPhotos/${host.id}`)
+      .then(({ data }) => setListingPic(data.url));
+  }, []);
 
   return (
     <>
       <Container className={classes.main}>
         <Grid container justify="center" item xs={12}>
           <img
-            src="https://images.unsplash.com/photo-1520619831939-20749195c50f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=651&q=80"
-            alt="nobodys home"
+            src={listingPic}
+            alt="This person hasn't uploaded any pics of their place yet!"
             className={classes.imgStyle}
           />
         </Grid>
         <Grid item xs={12}>
           <Box className={classes.buttonStyle}>
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
             >
               Availability
-            </Button>
+            </Button> */}
           </Box>
         </Grid>
         <Grid item xs={12}>
