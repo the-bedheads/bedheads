@@ -44,6 +44,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 
 app.use('/auth', require('./routes/jwtAuth'));
 app.use('/dashboard', require('./routes/dashboard'));
+
 app.use('/reviews', reviewRouter);
 app.use('/listing', listingRouter);
 app.use('/user', userRouter);
