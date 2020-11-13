@@ -1,6 +1,6 @@
 module.exports = [
   {
-    user_id: 1,
+    userId: 1,
     listingAddress: '4411 Iberville St',
     listingCity: 'New Orleans',
     listingState: 'LA',
@@ -17,7 +17,7 @@ module.exports = [
     longitude: -90.103,
   },
   {
-    user_id: 2,
+    userId: 2,
     listingAddress: '2037 S Chippewa St',
     listingCity: 'New Orleans',
     listingState: 'LA',
@@ -34,7 +34,7 @@ module.exports = [
     longitude: -90.072,
   },
   {
-    user_id: 3,
+    userId: 3,
     listingAddress: '2033 S Chippewa St',
     listingCity: 'New Orleans',
     listingState: 'LA',
@@ -51,7 +51,7 @@ module.exports = [
     longitude: -90.072,
   },
   {
-    user_id: 4,
+    userId: 4,
     listingAddress: '2515 Folsom St',
     listingCity: 'San Francisco',
     listingState: 'CA',
@@ -68,7 +68,7 @@ module.exports = [
     longitude: -122.41,
   },
   {
-    user_id: 5,
+    userId: 5,
     listingAddress: '2230 3rd St',
     listingCity: 'San Francisco',
     listingState: 'CA',
