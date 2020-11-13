@@ -71,9 +71,9 @@ dashboardRouter
       const arr = [];
       await Promise.all(obj.avails.map(async (avlb) => {
         const newObj = {};
-        const { listing_id, host_id } = avlb;
-        const listingUrl = `http://${h}:${p}/listing/byId/${listing_id}`;
-        const userUrl = `http://${h}:${p}/user/byId/${host_id}`;
+        const { listingId, host_id: hostId } = avlb;
+        const listingUrl = `http://${h}:${p}/listing/byId/${listingId}`;
+        const userUrl = `http://${h}:${p}/user/byId/${hostId}`;
         await axios.get(listingUrl)
           .then(({ data }) => {
             newObj.city = data.listingCity;

@@ -53,10 +53,10 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
 
   return (
     <div className={classes.root}>
-      <ButtonBase className={classes.image} component={Link} to={`/listing/${user}`}>
+      <ButtonBase className={classes.image} component={Link} to={`/view-listing/${user}`}>
         <img className={classes.img} alt="complex" src={photo} />
       </ButtonBase>
-      <Grid item xs component={Link} to={`/listing/${user}`}>
+      <Grid item xs component={Link} to={`/view-listing/${user}`}>
         <Typography variant="h6">
           {title}
         </Typography>

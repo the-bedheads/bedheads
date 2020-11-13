@@ -17,13 +17,12 @@ const Dashboard: React.FC<AuthProps> = ({
   handleLogin: [isAuth, setAuth],
   user,
 }) => {
-  const listingId = 1;
+  // const listingId = 1;
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
   const [randomLink, setRandomLink] = useState('');
-
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(user.id);
@@ -63,9 +62,12 @@ const Dashboard: React.FC<AuthProps> = ({
         setSwapCount(confirmedSwapCount);
         setPendingRequestCount(pendingRequests.count);
         setRandomListings(openAvailabilities);
-        const randIndex = Math.floor(Math.random() * openAvailabilities.length);
-        setShownIndex(randIndex);
-        setRandomLink(randomListings[randIndex].listing_id);
+        const i = 0;
+        setShownIndex(i);
+        if (randomListings.length) {
+          const { id, listingId } = randomListings[shownIndex];
+          setRandomLink(`${listingId}/${id}`);
+        }
       });
   };
 
@@ -85,9 +87,6 @@ const Dashboard: React.FC<AuthProps> = ({
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
       setListingTitle(e.target.value);
-    } else if (string === 'listingPhoto') {
-      const target = e.target as HTMLInputElement;
-      const file: File = (target.files as FileList)[0];
     }
   };
 
@@ -113,7 +112,10 @@ const Dashboard: React.FC<AuthProps> = ({
         userId,
         photoUrl,
       })
-        .then(() => getDashboardInfo())
+        .then(() => {
+          getDashboardInfo();
+          setHasListing(true);
+        })
         .catch((err) => console.warn(err));
       // save changes to DB
       // update field on screen
@@ -178,8 +180,9 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
-    setRandomLink(randomListings[shownIndex].listing_id);
-    console.log(randomListings[shownIndex]);
+    // setRandomLink(randomListings[shownIndex].listingId);
+    const { id, listingId } = randomListings[shownIndex];
+    setRandomLink(`${listingId}/${id}`);
   };
 
   const postUserInfo = () => {
@@ -225,7 +228,7 @@ const Dashboard: React.FC<AuthProps> = ({
               </div>
             )
           }
-          <Link to={`/listing/${randomLink}`}>
+          <Link to={`/view-listing/${randomLink}`}>
             <Button type="button">
               View Listing!
             </Button>
@@ -245,6 +248,7 @@ const Dashboard: React.FC<AuthProps> = ({
           handleClickOff={handleClickOff}
           handleTextChange={handleTextChange}
           toggleSwitch={toggleSwitch}
+          setPhotoUrl={setPhotoUrl}
           open={open}
         />
       </div>
