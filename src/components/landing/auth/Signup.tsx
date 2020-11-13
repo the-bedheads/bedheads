@@ -54,6 +54,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   const getUserProfile = async () => {
     await axios.get(`user/email/${email}`)
       .then(({ data }) => {
+        const { personalityScale } = data;
         localStorage.setItem('userId', data.id);
         localStorage.setItem('firstName', data.firstName);
         localStorage.setItem('pronouns', data.pronouns);
@@ -64,6 +65,11 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         localStorage.setItem('hostRating', data.hostRating);
         localStorage.setItem('inviteCount', data.inviteCount);
         localStorage.setItem('userBio', data.userBio);
+        localStorage.setItem('openness', personalityScale.openness);
+        localStorage.setItem('conscientiousness', personalityScale.conscientiousness);
+        localStorage.setItem('extraversion', personalityScale.extraversion);
+        localStorage.setItem('agreeableness', personalityScale.agreeableness);
+        localStorage.setItem('neuroticism', personalityScale.neuroticism);
       });
   };
 
