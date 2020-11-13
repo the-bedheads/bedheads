@@ -12,21 +12,33 @@ interface ThreadTypeInt {
   thread: number,
   userId: number,
   setActiveThread: React.Dispatch<React.SetStateAction<number>>,
+  setThreadName: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const ThreadListEntry: FC<ThreadTypeInt> = ({ thread, userId, setActiveThread }): JSX.Element => {
+const ThreadListEntry: FC<ThreadTypeInt> = ({
+  thread,
+  userId,
+  setActiveThread,
+  setThreadName,
+}): JSX.Element => {
   const classes = useStyles();
   const [name, setName] = useState('');
 
   useEffect(() => {
     const params = { thread, userId };
     axios.get('message/getName/', { params })
-      .then(({ data }) => setName(data));
+      .then(({ data }) => setName(data))
+      .catch((err) => console.warn(err.message));
   }, []);
+
+  const threadSetter = (selectedThread: number) => {
+    setThreadName(name);
+    setActiveThread(selectedThread);
+  };
 
   return (
     <Button
-      onClick={() => setActiveThread(thread)}
+      onClick={() => threadSetter(thread)}
     >
       <Grid>
         {name}

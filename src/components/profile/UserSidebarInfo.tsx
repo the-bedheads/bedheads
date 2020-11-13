@@ -14,6 +14,7 @@ const useStyles = makeStyles({
     borderRadius: 2,
     borderStyle: 'solid',
     justifyContent: 'center',
+    maxWidth: '100%',
   },
   imgStyle: {
     height: '100%',
@@ -21,16 +22,13 @@ const useStyles = makeStyles({
     padding: '10px 10px 5px',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
     justifyContent: 'center',
-    width: '50%',
     marginTop: '5px',
     marginBottom: '5px',
   },
   textStyle: {
     textAlign: 'center',
+    justifyContent: 'center',
     wordWrap: 'break-word',
   },
   buttonStyle: {
@@ -71,7 +69,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   const [tempPic, setTempPic] = useState(pic);
   const [tempName, setTempName] = useState(user.firstName);
   const [tempPronouns, setTempPronouns] = useState(user.pronouns);
-  const [tempLocation, setTempLocation] = useState('New Orleans, LA');
 
   const handleOpen = (type: string) => {
     if (type === 'pic') {
@@ -101,11 +98,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
         if (pronouns !== tempPronouns) {
           setPronouns(tempPronouns);
         }
-        if (location !== tempLocation) {
-          setLocation(tempLocation);
-        }
-        // save changes to DB
-        // update field on screen
       }
       setInfoOpen(false);
     }
@@ -144,13 +136,11 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
       setTempName(e.target.value);
     } else if (type === 'pronouns') {
       setTempPronouns(e.target.value);
-    } else if (type === 'location') {
-      setTempLocation(e.target.value);
     }
   };
 
   return (
-    <Container className={classes.main}>
+    <Container className={classes.main} disableGutters>
       <Grid item xs={12} className={classes.picOverlayStyle}>
         {renderImage()}
         <IconButton className={classes.editStyle} onClick={() => handleOpen('pic')}>
@@ -165,16 +155,13 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
         />
       </Grid>
       <Grid item xs={12} className={classes.picOverlayStyle}>
-        <Container className={classes.infoStyle}>
-          <Box className={classes.textStyle}>
-            {name}
-          </Box>
-          <Box className={classes.textStyle}>
-            {pronouns}
-          </Box>
-          <Box className={classes.textStyle}>
+        <Container className={classes.infoStyle} disableGutters>
+          <Grid container className={classes.textStyle}>
+            {`${name} (${pronouns})`}
+          </Grid>
+          <Grid container className={classes.textStyle}>
             {location}
-          </Box>
+          </Grid>
           <IconButton className={classes.editStyle} onClick={() => handleOpen('info')}>
             <EditIcon className={classes.overlayStyle} />
           </IconButton>
@@ -184,7 +171,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
             handleTextChange={handleTextChange}
             name={name}
             pronouns={pronouns}
-            location={location}
             infoOpen={infoOpen}
             picOpen={picOpen}
           />

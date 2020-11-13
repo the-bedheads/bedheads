@@ -1,5 +1,6 @@
 import React, { useState, FC, useEffect } from 'react';
 import axios from 'axios';
+import { Container, Grid } from '@material-ui/core';
 import { AppInterface, Availability } from 'goldilocksTypes';
 import SwapList from './SwapList';
 
@@ -38,22 +39,25 @@ const Swaps: FC<AppInterface> = ({ user }) => {
   }, [newUser]);
 
   return (
-    <>
-      Hello,
-      {` ${user.firstName}!`}
-      <br />
-      These swaps have been confirmed. Have fun!
-      <br />
-      <SwapList swaps={accSwaps} />
-      <br />
-      These swaps are still pending. Check back later!
-      <br />
-      <SwapList swaps={pendingSwaps} />
-      <br />
-      These swaps have already happened. Please submit a review for your experience!
-      <br />
+    <Container>
+      {`Hello, ${user.firstName}!`}
+      <Grid>
+        These swaps have been confirmed. Have fun!
+      </Grid>
+      <Grid>
+        <SwapList swaps={accSwaps} />
+      </Grid>
+      <Grid>
+        These swaps are still pending. Check back later!
+      </Grid>
+      <Grid>
+        <SwapList swaps={pendingSwaps} />
+      </Grid>
+      <Grid>
+        These swaps have already happened. Please submit a review for your experience!
+      </Grid>
       {/* <SwapList /> */}
-    </>
+    </Container>
   );
 };
 
