@@ -11,9 +11,7 @@ import {
 } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Hotel, Home } from '@material-ui/icons';
-import { UserProps, AppInterface } from 'goldilocksTypes';
 import axios from 'axios';
-import ReviewList from './ReviewList';
 import HostReviews from './HostReviews';
 import GuestReviews from './GuestReviews';
 
@@ -65,11 +63,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [guestReviews, setGuestReviews] = useState([]);
-  const [hostReviews, setHostReviews] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
   const [listing, setListing] = useState<number>(listingId);
-  console.info('listing id', listingId, listing);
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
@@ -79,17 +74,6 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
       .then((reviewInfo) => {
         console.info(reviewInfo.data);
         setAllReviews(reviewInfo.data);
-        // console.info('--->', allReviews);
-      })
-      .catch((err) => err.message);
-  };
-
-  const getReviews = () => {
-    axios.get(`/reviews/getReviews/${listingId}`)
-      .then((reviewInfo) => {
-        console.info(reviewInfo.data);
-        setAllReviews(reviewInfo.data);
-        console.info('--->', allReviews);
       })
       .catch((err) => err.message);
   };
@@ -118,9 +102,11 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
           </AppBar>
           <TabPanel value={value} index={0}>
             <HostReviews listingId={listingId} allReviews={allReviews} />
+            <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <GuestReviews listingId={listingId} allReviews={allReviews} />
+            <br />
           </TabPanel>
         </Paper>
       </Grid>

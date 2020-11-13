@@ -4,6 +4,8 @@ import {
   Box,
   Typography,
   Grid,
+  List,
+  ListItemText,
 } from '@material-ui/core';
 import ReviewList from './ReviewList';
 
@@ -46,14 +48,14 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId }): JSX.Elemen
     console.info(allReviews);
     const reviews = allReviews
       .map((review: { createdAt: any; guestComments: any; }) => (
-        <Grid>
-          <Typography>
+        <List>
+          <ListItemText>
             {`Date: ${review.createdAt}`}
-          </Typography>
-          <Typography>
+          </ListItemText>
+          <ListItemText>
             {review.guestComments}
-          </Typography>
-        </Grid>
+          </ListItemText>
+        </List>
       ));
     return reviews;
   };

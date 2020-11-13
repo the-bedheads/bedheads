@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const {
+  User,
   Listing,
   Availability,
   Reviews
@@ -66,8 +67,17 @@ reviewRouter
 
   });
 
-// TODO: Find the author or a review
-
+// TODO: Find the author of a review
+reviewRouter
+  .get('/getAuthor', async (req, res) => {
+    const { reviewerId } = req.body.params;
+    const author = await User.findOne({
+      where: {
+        id: reviewerId,
+      },
+    })
+    res.send(author);
+  })
 
 module.exports = {
   reviewRouter,
