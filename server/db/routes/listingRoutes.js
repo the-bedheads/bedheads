@@ -105,7 +105,9 @@ listingRouter
       photoUrl,
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
-    axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
+    const h = process.env.HOST;
+    const p = process.env.PORT;
+    axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
       .then(((geocoded) => {
         Listing.create({
           user_id: userId,
@@ -125,7 +127,6 @@ listingRouter
           longitude: geocoded.data[0],
         })
           .then(({ dataValues }) => {
-            console.log(dataValues);
             const { id } = dataValues;
             ListingPhotos.create({
               url: photoUrl,
