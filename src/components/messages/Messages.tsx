@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
   Grid,
@@ -11,7 +10,7 @@ import {
   Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { MessageProps, LocationProps } from 'goldilocksTypes';
+import { MessageProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
 
@@ -55,13 +54,14 @@ const useStyles = makeStyles({
     maxHeight: '5%',
     minHeight: '5%',
     borderStyle: 'none none solid none',
-    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
 const Messages: FC<MessageProps> = (props): JSX.Element => {
   const { user } = props;
-  // const location: LocationProps = useLocation();
   const classes = useStyles();
   const [threads, setThreads] = useState([]);
   const [activeThread, setActiveThread] = useState(0);
@@ -69,13 +69,6 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
   const [name, setName] = useState('');
 
   const onLoad = async () => {
-    // if (location.state) {
-    //   const params = {
-    //     userId: user.id,
-    //     hostId: location.state.hostData.id,
-    //   };
-    //   await axios.post('/message/thread', { params });
-    // }
     const params = { thread: activeThread, userId: user.id };
     await axios.get(`/message/getThreads/${user.id}`)
       .then(({ data }) => {

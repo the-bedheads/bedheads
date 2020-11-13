@@ -135,14 +135,18 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
     }
     if (!listingPhoto) {
       return (
-        <>
-          <Grid>
+        <Container className={classes.contStyle}>
+          <Grid className={classes.botMargStyle}>
             It looks like there aren&apos;t any photos of your place yet.
           </Grid>
-          <Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.botMargStyle}
+          >
             Upload a photo
           </Button>
-        </>
+        </Container>
       );
     }
     return (

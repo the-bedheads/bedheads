@@ -28,6 +28,7 @@ const useStyles = makeStyles({
   },
   textStyle: {
     textAlign: 'center',
+    justifyContent: 'center',
     wordWrap: 'break-word',
   },
   buttonStyle: {
@@ -68,7 +69,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   const [tempPic, setTempPic] = useState(pic);
   const [tempName, setTempName] = useState(user.firstName);
   const [tempPronouns, setTempPronouns] = useState(user.pronouns);
-  const [tempLocation, setTempLocation] = useState('New Orleans, LA');
 
   const handleOpen = (type: string) => {
     if (type === 'pic') {
@@ -98,11 +98,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
         if (pronouns !== tempPronouns) {
           setPronouns(tempPronouns);
         }
-        if (location !== tempLocation) {
-          setLocation(tempLocation);
-        }
-        // save changes to DB
-        // update field on screen
       }
       setInfoOpen(false);
     }
@@ -141,8 +136,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
       setTempName(e.target.value);
     } else if (type === 'pronouns') {
       setTempPronouns(e.target.value);
-    } else if (type === 'location') {
-      setTempLocation(e.target.value);
     }
   };
 
@@ -164,28 +157,10 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
       <Grid item xs={12} className={classes.picOverlayStyle}>
         <Container className={classes.infoStyle} disableGutters>
           <Grid container className={classes.textStyle}>
-            <Grid item xs={3}>
-              Name:
-            </Grid>
-            <Grid item xs={9}>
-              {name}
-            </Grid>
+            {`${name} (${pronouns})`}
           </Grid>
           <Grid container className={classes.textStyle}>
-            <Grid item xs={3}>
-              Pronouns:
-            </Grid>
-            <Grid item xs={9}>
-              {pronouns}
-            </Grid>
-          </Grid>
-          <Grid container className={classes.textStyle}>
-            <Grid item xs={3}>
-              Location:
-            </Grid>
-            <Grid item xs={9}>
-              {location}
-            </Grid>
+            {location}
           </Grid>
           <IconButton className={classes.editStyle} onClick={() => handleOpen('info')}>
             <EditIcon className={classes.overlayStyle} />
@@ -196,7 +171,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
             handleTextChange={handleTextChange}
             name={name}
             pronouns={pronouns}
-            location={location}
             infoOpen={infoOpen}
             picOpen={picOpen}
           />

@@ -23,17 +23,14 @@ const useStyles = makeStyles({
     padding: '10px 10px 5px',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
     justifyContent: 'center',
-    width: '75%',
     paddingTop: '5px',
     paddingBottom: '5px',
   },
   textStyle: {
     textAlign: 'center',
     wordWrap: 'break-word',
+    justifyContent: 'center',
   },
   buttonStyle: {
     padding: '5px 10px 10px',
@@ -80,7 +77,7 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
   };
 
   return (
-    <Container className={classes.main}>
+    <Container className={classes.main} disableGutters>
       <Grid item xs={12}>
         <img
           src={host.profilePhoto}
@@ -89,16 +86,13 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
         />
       </Grid>
       <Grid item xs={12}>
-        <Container className={classes.infoStyle}>
-          <Box className={classes.textStyle}>
-            {host.firstName}
-          </Box>
-          <Box className={classes.textStyle}>
-            {host.pronouns}
-          </Box>
-          <Box className={classes.textStyle}>
+        <Container className={classes.infoStyle} disableGutters>
+          <Grid container className={classes.textStyle}>
+            {`${host.firstName} (${host.pronouns})`}
+          </Grid>
+          <Grid container className={classes.textStyle}>
             New Orleans, LA
-          </Box>
+          </Grid>
         </Container>
       </Grid>
       <Grid item xs={12}>
