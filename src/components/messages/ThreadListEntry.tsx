@@ -27,7 +27,8 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({
   useEffect(() => {
     const params = { thread, userId };
     axios.get('message/getName/', { params })
-      .then(({ data }) => setName(data));
+      .then(({ data }) => setName(data))
+      .catch((err) => console.warn(err.message));
   }, []);
 
   const threadSetter = (selectedThread: number) => {

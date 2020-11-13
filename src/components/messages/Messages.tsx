@@ -76,9 +76,11 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
         setActiveThread(data[0]);
         const num = data[0];
         params.thread = num;
-      });
+      })
+      .catch((err) => console.warn(err.message));
     await axios.get('message/getName/', { params })
-      .then(({ data }) => setName(data));
+      .then(({ data }) => setName(data))
+      .catch((err) => console.warn(err.message));
   };
 
   useEffect(() => {
