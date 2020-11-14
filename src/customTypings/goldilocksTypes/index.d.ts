@@ -15,6 +15,14 @@ declare module 'goldilocksTypes' {
     userBio: string,
   };
 
+  type PersonalityType = {
+    openness: number,
+    conscientiousness: number,
+    extraversion: number,
+    agreeableness: number,
+    neuroticism: number,
+  };
+
   interface UserProps {
     user: UserType,
   }
@@ -173,6 +181,11 @@ declare module 'goldilocksTypes' {
   interface ProfileSidebarInterface {
     host: HostDataType,
     userId: string,
+  }
+
+  interface RadarChartInterface {
+    hostData: PersonalityType,
+    hostName: string,
   }
 
   interface HostInfoInterface {
