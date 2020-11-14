@@ -148,12 +148,6 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
       <Grid>
         <RadarChart hostData={personalityData} hostName={host.firstName} />
       </Grid>
-      {/* <Grid item xs={12}>
-        spotify
-      </Grid>
-      <Grid item xs={12}>
-        instagram
-      </Grid> */}
     </Container>
   );
 };
