@@ -132,6 +132,20 @@ userRouter.get('/:userId', (req, res) => {
     .catch((err) => err);
 });
 
+// get user's personality data
+userRouter
+  .get('/personalityData/:userId', (req, res) => {
+    const { userId } = req.params;
+    PersonalityScale.findOne({
+      where: {
+        userId,
+      },
+      include: { model: User },
+    })
+      .then((data) => res.send(data))
+      .catch((err) => res.status(500).send(err));
+  });
+
 // get single user
 userRouter
   .get('/oneUser/:userId', (req, res) => {
