@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const axios = require('axios');
 
 const {
@@ -18,14 +19,24 @@ const {
 const listingRouter = Router();
 
 listingRouter
-  .get('/', async (req, res) => {
+  .get('/randomFour/:currentUser', async (req, res) => {
+    const { currentUser } = req.params;
     await Listing.findAll({
-      include: [{
-        model: ListingPhotos,
+      where: {
+        user_id: { [Op.not]: currentUser },
       },
-      {
-        model: Availability,
-      },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: Availability,
+          where: { accepted: false },
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
       ],
       order: [
         [Availability, 'startDate', 'ASC'],
