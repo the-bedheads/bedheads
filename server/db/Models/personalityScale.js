@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   PersonalityScale.associate = (models) => {
     PersonalityScale.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
   };
 

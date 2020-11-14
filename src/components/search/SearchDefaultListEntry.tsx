@@ -42,14 +42,16 @@ interface DefaultListProps {
   state: string;
   avail: Date;
   photo: string;
+  matchPercentage: number;
 }
 
 const DefaultListEntry: React.FC<DefaultListProps> = ({
-  listingId, user, title, city, state, avail, photo,
+  listingId, user, title, city, state, avail, photo, matchPercentage,
 }) => {
   const classes = useStyles();
   const location = `${city}, ${state}`;
   const availMessage = `available ${avail}`;
+  const matchMsg = `${matchPercentage}% match`;
 
   return (
     <div className={classes.root}>
@@ -66,6 +68,9 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
       </Grid>
       <Typography variant="overline" display="block">
         {availMessage}
+      </Typography>
+      <Typography variant="overline" display="block">
+        {matchMsg}
       </Typography>
     </div>
   );

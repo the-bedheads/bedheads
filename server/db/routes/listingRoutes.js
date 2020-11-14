@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const axios = require('axios');
 
 const {
@@ -12,19 +13,30 @@ const {
   Availability,
   Geolocation,
   models,
+  PersonalityScale,
 } = require('../index');
 
 const listingRouter = Router();
 
 listingRouter
-  .get('/', async (req, res) => {
+  .get('/randomFour/:currentUser', async (req, res) => {
+    const { currentUser } = req.params;
     await Listing.findAll({
-      include: [{
-        model: ListingPhotos,
+      where: {
+        user_id: { [Op.not]: currentUser },
       },
-      {
-        model: Availability,
-      },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: Availability,
+          where: { accepted: false },
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
       ],
       order: [
         [Availability, 'startDate', 'ASC'],
@@ -62,16 +74,22 @@ listingRouter
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
   })
-  .get('/fullSearch/:listingId/:location', (req, res) => {
+  .get('/fullSearch/:listingId/:location', async (req, res) => {
     const { listingId, location } = req.params;
     Listing.findOne({
       where: {
         id: listingId,
         listingCity: location,
       },
-      include: {
-        model: ListingPhotos,
-      },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
+      ],
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));

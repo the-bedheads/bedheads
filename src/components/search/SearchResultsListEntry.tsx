@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+// import { TypeFormatFlags } from 'typescript';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -48,10 +49,11 @@ interface SearchListProps {
   listingAvail: { startAvail: string, endAvail: string },
   queriedDates: { start: string, end: string },
   photo: string,
+  matchPercentage: number,
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates, photo, avbId, listingId,
+  user, title, location, listingAvail, queriedDates, photo, avbId, listingId, matchPercentage,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
@@ -59,6 +61,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
   const { start, end } = queriedDates;
   const [availMessage, setAvailMessage] = useState<string>('');
   const locationStr = `${listingCity}, ${listingState}`;
+  const matchStr = `${matchPercentage}% match`;
 
   const getAvailMessage = () => {
     if (start !== startAvail || end !== endAvail) {
@@ -104,6 +107,9 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
         </Grid>
         <Typography variant="overline" display="block">
           {availMessage}
+        </Typography>
+        <Typography variant="overline" display="block">
+          {matchStr}
         </Typography>
       </Grid>
     </div>
