@@ -1,6 +1,7 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { useState, FunctionComponent, useEffect } from 'react';
 import { Grid, Container, makeStyles } from '@material-ui/core';
 import { ProfileProps } from 'goldilocksTypes';
+import { string } from 'prop-types';
 import ProfileInfo from './ProfileInfo';
 import SidebarInfo from './SidebarInfo';
 
@@ -28,7 +29,6 @@ const Profile: FunctionComponent<ProfileProps> = (props): JSX.Element => {
         </Grid>
       </Grid>
     </Container>
-
   );
 };
 
