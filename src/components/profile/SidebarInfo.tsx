@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Grid,
@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { ProfileSidebarInterface } from 'goldilocksTypes';
 import MessageModal from '../messages/MessageModal';
+import RadarChart from './RadarChart';
 
 const useStyles = makeStyles({
   main: {
@@ -43,6 +44,13 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [personalityData, setPersonalityData] = useState({
+    openness: 0,
+    conscientiousness: 0,
+    extraversion: 0,
+    agreeableness: 0,
+    neuroticism: 0,
+  });
 
   const handleOpen = () => {
     setOpen(true);
@@ -75,6 +83,26 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setMessage(e.target.value);
   };
+
+  const getPersonalityData = () => {
+    axios.get(`/user/personalityData/${host.id}`)
+      .then(({ data }) => {
+        // console.log(data);
+        setPersonalityData({
+          openness: data.openness,
+          conscientiousness: data.conscientiousness,
+          extraversion: data.extraversion,
+          agreeableness: data.agreeableness,
+          neuroticism: data.neuroticism,
+        });
+        // console.log(personalityData);
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  useEffect(() => {
+    getPersonalityData();
+  }, []);
 
   return (
     <Container className={classes.main} disableGutters>
@@ -113,6 +141,12 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
             name={host.firstName}
           />
         </Box>
+      </Grid>
+      <Grid>
+        {`Your match profile with ${host.firstName}`}
+      </Grid>
+      <Grid>
+        <RadarChart hostData={personalityData} hostName={host.firstName} />
       </Grid>
       {/* <Grid item xs={12}>
         spotify
