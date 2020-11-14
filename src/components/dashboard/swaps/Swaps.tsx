@@ -30,9 +30,6 @@ const Swaps: FC<AppInterface> = ({ user }) => {
         tempCompleted.push(entry);
       }
     });
-    console.log(tempAcc);
-    console.log(tempPending);
-    console.log(tempCompleted);
     setAccSwaps(tempAcc);
     setPendingSwaps(tempPending);
     setCompletedSwaps(tempCompleted);
