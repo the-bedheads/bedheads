@@ -5,14 +5,10 @@ const axios = require('axios');
 
 const {
   User,
-  Survey,
-  Request,
   ListingPhotos,
   Listing,
-  Invite,
   Availability,
   Geolocation,
-  models,
   PersonalityScale,
 } = require('../index');
 

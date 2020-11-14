@@ -1,16 +1,5 @@
 const { Router } = require('express');
 const axios = require('axios');
-const { Op } = require('sequelize');
-
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
 
 const h = process.env.HOST;
 const p = process.env.PORT;
@@ -66,7 +55,7 @@ dashboardRouter
       })
       .catch((err) => console.warn(err));
 
-    // Add host name and city to availabilites found in above axios call
+    // Add host name and city to availabilities found in above axios call
     const getAccumulatedData = async () => {
       const arr = [];
       await Promise.all(obj.avails.map(async (avlb) => {
