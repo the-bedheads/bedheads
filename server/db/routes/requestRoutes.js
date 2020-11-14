@@ -52,7 +52,42 @@ requestRouter
 // to make a request
 requestRouter
   .post('/newRequest', async (req, res) => {
-    const { userId, avbId } = req.body.params;
+    const { userId, avbId, dates } = req.body.params;
+    // does host have availability for same days?
+    const requesterListingId = await Listing.findOne({
+      where: {
+        user_id: userId,
+      },
+    })
+      .then(({ dataValues }) => dataValues.id)
+      .catch((err) => res.status(500).send(err));
+    const avbCheck = await Availability.findOne({
+      where: {
+        listingId: requesterListingId,
+        startDate: dates.startAvail,
+        endDate: dates.endAvail,
+      },
+    })
+      .then((avb) => {
+        if (!avb) {
+          return false;
+        }
+        return true;
+      })
+      .catch((err) => res.status(500).send(err));
+    if (!avbCheck) {
+      Availability.create({
+        listingId: requesterListingId,
+        startDate: dates.startAvail,
+        endDate: dates.endAvail,
+        host_id: userId,
+        accepted: false,
+      })
+        .then(() => {
+          res.status(201).send('complete');
+        })
+        .catch((err) => err);
+    }
     // does request already exist?
     await Request.findOne({
       where: {
@@ -72,7 +107,24 @@ requestRouter
         })
           .then(() => res.status(201).send('Request sent!'));
       })
-      .catch(() => res.status(409).send('Request already exists'));
+      .catch((err) => res.status(409).send(err));
+  });
+
+// decline request
+requestRouter
+  .delete('/decline', async (req, res) => {
+    const { avbId, guestId } = req.query;
+    await Request.destroy({
+      where: {
+        requester_id: guestId,
+        availability_id: avbId,
+      },
+    })
+      .catch((err) => {
+        console.warn('DELETE request/decline - Request.destroy');
+        res.send(err);
+      });
+    res.status(201).send('success');
   });
 
 module.exports = {

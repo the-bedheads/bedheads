@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { AppInterface } from 'goldilocksTypes';
+import { AppInterface, ListingLocationInterface } from 'goldilocksTypes';
 import UserReviews from './UserReviews';
 import ListingInfo from './ListingInfo';
 import HostInfo from './HostInfo';
@@ -24,8 +24,8 @@ const Listing: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const [userId] = useState(localStorage.userId);
   const { id } = useParams<{ id: any }>();
   const { avbId } = useParams<{ avbId: any }>();
-
-  // const [avbId] = useState(3);
+  const { startAvail } = useParams<{ startAvail: string }>();
+  const { endAvail } = useParams<{ endAvail: string }>();
 
   return (
     <div className={classes.root}>
@@ -44,6 +44,7 @@ const Listing: React.FC<AppInterface> = ({ user }): JSX.Element => {
               hostId={id}
               userId={userId}
               avbId={avbId}
+              dates={{ startAvail, endAvail }}
             />
           </Paper>
         </Grid>

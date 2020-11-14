@@ -1,7 +1,13 @@
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
-import { Availability } from 'goldilocksTypes';
-import { Grid, Box, makeStyles } from '@material-ui/core';
+import { SwapListEntryInterface } from 'goldilocksTypes';
+import {
+  Grid,
+  Box,
+  makeStyles,
+  Button,
+  Container,
+} from '@material-ui/core';
 
 const useStyles = makeStyles({
   main: {
@@ -27,15 +33,65 @@ const useStyles = makeStyles({
   },
 });
 
-interface SwapListEntryInterface {
-  swap: Availability,
-  guestId: number,
-}
-const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId }) => {
+const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   const classes = useStyles();
   const [swappee, setSwappee] = useState({ firstName: '' });
   const [photo, setPhoto] = useState('');
   const [address, setAddress] = useState('');
+
+  const approveSwap = () => {
+    const params = {
+      avbId: swap.availability_id,
+      guestId,
+    };
+    axios.post('/availability/confirm', { params })
+      .catch((err) => console.warn(err.message));
+  };
+
+  const declineSwap = () => {
+    const params = {
+      avbId: swap.availability_id,
+      guestId,
+    };
+    axios.delete('/request/decline', { params })
+      .catch((err) => console.warn(err.message));
+  };
+
+  const renderInfo = () => {
+    if (type === 'con') {
+      return (
+        <Grid xs={12}>
+          Stuff
+          <br />
+          <br />
+          <br />
+        </Grid>
+      );
+    }
+    return (
+      <Container>
+        <Grid xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={approveSwap}
+          >
+            Approve Swap!
+          </Button>
+        </Grid>
+        <Grid xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={declineSwap}
+          >
+            Decline Swap!
+          </Button>
+        </Grid>
+      </Container>
+
+    );
+  };
 
   useEffect(() => {
     if (guestId) {
@@ -74,12 +130,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId }) => {
           <Grid xs={12} className={classes.bottomBorder}>
             {swappee.firstName}
           </Grid>
-          <Grid xs={12}>
-            Stuff
-            <br />
-            <br />
-            <br />
-          </Grid>
+          {renderInfo()}
         </Grid>
       </Grid>
     </Box>

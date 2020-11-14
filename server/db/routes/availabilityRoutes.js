@@ -69,7 +69,7 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
   // get listing id
   const listingId = await Listing.findOne({
     where: {
-      user_id: userId,
+      userId,
     },
   })
     .then((listing) => listing.dataValues.id)
@@ -89,85 +89,91 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
 });
 
 // get current users entire calendar
-availabilityRouter.get('/allAvailabilities/:listingId', (req, res) => {
+availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
   const { listingId } = req.params;
-  Availability.findAll({
+  const availabilities = await Availability.findAll({
     where: {
       listingId,
     },
   })
-    .then(async (availabilities) => {
-      const final = await availabilities.map((item) => {
-        const { id, startDate, endDate } = item.dataValues;
-        if (!item.dataValues.accepted) {
-          return {
-            start: startDate,
-            end: endDate,
-            title: 'Availability',
-            backgroundColor: 'green',
-            id,
-            listingId: item.dataValues.listingId,
-            type: 'avb',
-          };
-        }
-        return {
-          start: startDate,
-          end: endDate,
-          title: 'Swap Confirmed',
-          backgroundColor: 'purple',
-          id,
-          listingId: item.dataValues.listingId,
-          guestId: item.dataValues.guest_id,
-          type: 'swap',
-        };
-      });
-      const getRequests = async () => Promise.all(
-        availabilities.map((item) => Request.findAll({
-          where: {
-            availability_id: item.dataValues.id,
-          },
-        }).then((data) => data)),
-      );
-      const requests = await getRequests()
-        .then((data) => data.filter((item) => item.length))
-        .then((filteredData) => filteredData);
-      const testArr = [];
-      requests.forEach((requestGroup) => {
-        const nestedObj = {
-          availability_id: null,
-          requester_ids: [],
-        };
-        requestGroup.forEach((request) => {
-          nestedObj.availability_id = request.dataValues.availability_id;
-          nestedObj.requester_ids.push(request.dataValues.requester_id);
-        });
-        testArr.push(nestedObj);
-      });
-      const arrJoin = async () => Promise.all(
-        testArr.map((request) => Availability.findOne({
-          where: {
-            id: request.availability_id,
-          },
-        }).then((availability) => {
-          const reqLength = request.requester_ids.length;
-          const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
-          const idkAnymore = {
-            availability_id: request.availability_id,
-            requester_ids: request.requester_ids,
-            title,
-            backgroundColor: 'blue',
-            start: availability.dataValues.startDate,
-            end: availability.dataValues.endDate,
-            type: 'req',
-          };
-          return idkAnymore;
-        })),
-      );
-      const wut = await arrJoin().then((data) => data);
-      wut.forEach((request) => final.push(request));
-      res.status(200).send(final);
+    .then((data) => data.map((avb) => avb.dataValues))
+    .catch(() => console.warn('GET availability/allAvailabilities: Availability.findAll'));
+  const final = availabilities.map((item) => {
+    const { id, startDate, endDate } = item;
+    if (!item.accepted) {
+      return {
+        start: startDate,
+        end: endDate,
+        title: 'Availability',
+        backgroundColor: 'green',
+        id,
+        listingId: item.listingId,
+        type: 'avb',
+      };
+    }
+    return {
+      start: startDate,
+      end: endDate,
+      title: 'Swap Confirmed',
+      backgroundColor: 'purple',
+      id,
+      listingId: item.listingId,
+      guestId: item.guest_id,
+      type: 'swap',
+    };
+  });
+  const getRequests = async () => Promise.all(
+    availabilities.map((item) => Request.findAll({
+      where: {
+        availability_id: item.id,
+      },
     })
-    .catch((err) => res.status(500).send(err));
+      .then((data) => data)
+      .catch(() => console.warn('GET availability/allAvailabilities: getRequests'))),
+  );
+  const requests = await getRequests()
+    .then((data) => data.filter((item) => item.length))
+    .then((filteredData) => filteredData)
+    .catch(() => console.warn('GET availability/allAvailabilities: getRequests()'));
+  const requestArr = [];
+  requests.forEach((requestGroup) => {
+    const nestedObj = {
+      availability_id: null,
+      requester_ids: [],
+    };
+    requestGroup.forEach((request) => {
+      nestedObj.availability_id = request.dataValues.availability_id;
+      nestedObj.requester_ids.push(request.dataValues.requester_id);
+    });
+    requestArr.push(nestedObj);
+  });
+  const createReq = async () => Promise.all(
+    requestArr.map((request) => Availability.findOne({
+      where: {
+        id: request.availability_id,
+      },
+    })
+      .then((availability) => {
+        const reqLength = request.requester_ids.length;
+        const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
+        const reqObj = {
+          availability_id: request.availability_id,
+          requester_ids: request.requester_ids,
+          title,
+          backgroundColor: 'blue',
+          start: availability.dataValues.startDate,
+          end: availability.dataValues.endDate,
+          type: 'req',
+        };
+        return reqObj;
+      })
+      .catch(() => console.warn('GET availability/allAvailabilities: createReq'))),
+  );
+  const reqs = await createReq()
+    .then((data) => data)
+    .catch(() => console.warn('GET availability/allAvailabilities: createReq()'));
+  reqs.forEach((request) => final.push(request));
+  res.send(final);
 });
 
 // delete availability
@@ -188,11 +194,11 @@ availabilityRouter.delete('/', (req, res) => {
 });
 
 // get availabilities for certain date range, use response to grab listings they're attached to
-availabilityRouter.get('/listings/:start/:end', (req, res) => {
+availabilityRouter.get('/listings/:start/:end', async (req, res) => {
   let { start, end } = req.params;
   start = moment(start, '');
   end = moment(end, '');
-  Availability.findAll({
+  await Availability.findAll({
     where: {
       [Op.and]: [{
         startDate: {
@@ -211,6 +217,35 @@ availabilityRouter.get('/listings/:start/:end', (req, res) => {
     .then((availListings) => res.send(availListings))
     .catch((err) => res.send(err));
 });
+
+// confirm swap
+availabilityRouter
+  .post('/confirm', async (req, res) => {
+    const { avbId, guestId } = req.body.params;
+    const final = await Availability.update({
+      accepted: true,
+      guest_id: guestId,
+    }, {
+      where: {
+        id: avbId,
+      },
+    })
+      .then((avb) => avb)
+      .catch((err) => {
+        console.warn('POST availability/confirm - Availability.update');
+        res.send(err);
+      });
+    await Request.destroy({
+      where: {
+        availability_id: avbId,
+      },
+    })
+      .catch((err) => {
+        console.warn('POST availability/confirm - Request.destroy');
+        res.send(err);
+      });
+    res.status(201).send(final);
+  });
 
 module.exports = {
   availabilityRouter,
