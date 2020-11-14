@@ -13,6 +13,7 @@ import {
   withStyles,
   createMuiTheme,
 } from '@material-ui/core/styles';
+import { useLocation } from 'react-router-dom';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Rating } from '@material-ui/lab';
 import { AppInterface } from 'goldilocksTypes';
@@ -67,6 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
+  const location = useLocation();
   const [hostRating, setHostRating] = useState<number | null>(3);
   const [guestRating, setGuestRating] = useState<number | null>(3);
   const [hHover, setHostHover] = useState<number>(-1);

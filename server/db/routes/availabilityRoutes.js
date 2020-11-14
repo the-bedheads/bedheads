@@ -111,6 +111,18 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
         type: 'avb',
       };
     }
+    if (item.accepted && moment(endDate).isBefore(new Date())) {
+      return {
+        start: startDate,
+        end: endDate,
+        title: 'Complete',
+        backgroundColor: 'yellow',
+        id,
+        listingId: item.listingId,
+        guestId: item.guest_id,
+        type: 'complete',
+      };
+    }
     return {
       start: startDate,
       end: endDate,

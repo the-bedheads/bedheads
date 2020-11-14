@@ -143,4 +143,20 @@ module.exports = [
     guest_id: null,
     host_id: 4,
   },
+  {
+    listingId: 1,
+    startDate: new Date(2020, 9, 28),
+    endDate: new Date(2020, 10, 2),
+    accepted: true,
+    guest_id: 2,
+    host_id: 1,
+  },
+  {
+    listingId: 2,
+    startDate: new Date(2020, 9, 28),
+    endDate: new Date(2020, 10, 2),
+    accepted: true,
+    guest_id: 1,
+    host_id: 2,
+  },
 ];

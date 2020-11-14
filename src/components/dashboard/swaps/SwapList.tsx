@@ -9,19 +9,6 @@ interface Swaps {
 
 const SwapList: FC<Swaps> = ({ swaps }) => {
   const swapRender = (someSwaps: Array<Availability>) => someSwaps.map((swap) => {
-    if (swap.guestId) {
-      const { guestId } = swap;
-      return (
-        <div>
-          <SwapListEntry
-            swap={swap}
-            guestId={guestId}
-            margin-bottom="10px"
-            type="con"
-          />
-        </div>
-      );
-    }
     if (swap.requester_ids) {
       return swap.requester_ids.map((requester: number) => {
         const guestId = requester;
@@ -37,7 +24,33 @@ const SwapList: FC<Swaps> = ({ swaps }) => {
         );
       });
     }
-    return 'whoops';
+    if (swap.guestId && swap.type === 'complete') {
+      const { guestId } = swap;
+      return (
+        <div>
+          <SwapListEntry
+            swap={swap}
+            guestId={guestId}
+            margin-bottom="10px"
+            type="complete"
+          />
+        </div>
+      );
+    }
+    if (swap.guestId) {
+      const { guestId } = swap;
+      return (
+        <div>
+          <SwapListEntry
+            swap={swap}
+            guestId={guestId}
+            margin-bottom="10px"
+            type="con"
+          />
+        </div>
+      );
+    }
+    return 'oops';
   });
 
   return (

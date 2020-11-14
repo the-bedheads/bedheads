@@ -26,7 +26,7 @@ const Swaps: FC<AppInterface> = ({ user }) => {
         tempAcc.push(entry);
       } else if (type === 'req') {
         tempPending.push(entry);
-      } else {
+      } else if (type === 'complete') {
         tempCompleted.push(entry);
       }
     });
@@ -57,7 +57,9 @@ const Swaps: FC<AppInterface> = ({ user }) => {
       <Grid>
         These swaps have already happened. Please submit a review for your experience!
       </Grid>
-      {/* <SwapList /> */}
+      <Grid>
+        <SwapList swaps={completedSwaps} />
+      </Grid>
     </Container>
   );
 };

@@ -8,6 +8,7 @@ import {
   Button,
   Container,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   main: {
@@ -38,6 +39,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   const [swappee, setSwappee] = useState({ firstName: '' });
   const [photo, setPhoto] = useState('');
   const [address, setAddress] = useState('');
+  const [userId] = useState(localStorage.userId);
 
   const approveSwap = () => {
     const params = {
@@ -68,28 +70,55 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
         </Grid>
       );
     }
+    if (type === 'complete') {
+      return (
+        <Grid>
+          <Container>
+            <Grid xs={12}>
+              <Button
+                component={Link}
+                to={
+                  {
+                    pathname: '/writeReview',
+                    state: {
+                      availabilityId: swap.id,
+                      reviewerId: userId,
+                      revieweeId: guestId,
+                    },
+                  }
+                }
+                variant="contained"
+              >
+                Review Swap!
+              </Button>
+            </Grid>
+          </Container>
+        </Grid>
+      );
+    }
     return (
-      <Container>
-        <Grid xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={approveSwap}
-          >
-            Approve Swap!
-          </Button>
-        </Grid>
-        <Grid xs={12}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={declineSwap}
-          >
-            Decline Swap!
-          </Button>
-        </Grid>
-      </Container>
-
+      <Grid>
+        <Container>
+          <Grid xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={approveSwap}
+            >
+              Approve Swap!
+            </Button>
+          </Grid>
+          <Grid xs={12}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={declineSwap}
+            >
+              Decline Swap!
+            </Button>
+          </Grid>
+        </Container>
+      </Grid>
     );
   };
 
