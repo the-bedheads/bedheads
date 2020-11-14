@@ -1,12 +1,12 @@
 import React, { SyntheticEvent, useState } from 'react';
 import {
   makeStyles,
-  Typography,
   AppBar,
   Toolbar,
   Button,
   MenuItem,
   Menu,
+  Typography,
   IconButton,
   Avatar,
   Switch,
@@ -15,31 +15,37 @@ import { toast } from 'react-toastify';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link, NavLink } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    background: '#4E3977',
+    background: '#8b98de',
   },
-  avatar: {
-    marginLeft: '7px',
+  icons: {
+    marginLeft: 7,
+    marginRight: 7,
+    maxHeight: 35,
+    maxWidth: 35,
   },
   grow: {
     flexGrow: 1,
   },
+  logo: {
+    maxWidth: 35,
+  },
 });
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  handleLogin: [React.Dispatch<React.SetStateAction<boolean>>],
   toggleMode: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
 }
 
 const Navbar: React.FC<AuthProps> = ({
-  handleLogin: [isAuth, setAuth],
+  handleLogin: [setAuth],
   toggleMode: [darkMode, setDarkMode],
 }): JSX.Element => {
   const classes = useStyles();
-  const [isUserAuthenticated, setIsAuthenticated] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [pic] = useState(localStorage.profilePhoto);
   const [int] = useState(localStorage.firstName[0]);
@@ -65,31 +71,26 @@ const Navbar: React.FC<AuthProps> = ({
   };
 
   // TODO: give the dark mode toggle a label; reformat nav bar -- formgroup?}
-
   return (
     <div className="toggle-container">
       <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
-          <Typography component={Link} to="/dashboard" variant="h3" color="inherit">
-            🛏
+          <Typography component={Link} to="/" color="inherit">
+            <img src={logo} alt="logo" className={classes.logo} />
+            {/* <img src="https://www.flaticon.com/svg/static/icons/svg/3168/3168626.svg" alt="logo" className={classes.logo} /> */}
           </Typography>
           <Button component={Link} to="/" color="inherit">Dashboard</Button>
-          <IconButton component={Link} to="/view-searches" color="inherit">
-            <SearchIcon />
-          </IconButton>
-          <Switch
-            checked={darkMode}
-            onChange={() => setDarkMode((prevMode: boolean) => !prevMode)}
-            name="toggleMode"
-            inputProps={{ 'aria-label': 'toggle between light and dark mode' }}
-          />
           <div className={classes.grow} />
+          <IconButton component={Link} to="/view-searches" color="inherit">
+            <SearchIcon className="icon" />
+          </IconButton>
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
+            color="inherit"
             onClick={(e) => handleClick(e)}
           >
-            <MenuIcon />
+            <MenuIcon className="icon" />
           </IconButton>
           <Menu
             id="customized-menu"
@@ -164,11 +165,18 @@ const Navbar: React.FC<AuthProps> = ({
             to="/view-profile"
           >
             <Avatar
-              className={classes.avatar}
+              className={classes.icons}
               alt={int}
               src={pic}
             />
           </NavLink>
+          <Switch
+            // className={classes.icons}
+            checked={darkMode}
+            onChange={() => setDarkMode((prevMode: boolean) => !prevMode)}
+            name="toggleMode"
+            inputProps={{ 'aria-label': 'toggle between light and dark mode' }}
+          />
         </Toolbar>
       </AppBar>
     </div>
