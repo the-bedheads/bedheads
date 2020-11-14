@@ -4,18 +4,9 @@ const axios = require('axios');
 
 const {
   User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-  Geolocation,
-  models,
   Message,
   Thread,
 } = require('../index');
-const { send } = require('emailjs-com');
 
 const messageRouter = Router();
 
