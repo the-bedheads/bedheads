@@ -82,7 +82,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
           <ButtonBase
             className={classes.image}
             component={Link}
-            to={`/view-listing/${listingId}/${avbId}`}
+            to={`/view-listing/${user}/${avbId}/${startAvail}/${endAvail}`}
           >
             <img className={classes.img} alt="listing" src={photo} />
           </ButtonBase>
@@ -95,7 +95,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
         xs={12}
         direction="column"
         component={Link}
-        to={`/view-listing/${user}/${avbId}`}
+        to={`/view-listing/${user}/${avbId}/${startAvail}/${endAvail}`}
       >
         <Grid item xs>
           <Typography variant="body1">

@@ -13,7 +13,12 @@ const SwapList: FC<Swaps> = ({ swaps }) => {
       const { guestId } = swap;
       return (
         <div>
-          <SwapListEntry swap={swap} guestId={guestId} margin-bottom="10px" />
+          <SwapListEntry
+            swap={swap}
+            guestId={guestId}
+            margin-bottom="10px"
+            type="con"
+          />
         </div>
       );
     }
@@ -22,7 +27,12 @@ const SwapList: FC<Swaps> = ({ swaps }) => {
         const guestId = requester;
         return (
           <div>
-            <SwapListEntry swap={swap} guestId={guestId} margin-bottom="10px" />
+            <SwapListEntry
+              swap={swap}
+              guestId={guestId}
+              margin-bottom="10px"
+              type="req"
+            />
           </div>
         );
       });

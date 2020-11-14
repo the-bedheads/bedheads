@@ -179,10 +179,25 @@ declare module 'goldilocksTypes' {
     hostId: string,
     userId: string,
     avbId: number,
+    dates: { startAvail: string, endAvail: string },
   }
 
   interface ProfileInfoInterface {
     host: HostDataType
+  }
+
+  interface SwapListEntryInterface {
+    swap: Availability,
+    guestId: number,
+    type: string,
+  }
+
+  interface ListingLocationState {
+    listingAvail: { startAvail: string, endAvail: string },
+  }
+
+  interface ListingLocationInterface {
+    state: ListingLocationState,
   }
 }
 
@@ -203,4 +218,6 @@ module.exports = {
   ProfileSidebarInterface,
   HostInfoInterface,
   ProfileInfoInterface,
+  SwapListEntryInterface,
+  ListingLocationInterface,
 };

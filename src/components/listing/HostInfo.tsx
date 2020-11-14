@@ -33,6 +33,7 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
     hostId,
     userId,
     avbId,
+    dates,
   } = props;
   const [hostData, setHostData] = useState({
     firstName: '',
@@ -72,8 +73,9 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
   };
 
   const requestSwap = () => {
-    const params = { userId, avbId };
-    axios.post('/request/newRequest', { params });
+    const params = { userId, avbId, dates };
+    axios.post('/request/newRequest', { params })
+      .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
