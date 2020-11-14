@@ -32,11 +32,29 @@ const SearchDefaultList: React.FC = () => {
   const [defaultListings, setDefaultListings] = useState([] as any);
 
   const getDefaultListings = () => {
-    axios.get('/listing')
+    axios.get(`/listing/randomFour/${localStorage.userId}`)
       .then((results) => {
         setDefaultListings(results.data);
       })
       .catch((err) => err);
+  };
+
+  const getMatchPercentage = (scale: any) => {
+    const userScale = {
+      o: localStorage.openness,
+      c: localStorage.conscientiousness,
+      e: localStorage.extraversion,
+      a: localStorage.agreeableness,
+      n: localStorage.neuroticism,
+    };
+    const diff1 = Math.abs(scale.openness - userScale.o);
+    const diff2 = Math.abs(scale.conscientiousness - userScale.c);
+    const diff3 = Math.abs(scale.extraversion - userScale.e);
+    const diff4 = Math.abs(scale.agreeableness - userScale.a);
+    const diff5 = Math.abs(scale.neuroticism - userScale.n);
+    const totalDiff = diff1 + diff2 + diff3 + diff4 + diff5;
+    const percentage = Math.round(((5 - totalDiff) / 5) * 100);
+    return percentage;
   };
 
   useEffect(() => {
@@ -61,6 +79,7 @@ const SearchDefaultList: React.FC = () => {
             listingTitle: string;
             listingCity: string;
             listingState: string;
+            user: any;
             availabilities: [{
               startDate: Date,
             }];
@@ -72,6 +91,7 @@ const SearchDefaultList: React.FC = () => {
               id, user_id: userId, listingTitle, listingCity,
               listingState, availabilities, listingPhoto,
             } = random;
+            const matchPercentage = getMatchPercentage(random.user.personalityScale);
             const earliestAvail = availabilities[0].startDate;
             const { url } = listingPhoto;
             return (
@@ -85,6 +105,7 @@ const SearchDefaultList: React.FC = () => {
                     state={listingState}
                     avail={earliestAvail}
                     photo={url}
+                    matchPercentage={matchPercentage}
                   />
                 </Paper>
               </Grid>
