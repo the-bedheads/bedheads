@@ -87,7 +87,6 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
   const getPersonalityData = () => {
     axios.get(`/user/personalityData/${host.id}`)
       .then(({ data }) => {
-        // console.log(data);
         setPersonalityData({
           openness: data.openness,
           conscientiousness: data.conscientiousness,
@@ -95,7 +94,6 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
           agreeableness: data.agreeableness,
           neuroticism: data.neuroticism,
         });
-        // console.log(personalityData);
       })
       .catch((err) => console.warn(err));
   };

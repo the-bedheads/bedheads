@@ -46,8 +46,6 @@ const CreateListing: FC<BioProps> = (Props: BioProps): JSX.Element => {
       .then(({ data }) => {
         setPhotoUrl(data);
       })
-      // TODO: GETTING A GOOD RESPONSE, NOW JUST NEED TO GET IT BACK TO THE DASHBOARD
-      // IE URL IS SHOWING BACK UP ON CLIENT SIDE!!
       .catch((err) => console.warn(err));
   };
 

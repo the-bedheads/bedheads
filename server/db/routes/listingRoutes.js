@@ -142,11 +142,13 @@ listingRouter
         })
           .then(({ dataValues }) => {
             const { id } = dataValues;
-            ListingPhotos.create({
-              url: photoUrl,
-              userId,
-              listingId: id,
-            });
+            if (photoUrl) {
+              ListingPhotos.create({
+                url: photoUrl,
+                userId,
+                listingId: id,
+              });
+            }
           })
           .catch((err) => res.send(err));
       }))
