@@ -61,7 +61,7 @@ const BulletinBoard: React.FC = (): JSX.Element => {
         </Grid>
         <Grid container item className={classes.bulletins} xs={9}>
           {posts.map((post, idx) => {
-            if (post.author) {
+            if (post.author.listing) {
               const author = post.author.first_name;
               const authorCity = post.author.listing.listingCity;
               const { title, body } = post;

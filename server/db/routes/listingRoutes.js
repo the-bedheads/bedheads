@@ -23,7 +23,7 @@ listingRouter
     const { currentUser } = req.params;
     await Listing.findAll({
       where: {
-        user_id: { [Op.not]: currentUser },
+        userId: { [Op.not]: currentUser },
       },
       include: [
         {
@@ -56,7 +56,7 @@ listingRouter
     const { userId } = req.params;
     Listing.findOne({
       where: {
-        user_id: userId,
+        userId,
       },
     })
       .then((listing) => {
@@ -128,7 +128,7 @@ listingRouter
     axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
       .then(((geocoded) => {
         Listing.create({
-          user_id: userId,
+          userId,
           listingAddress,
           listingCity,
           listingState,
@@ -148,7 +148,7 @@ listingRouter
             const { id } = dataValues;
             ListingPhotos.create({
               url: photoUrl,
-              user_id: userId,
+              userId,
               listingId: id,
             });
           })
