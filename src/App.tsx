@@ -108,7 +108,7 @@ const App: FC = (): JSX.Element => {
               strict
               path="/dashboard"
               render={() => (isAuth ? (
-                <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
+                <Dashboard handleLogin={[setAuth]} user={user} />) : (
                   <Redirect to="/" />
               ))}
             />

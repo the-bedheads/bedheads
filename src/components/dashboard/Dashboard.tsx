@@ -5,23 +5,51 @@ import {
   Container,
   Grid,
 } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
 import { Link } from 'react-router-dom';
-import Navbar from '../global/Navbar';
 import ListingModal from '../listing/ListingModal';
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  handleLogin: [React.Dispatch<React.SetStateAction<boolean>>],
   user: AppType,
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    flexGrow: 1,
+    padding: '25px',
+  },
+  container: {
+    backgroundColor: '#7694af',
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  greeting: {
+    backgroundColor: '#6e8010',
+  },
+  upcoming: {
+    backgroundColor: '#90789e',
+  },
+  requests: {
+    backgroundColor: '#ff176d',
+  },
+  msg: {
+    backgroundColor: 'bisque',
+  },
+  create: {
+    backgroundColor: 'white',
+  },
+}));
+
 const Dashboard: React.FC<AuthProps> = ({
-  handleLogin: [isAuth, setAuth],
+  handleLogin: [setAuth],
   user,
 }) => {
-  // const listingId = 1;
+  const classes = useStyles();
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
@@ -184,7 +212,6 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
-    // setRandomLink(randomListings[shownIndex].listingId);
     const { id, listingId } = randomListings[shownIndex];
     setRandomLink(`${listingId}/${id}`);
   };
@@ -237,10 +264,10 @@ const Dashboard: React.FC<AuthProps> = ({
     }
     return (
       <>
-        <Grid>
+        <Grid item className={classes.msg} xs={8}>
           It looks like you don&apos;t have a listing yet.
         </Grid>
-        <Grid>
+        <Grid item className={classes.create} xs={8}>
           <Button
             variant="contained"
             color="primary"
@@ -262,21 +289,25 @@ const Dashboard: React.FC<AuthProps> = ({
   };
 
   return (
-    <Container>
-      <Grid>
-        <h4>
-          {`Hello, ${user.firstName}!!`}
-        </h4>
+    <Container className={classes.root}>
+      <Grid container className={classes.container} xs={11} spacing={3}>
+        <Grid item className={classes.greeting} xs={8}>
+          <h4>
+            {`Hello, ${user.firstName}!!`}
+          </h4>
+        </Grid>
+        <Grid item className={classes.upcoming} xs={8}>
+          <h4>
+            {`You have ${swapCount} upcoming trips`}
+          </h4>
+        </Grid>
+        <Grid item className={classes.requests} xs={8}>
+          <h4>
+            {`You have ${pendingRequestCount} requests to swap rooms`}
+          </h4>
+        </Grid>
+        {listingCheck()}
       </Grid>
-      <Grid id="user-notifications">
-        <p>
-          {`You have ${swapCount} upcoming trips`}
-        </p>
-        <p>
-          {`You have ${pendingRequestCount} requests to swap rooms`}
-        </p>
-      </Grid>
-      {listingCheck()}
     </Container>
   );
 };
