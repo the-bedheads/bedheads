@@ -119,7 +119,6 @@ router.post('/login', validEmail, async (req, res) => {
     const jwtToken = generateToken(user.id);
 
     // TODO: Verify token is being created
-    console.info({ jwtToken });
     res.json({ jwtToken });
   } catch (err) {
     console.warn(err.message);

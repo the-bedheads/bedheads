@@ -45,8 +45,6 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
     await axios.get(`user/email/${email}`)
       .then(({ data }) => {
         const { personalityScale } = data;
-        console.log('data getting back: ', data);
-        console.log('personality scale derived from data: ', personalityScale);
         localStorage.setItem('userId', data.id);
         localStorage.setItem('firstName', data.firstName);
         localStorage.setItem('pronouns', data.pronouns);

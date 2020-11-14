@@ -30,7 +30,7 @@ const ResultsList: React.FC<SearchProps> = ({
   const classes = useStyles();
   const [message, setMessage] = useState('');
 
-  const getMatchPercentage = (scale: any) => {
+  const getMatchPerc = (scale: any) => {
     const userScale = {
       o: localStorage.openness,
       c: localStorage.conscientiousness,
@@ -58,7 +58,7 @@ const ResultsList: React.FC<SearchProps> = ({
             newObj.data.startAvail = listingIds[id].startDate;
             newObj.data.endAvail = listingIds[id].endDate;
             newObj.data.avbId = listingIds[id].avlbId;
-            newObj.data.matchPercentage = getMatchPercentage(listingInfo.data.user.personalityScale)
+            newObj.data.matchPercentage = getMatchPerc(listingInfo.data.user.personalityScale);
           }
           return newObj.data;
         })),
@@ -105,11 +105,11 @@ const ResultsList: React.FC<SearchProps> = ({
     <div className={classes.root}>
       <Grid className={classes.paper} item xs={7}>
         {availListings.map((listing: {
-          user_id: number; listingId: number; avbId: number; listingTitle: string;
+          userId: number; listingId: number; avbId: number; listingTitle: string;
           listingCity: string; listingState: string; startAvail: string;
           endAvail: string; matchPercentage: number; listingPhoto: { url: string } }) => {
           const {
-            user_id: userId, listingId, listingTitle, listingCity, listingState,
+            userId, listingId, listingTitle, listingCity, listingState,
             startAvail, endAvail, listingPhoto, avbId, matchPercentage,
           } = listing;
           const { url } = listingPhoto;

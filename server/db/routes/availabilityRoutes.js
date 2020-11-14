@@ -69,7 +69,7 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
   // get listing id
   const listingId = await Listing.findOne({
     where: {
-      user_id: userId,
+      userId,
     },
   })
     .then((listing) => listing.dataValues.id)
