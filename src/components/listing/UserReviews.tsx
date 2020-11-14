@@ -64,7 +64,7 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [allReviews, setAllReviews] = useState([]);
-  const [listing, setListing] = useState<number>(listingId);
+  const [reviewer, setRevId] = useState<number>();
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
@@ -72,13 +72,12 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   const renderReviews = () => {
     axios.get(`/reviews/getReviews/${listingId}`)
       .then((reviewInfo) => {
-        console.info(reviewInfo.data);
         setAllReviews(reviewInfo.data);
+        console.info(allReviews);
       })
       .catch((err) => err.message);
   };
 
-  // TODO: Working on this code
   useEffect(() => {
     renderReviews();
   }, []);
@@ -101,11 +100,11 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            <HostReviews listingId={listingId} allReviews={allReviews} />
+            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
             <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <GuestReviews listingId={listingId} allReviews={allReviews} />
+            <GuestReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
             <br />
           </TabPanel>
         </Paper>

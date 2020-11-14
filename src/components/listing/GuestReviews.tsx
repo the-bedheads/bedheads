@@ -1,72 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import {
-  Box,
+  Avatar,
+  Divider,
   Typography,
   Grid,
   List,
   ListItemText,
 } from '@material-ui/core';
-import ReviewList from './ReviewList';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import moment from 'moment';
 
 interface ReviewInt {
   allReviews: any,
   listingId: number,
+  reviewer: any,
 }
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
-const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId }): JSX.Element => {
-  const [author, setAuthor] = useState<string>('Krissy');
-  const [reviewData, setReviewData] = useState<any>([{
-    timestamp: null,
-    comments: null,
-  }]);
-  const [data, setData] = useState([]);
-  const [timeStamp, setTimestamp] = useState<string>('June 10, 1992');
+const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): JSX.Element => {
+  const classes = useStyles();
 
-  const getGuestReviews = () => {
-    axios.get(`/reviews/getReviews/${listingId}`)
-      .then((reviewInfo) => {
-        if (!reviewInfo) {
-          setReviewData('Sorry, there are no reviews for this user.');
-        }
-        return reviewInfo.data.map((info: { createdAt: any; guestComments: any; }) => {
-          const {
-            createdAt,
-            guestComments,
-          } = info;
-          setReviewData([{
-            timestamp: createdAt,
-            comments: guestComments,
-          }]);
-          return reviewData;
-        });
-      })
-      .catch((err) => err.message);
-  };
-
-  const renderReviews = () => {
+  const postReviews = () => {
     console.info(allReviews);
+    // TODO: Helper function
     const reviews = allReviews
-      .map((review: { createdAt: any; hostComments: any; }) => (
+      .map((review: { createdAt: any; hostComments: any; user: any; }) => (
         <List>
           <ListItemText>
-            {`Date: ${review.createdAt}`}
+            {`Reviewed: ${moment().format('MMMM DD, YYYY')}`}
           </ListItemText>
           <ListItemText>
-            {review.hostComments}
+            <Grid
+              container
+              xs={6}
+              spacing={2}
+              justify="center"
+            >
+              <Grid
+                item
+                xs={3}
+                alignItems="flex-end"
+                direction="column"
+                justify="center"
+                spacing={2}
+              >
+                <Grid
+                  item
+                  alignItems="center"
+                  direction="column"
+                  justify="center"
+                >
+                  <Avatar
+                    className={classes.large}
+                    src={review.user.profile_photo}
+                  />
+                  <Grid alignItems="center" direction="column" justify="center">
+                    <Typography>{review.user.first_name}</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={9}>
+                <Grid container>
+                  <Grid item justify="center">
+                    <Typography>{review.hostComments}</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Divider
+              variant="middle"
+              light={false}
+              orientation="horizontal"
+            />
           </ListItemText>
         </List>
       ));
     return reviews;
   };
 
-  useEffect(() => {
-    getGuestReviews();
-  }, []);
-
   return (
     <>
-      {renderReviews()}
+      {postReviews()}
     </>
   );
 };

@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { Op } = require('sequelize');
 const {
   User,
   Listing,
@@ -8,28 +9,46 @@ const {
 const reviewRouter = Router();
 
 // TODO: GET ALL REVIEWS: Get all of a user's reviews about them as a GUEST or HOST
+
+let reviews;
+let hostId;
+let guestId;
+let result;
+
 reviewRouter
   .get('/getReviews/:listingId', async (req, res) => {
     const { listingId } = req.params;
-    const reviews = await Listing.findAll({
+
+    reviews = await Availability.findAll({
       where: {
-        id: listingId,
+        listing_id: listingId,
       }
     })
-      .then(results => {
-        const userId = results.map(info => {
-          return info.dataValues.user_id;
+      .then(res => {
+        res.map(info => {
+          if (info.dataValues.accepted) {
+            guestId = info.dataValues.guest_id;
+            hostId = info.dataValues.host_id;
+          }
         })
-        const result = Reviews.findAll({
+        result = Reviews.findAll({
           where: {
-            revieweeId: userId,
+            [Op.and]: [{ revieweeId: hostId }, { reviewerId: guestId }],
           },
           order: [
-            ['updatedAt', 'DESC'],
+            ['createdAt', 'DESC'],
           ],
+          include: {
+            model: User,
+            where: {
+              id: guestId,
+            }
+          },
         })
         return result;
       })
+      .catch(err => err.message);
+    console.info(reviews);
     res.send(reviews);
   })
 
