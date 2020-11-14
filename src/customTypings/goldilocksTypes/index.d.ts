@@ -193,11 +193,13 @@ declare module 'goldilocksTypes' {
   }
 
   interface ListingLocationState {
-    listingAvail: { startAvail: string, endAvail: string },
+    startAvail: string,
+    endAvail: string,
   }
 
   interface ListingLocationInterface {
-    state: ListingLocationState,
+    startAvail: string,
+    endAvail: string,
   }
 }
 
