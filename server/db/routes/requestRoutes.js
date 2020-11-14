@@ -53,7 +53,6 @@ requestRouter
 requestRouter
   .post('/newRequest', async (req, res) => {
     const { userId, avbId, dates } = req.body.params;
-    console.log(userId, avbId, dates);
     // does host have availability for same days?
     const requesterListingId = await Listing.findOne({
       where: {
