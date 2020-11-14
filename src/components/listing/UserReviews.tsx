@@ -101,11 +101,9 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
           </AppBar>
           <TabPanel value={value} index={0}>
             <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
-            <br />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <GuestReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
-            <br />
           </TabPanel>
         </Paper>
       </Grid>

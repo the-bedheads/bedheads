@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
   },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
   },
   buttonMargin: {
     margin: theme.spacing(3),
@@ -159,7 +159,6 @@ const UserDetailsForm: React.FC<MyProps> = (Props: MyProps) => {
               labelWidth={70}
             />
           </FormControl>
-          <br />
           <Button
             className={clsx(classes.buttonMargin, classes.root)}
             onClick={(e) => continueStep(e)}

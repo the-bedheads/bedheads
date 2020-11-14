@@ -59,59 +59,54 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
         user: any;
         guestRating: any;
       }) => (
-          <div className={classes.root}>
-            <Paper className={classes.paper}>
-              <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                  <Avatar
-                    className={classes.large}
-                    src={review.user.profile_photo}
-                  />
-                </Grid>
-                <Grid item xs>
-                  <Typography
-                    variant="overline"
-                    display="block"
-                    component="legend"
-                  >
-                    <Box
-                      component="fieldset"
-                      fontWeight="fontWeightBold"
-                      borderColor="transparent"
-                    >
-                      {review.user.first_name}
-                      // TODO: Revisiting this
-                      {/* <br />
-                    <Typography variant="caption">
-                      {moment(review.createdAt, 'YYYYMMDD').fromNow()}
-                    </Typography> */}
-                      <br />
-                      <StyledRating
-                        icon={(
-                          <FavoriteIcon
-                            fontSize="small"
-                          />
-                        )}
-                        name="read-only"
-                        value={review.guestRating}
-                        readOnly
-                      />
-                    </Box>
-                  </Typography>
-                  <Typography>
-                    <Box fontSize={13}>
-                      {review.guestComments}
-                    </Box>
-                  </Typography>
-                </Grid>
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <Grid container wrap="nowrap" spacing={2}>
+              <Grid item>
+                <Avatar
+                  className={classes.large}
+                  src={review.user.profile_photo}
+                />
               </Grid>
-            </Paper>
-            <Divider
-              light={false}
-              orientation="vertical"
-            />
-          </div>
-        ));
+              <Grid item xs>
+                <Typography
+                  variant="overline"
+                  display="block"
+                  component="legend"
+                >
+                  <Box
+                    component="fieldset"
+                    fontWeight="fontWeightBold"
+                    borderColor="transparent"
+                    m={1}
+                  >
+                    {review.user.first_name}
+                    <StyledRating
+                      icon={(
+                        <FavoriteIcon
+                          fontSize="small"
+                        />
+                        )}
+                      name="read-only"
+                      value={review.guestRating}
+                      readOnly
+                    />
+                  </Box>
+                </Typography>
+                <Typography>
+                  <Box fontSize={13}>
+                    {review.guestComments}
+                  </Box>
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+          <Divider
+            light={false}
+            orientation="vertical"
+          />
+        </div>
+      ));
     return reviews;
   };
 

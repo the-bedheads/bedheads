@@ -48,7 +48,6 @@ reviewRouter
         return result;
       })
       .catch(err => err.message);
-    console.info(reviews);
     res.send(reviews);
   })
 

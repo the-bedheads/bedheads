@@ -2,7 +2,7 @@ import React, { useState, SyntheticEvent } from 'react';
 import { toast } from 'react-toastify';
 import '../../../App.css';
 import axios from 'axios';
-import { Grid } from '@material-ui/core';
+import { Grid, Box } from '@material-ui/core';
 import UserFormFC from './UserFormFC';
 
 const rh = process.env.REACT_APP_HOST;
@@ -138,7 +138,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
       <div className="signup-container">
         <h1 className="text-center my-5">Register</h1>
         <div className="row justify-content-center">
-          <Grid>
+          <Box m={2}>
             <UserFormFC
               firstName={firstName}
               lastName={lastName}
@@ -159,9 +159,8 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
               setProfilePhotoUrl={setProfilePhotoUrl}
               onSubmitForm={onSubmitForm}
             />
-            <br />
-            <a href="/">Already registered? Login here.</a>
-          </Grid>
+          </Box>
+          <a href="/">Already registered? Login here.</a>
         </div>
       </div>
     </>
