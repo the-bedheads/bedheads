@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Avatar,
-  Divider,
-  Typography,
   Grid,
-  List,
-  ListItemText,
+  Divider,
+  Container,
+  Typography,
+  Paper,
+  Box,
 } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  withStyles,
+} from '@material-ui/core/styles';
+import { Rating } from '@material-ui/lab';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import moment from 'moment';
 
 interface ReviewInt {
@@ -15,10 +23,28 @@ interface ReviewInt {
   listingId: number,
   reviewer: any,
 }
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#ff6d75',
+  },
+  iconHover: {
+    color: '#ff3d47',
+  },
+})(Rating);
+
 const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing(0, 3),
+  },
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),
+  },
+  paper: {
+    maxWidth: 800,
+    margin: `${theme.spacing(1)}px auto`,
+    padding: theme.spacing(2),
   },
 }));
 
@@ -26,67 +52,73 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
   const classes = useStyles();
 
   const postReviews = () => {
-    console.info(allReviews);
-    // TODO: Helper function
     const reviews = allReviews
-      .map((review: { createdAt: any; hostComments: any; user: any; }) => (
-        <List>
-          <ListItemText>
-            {`Reviewed: ${moment().format('MMMM DD, YYYY')}`}
-          </ListItemText>
-          <ListItemText>
-            <Grid
-              container
-              xs={6}
-              spacing={2}
-              justify="center"
-            >
-              <Grid
-                item
-                xs={3}
-                alignItems="flex-end"
-                direction="column"
-                justify="center"
-                spacing={2}
-              >
-                <Grid
-                  item
-                  alignItems="center"
-                  direction="column"
-                  justify="center"
-                >
+      .map((review: {
+        createdAt: any;
+        hostComments: any;
+        user: any;
+        hostRating: any;
+      }) => (
+          <div className={classes.root}>
+            <Paper className={classes.paper}>
+              <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
                   <Avatar
                     className={classes.large}
                     src={review.user.profile_photo}
                   />
-                  <Grid alignItems="center" direction="column" justify="center">
-                    <Typography>{review.user.first_name}</Typography>
-                  </Grid>
+                </Grid>
+                <Grid item xs>
+                  <Typography
+                    variant="overline"
+                    display="block"
+                    component="legend"
+                  >
+                    <Box
+                      component="fieldset"
+                      fontWeight="fontWeightBold"
+                      borderColor="transparent"
+                    >
+                      {review.user.first_name}
+                      // TODO: Revisiting this
+                      {/* <br />
+                    <Typography variant="caption">
+                      {moment(review.createdAt, 'YYYYMMDD').fromNow()}
+                    </Typography> */}
+                      <br />
+                      <StyledRating
+                        icon={(
+                          <FavoriteIcon
+                            fontSize="small"
+                          />
+                        )}
+                        name="read-only"
+                        value={review.hostRating}
+                        readOnly
+                      />
+                    </Box>
+                  </Typography>
+                  <Typography>
+                    <Box fontSize={13}>
+                      {review.hostComments}
+                    </Box>
+                  </Typography>
                 </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <Grid container>
-                  <Grid item justify="center">
-                    <Typography>{review.hostComments}</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            </Paper>
             <Divider
-              variant="middle"
               light={false}
-              orientation="horizontal"
+              orientation="vertical"
             />
-          </ListItemText>
-        </List>
-      ));
+          </div>
+        ));
     return reviews;
   };
 
   return (
-    <>
+    <Container>
       {postReviews()}
-    </>
+    </Container>
   );
 };
 
