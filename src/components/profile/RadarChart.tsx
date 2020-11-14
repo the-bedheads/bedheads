@@ -3,12 +3,6 @@ import { RadarChartInterface } from 'goldilocksTypes';
 import { Radar } from 'react-chartjs-2';
 
 const radarChart: FC<RadarChartInterface> = ({ hostData, hostName }): JSX.Element => {
-  // const blah = 'shut up';
-  // console.log('host data: ', hostData);
-  // console.log('host name: ', hostName);
-
-  // TODO: get all this crap data delivered to this crap component
-  // const otherData = something.something;
   const otherData = [
     hostData.openness,
     hostData.conscientiousness,
@@ -23,8 +17,6 @@ const radarChart: FC<RadarChartInterface> = ({ hostData, hostName }): JSX.Elemen
     localStorage.agreeableness,
     localStorage.neuroticism,
   ];
-  console.log('logged in user\'s data: ', myData);
-  console.log('other users data: ', otherData);
   const personalityLabels = [
     'Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Emotional Range',
   ];
@@ -33,7 +25,7 @@ const radarChart: FC<RadarChartInterface> = ({ hostData, hostName }): JSX.Elemen
     labels: personalityLabels,
     datasets: [
       {
-        label: localStorage.firstName,
+        label: 'You',
         backgroundColor: 'rgba(0, 0, 255, 0.3)',
         hoverBackgroundColor: 'rgba(0, 0, 255, 0.5)',
         borderColor: 'rgba(0, 0, 255, 1)',
