@@ -24,7 +24,6 @@ const EditProfilePic: FunctionComponent<BioProps> = (Props: BioProps): JSX.Eleme
     handleClose,
     handleClickOff,
     picOpen,
-    pic,
   } = Props;
   const rh = process.env.REACT_APP_HOST;
   const rp = process.env.REACT_APP_PORT;
@@ -35,7 +34,6 @@ const EditProfilePic: FunctionComponent<BioProps> = (Props: BioProps): JSX.Eleme
     })
       .then(({ data }) => {
         localStorage.setItem('profilePhoto', data);
-        pic = data;
       })
       .catch((err) => console.warn(err));
   };
