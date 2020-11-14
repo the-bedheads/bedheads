@@ -70,14 +70,12 @@ const Navbar: React.FC<AuthProps> = ({
     }
   };
 
-  // TODO: give the dark mode toggle a label; reformat nav bar -- formgroup?}
   return (
     <div className="toggle-container">
       <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
           <Typography component={Link} to="/" color="inherit">
             <img src={logo} alt="logo" className={classes.logo} />
-            {/* <img src="https://www.flaticon.com/svg/static/icons/svg/3168/3168626.svg" alt="logo" className={classes.logo} /> */}
           </Typography>
           <Button component={Link} to="/" color="inherit">Dashboard</Button>
           <div className={classes.grow} />
@@ -171,7 +169,6 @@ const Navbar: React.FC<AuthProps> = ({
             />
           </NavLink>
           <Switch
-            // className={classes.icons}
             checked={darkMode}
             onChange={() => setDarkMode((prevMode: boolean) => !prevMode)}
             name="toggleMode"
