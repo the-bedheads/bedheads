@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  createStyles, Theme, makeStyles, MuiThemeProvider, createMuiTheme,
-} from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,23 +16,7 @@ interface BulletinProps {
   idx: number,
 }
 
-const bulletinTheme = createMuiTheme({
-  typography: {
-    h6: {
-      fontWeight: 'bold',
-      lineHeight: 1.65,
-    },
-    subtitle1: {
-      lineHeight: 1.25,
-    },
-    overline: {
-      color: 'black',
-      lineHeight: 0.25,
-    },
-  },
-});
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles(() => createStyles({
   even: {
     backgroundColor: 'pink',
     height: '270px',
@@ -108,31 +90,29 @@ const Post: React.FC<BulletinProps> = ({
   }, []);
 
   return (
-    <MuiThemeProvider theme={bulletinTheme}>
-      <Paper className={idx % 2 === 0 ? classes.even : classes.odd}>
-        <Grid item xs={12}><Typography variant="h6">{title}</Typography></Grid>
-        <Grid item xs={12}><Typography variant="subtitle1">{body}</Typography></Grid>
-        <Grid
-          item
-          xs={12}
-        >
-          <Typography
-            variant="overline"
-            component={Link}
-            to={
+    <Paper className={idx % 2 === 0 ? classes.even : classes.odd}>
+      <Grid item xs={12}><Typography variant="h6">{title}</Typography></Grid>
+      <Grid item xs={12}><Typography variant="subtitle1">{body}</Typography></Grid>
+      <Grid
+        item
+        xs={12}
+      >
+        <Typography
+          variant="overline"
+          component={Link}
+          to={
             {
               pathname: '/hostProfile',
               state: { hostData, userId },
             }
           }
-          >
-            {author}
-          </Typography>
-          <Typography variant="overline">{location}</Typography>
-        </Grid>
+        >
+          {author}
+        </Typography>
+        <Typography variant="overline">{location}</Typography>
+      </Grid>
 
-      </Paper>
-    </MuiThemeProvider>
+    </Paper>
   );
 };
 

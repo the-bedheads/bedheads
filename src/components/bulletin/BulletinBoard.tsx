@@ -33,11 +33,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 const BulletinBoard: React.FC = (): JSX.Element => {
   const classes = useStyles();
+  const [loggedInUser] = useState(localStorage.userId);
   const [posts, setPosts] = useState([{
     body: '',
     title: '',
-    user: { first_name: '', listing: { listingCity: '' } },
-    userId: 0,
+    author: { id: 1, first_name: '', listing: { listingCity: '' } },
     userCity: '',
   }]);
 
@@ -57,25 +57,28 @@ const BulletinBoard: React.FC = (): JSX.Element => {
       <h4>community bulletins</h4>
       <Grid container className={classes.container} xs={11} spacing={3}>
         <Grid container item className={classes.sidebar} xs={3}>
-          <CreatePost />
+          <CreatePost user={loggedInUser} />
         </Grid>
         <Grid container item className={classes.bulletins} xs={9}>
           {posts.map((post, idx) => {
-            const user = post.user.first_name;
-            const userCity = post.user.listing.listingCity;
-            const { title, body, userId } = post;
-            return (
-              <Grid item container className={classes.paper} xs={3}>
-                <Post
-                  title={title}
-                  body={body}
-                  author={user}
-                  authorId={userId}
-                  location={userCity}
-                  idx={idx}
-                />
-              </Grid>
-            );
+            if (post.author) {
+              const author = post.author.first_name;
+              const authorCity = post.author.listing.listingCity;
+              const { title, body } = post;
+              const authorId = post.author.id;
+              return (
+                <Grid item container className={classes.paper} xs={3}>
+                  <Post
+                    title={title}
+                    body={body}
+                    author={author}
+                    authorId={authorId}
+                    location={authorCity}
+                    idx={idx}
+                  />
+                </Grid>
+              );
+            } return null;
           })}
         </Grid>
       </Grid>

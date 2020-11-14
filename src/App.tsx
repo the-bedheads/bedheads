@@ -8,8 +8,13 @@ import {
 } from 'react-router-dom';
 import { AppType, UserType } from 'goldilocksTypes';
 
-// Components
+// theming
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { toast } from 'react-toastify';
+import theme from './theme';
+
+// Components
 import 'react-toastify/dist/ReactToastify.css';
 import SignUp from './components/landing/auth/Signup';
 import Login from './components/landing/auth/Login';
@@ -68,93 +73,96 @@ const App: FC = (): JSX.Element => {
   }, [user]);
 
   return (
-    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-      <BrowserRouter>
-        {isAuth
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+        <BrowserRouter>
+          {isAuth
           && <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />}
-        <Switch>
-          <Route
-            exact
-            strict
-            path="/"
-            render={() => (!isAuth ? (
-              <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
-                <Redirect to="/dashboard" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/register"
-            render={() => (!isAuth ? (
-              <SignUp handleLogin={[isAuth, setAuth]} />) : (
-                <Redirect to="/dashboard" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/dashboard"
-            render={() => (isAuth ? (
-              <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
-                <Redirect to="/" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/view-searches"
-            component={Search}
-          />
-          <Route
-            exact
-            path="/view-listing/:id/:avbId"
-            component={() => <Listing user={user} />}
-          />
-          <Route
-            exact
-            strict
-            path="/view-messages"
-            component={() => <Messages user={user} />}
-          />
-          <Route
-            exact
-            path="/view-profile"
-            component={() => <UserProfile user={user} />}
-          />
-          <Route
-            exact
-            path="/view-hostProfile"
-            component={Profile}
-          />
-          <Route
-            exact
-            path="/view-calendar"
-            component={() => <UserCalendar user={user} listingId={listingId} />}
-          />
-          <Route
-            exact
-            path="/view-swaps"
-            component={() => <Swaps user={user} />}
-          />
-          <Route
-            exact
-            path="/view-invites"
-            component={Invite}
-          />
-          <Route
-            exact
-            path="/view-bulletins"
-            component={BulletinBoard}
-          />
-          <Route
-            exact
-            path="/writeReview"
-            component={() => <WriteAReview user={user} />}
-          />
-        </Switch>
-      </BrowserRouter>
-    </div>
+          <Switch>
+            <Route
+              exact
+              strict
+              path="/"
+              render={() => (!isAuth ? (
+                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
+                  <Redirect to="/dashboard" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/register"
+              render={() => (!isAuth ? (
+                <SignUp handleLogin={[isAuth, setAuth]} />) : (
+                  <Redirect to="/dashboard" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/dashboard"
+              render={() => (isAuth ? (
+                <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
+                  <Redirect to="/" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/view-searches"
+              component={Search}
+            />
+            <Route
+              exact
+              path="/view-listing/:id/:avbId"
+              component={() => <Listing user={user} />}
+            />
+            <Route
+              exact
+              strict
+              path="/view-messages"
+              component={() => <Messages user={user} />}
+            />
+            <Route
+              exact
+              path="/view-profile"
+              component={() => <UserProfile user={user} />}
+            />
+            <Route
+              exact
+              path="/view-hostProfile"
+              component={Profile}
+            />
+            <Route
+              exact
+              path="/view-calendar"
+              component={() => <UserCalendar user={user} listingId={listingId} />}
+            />
+            <Route
+              exact
+              path="/view-swaps"
+              component={() => <Swaps user={user} />}
+            />
+            <Route
+              exact
+              path="/view-invites"
+              component={Invite}
+            />
+            <Route
+              exact
+              path="/view-bulletins"
+              component={BulletinBoard}
+            />
+            <Route
+              exact
+              path="/writeReview"
+              component={() => <WriteAReview user={user} />}
+            />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </MuiThemeProvider>
   );
 };
 

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import { AppInterface } from 'goldilocksTypes';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+interface BulletinProps {
+  user: number,
+}
+
+const useStyles = makeStyles(() => createStyles({
   // post: {
   //   display: 'flex',
   // },
@@ -26,11 +28,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const CreatePost: React.FC<AppInterface> = ({ user }): JSX.Element => {
+const CreatePost: React.FC<BulletinProps> = ({ user }): JSX.Element => {
   const classes = useStyles();
-  const userId = user.id;
   const [postTitle, setPostTitle] = useState('(untitled)');
   const [postBody, setPostBody] = useState('');
+  const [postMsg, setPostMsg] = useState('');
 
   const saveTitle = (input: { target: { value: string } }) => {
     setPostTitle(input.target.value);
@@ -42,13 +44,16 @@ const CreatePost: React.FC<AppInterface> = ({ user }): JSX.Element => {
 
   const submitPost = () => {
     if (postBody) {
-      setPostBody('');
-      setPostTitle('(untitled)');
+      axios.post('/bulletin', {
+        title: postTitle,
+        body: postBody,
+        userId: user,
+      })
+        .then(() => setPostMsg('good job.'))
+        .catch(() => setPostMsg('hmm that did not work.'));
     }
-    // TODO: why is userId in brackets?
   };
 
-  // TODO: styling & post request
   return (
     <Container>
       <Grid className={classes.title} item xs={12}>
@@ -59,6 +64,7 @@ const CreatePost: React.FC<AppInterface> = ({ user }): JSX.Element => {
       </Grid>
       <Grid className={classes.button} item xs={12}>
         <Button variant="contained" color="primary" onClick={submitPost} disableElevation disableFocusRipple>hey.</Button>
+        {postMsg}
       </Grid>
     </Container>
   );
