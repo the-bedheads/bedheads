@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { Router } = require('express');
 const { cloudinary } = require('../utils/cloudinary');
+const { User } = require('../db/index');
+
 // const { multerUploads, dataUri } = require('../middleware/multer');
 
 const imageRouter = Router();
@@ -34,6 +36,19 @@ imageRouter.post('/profile', async (req, res) => {
     console.warn(error);
     res.status(500).json({ msg: error });
   }
+});
+
+imageRouter.put('/editProfilePic/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { data } = req.body;
+  const newImage = await cloudinary.uploader
+    .upload(data);
+  const newUserStuff = await User.update({
+    profile_photo: newImage.url,
+  }, {
+    where: { id: userId },
+  });
+  res.send(newImage.url);
 });
 
 module.exports = {
