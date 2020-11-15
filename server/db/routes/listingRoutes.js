@@ -5,14 +5,10 @@ const axios = require('axios');
 
 const {
   User,
-  Survey,
-  Request,
   ListingPhotos,
   Listing,
-  Invite,
   Availability,
   Geolocation,
-  models,
   PersonalityScale,
 } = require('../index');
 
@@ -70,6 +66,7 @@ listingRouter
       where: {
         id: listingId,
       },
+      include: { model: ListingPhotos },
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
@@ -146,11 +143,13 @@ listingRouter
         })
           .then(({ dataValues }) => {
             const { id } = dataValues;
-            ListingPhotos.create({
-              url: photoUrl,
-              userId,
-              listingId: id,
-            });
+            if (photoUrl) {
+              ListingPhotos.create({
+                url: photoUrl,
+                userId,
+                listingId: id,
+              });
+            }
           })
           .catch((err) => res.send(err));
       }))

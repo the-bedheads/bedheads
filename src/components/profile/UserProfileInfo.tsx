@@ -9,6 +9,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import { Link } from 'react-router-dom';
 import { AppInterface } from 'goldilocksTypes';
 import EditBio from './EditBio';
 
@@ -116,6 +117,29 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
     setTempBio(e.target.value);
   };
 
+  const rh = process.env.REACT_APP_HOST;
+  const rp = process.env.REACT_APP_PORT;
+
+  const uploadPhoto = (photoString: any) => {
+    axios.post(`http://${rh}:${rp}/image/addListingPhoto/${localStorage.userId}`, {
+      data: photoString,
+    })
+      .then(({ data }) => {
+        localStorage.setItem('profilePhoto', data);
+        setListingPhoto(data);
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  const handleFileChange = (e: any) => {
+    const image = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onloadend = () => {
+      uploadPhoto(reader.result);
+    };
+  };
+
   const listingCheck = () => {
     if (!hasListing) {
       return (
@@ -123,13 +147,15 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
           <Grid className={classes.botMargStyle}>
             It looks like you haven&apos;t made a listing yet.
           </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.botMargStyle}
-          >
-            Create a listing
-          </Button>
+          <Link to="/dashboard">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.botMargStyle}
+            >
+              Create a listing
+            </Button>
+          </Link>
         </Container>
       );
     }
@@ -141,10 +167,16 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
           </Grid>
           <Button
             variant="contained"
+            component="label"
             color="primary"
             className={classes.botMargStyle}
           >
             Upload a photo
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e)}
+            />
           </Button>
         </Container>
       );

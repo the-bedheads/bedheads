@@ -1,15 +1,5 @@
 const { Router } = require('express');
-const axios = require('axios');
-
-const {
-  User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-} = require('../index');
+const { ListingPhotos } = require('../index');
 
 const listingPhotosRouter = Router();
 

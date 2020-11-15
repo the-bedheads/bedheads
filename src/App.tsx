@@ -34,7 +34,7 @@ import WriteAReview from './components/listing/WriteAReview';
 toast.configure();
 
 const App: FC = (): JSX.Element => {
-  const [isAuth, setAuth] = useState(true);
+  const [isAuth, setAuth] = useState(false);
   const [listingId, setListingId] = useState(0);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
