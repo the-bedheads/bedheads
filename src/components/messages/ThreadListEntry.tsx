@@ -1,9 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { Grid, makeStyles, Button } from '@material-ui/core';
-
-// let socket;
 
 const useStyles = makeStyles({
   main: {
@@ -26,6 +24,7 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({
 }): JSX.Element => {
   const classes = useStyles();
   const [name, setName] = useState('');
+  // let socket;
 
   useEffect(() => {
     const params = { thread, userId };

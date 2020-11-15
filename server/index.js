@@ -68,11 +68,19 @@ app.get('/*', (req, res) => {
 const server = http.createServer(app);
 const io = socketio(server);
 
-io.on('connection', (socket) => {
-  console.info('we have a new connection');
-  socket.on('create', (room) => {
+io.sockets.on('connection', (socket) => {
+  socket.on('room', (room) => {
     socket.join(room);
     console.info(`someone joined room ${room}`);
+  });
+  socket.on('message', (data) => {
+    const { room, msg } = data;
+    console.log(`room: ${room}`);
+    console.log(`msg: ${msg}`);
+    socket.to(room).emit('message', { msg });
+  });
+  socket.on('disconnect', () => {
+    console.info('disconnected from socket');
   });
 });
 

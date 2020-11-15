@@ -1,4 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import axios from 'axios';
 import {
   Grid,
@@ -10,6 +15,7 @@ import {
   Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { io } from 'socket.io-client';
 import { MessageProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
@@ -67,6 +73,8 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
   const [activeThread, setActiveThread] = useState(0);
   const [newMessage, setNewMessage] = useState('');
   const [name, setName] = useState('');
+  const socket = io('localhost:3000');
+  const messageListRef = useRef<HTMLInputElement>(null);
 
   const onLoad = async () => {
     const params = { thread: activeThread, userId: user.id };
@@ -83,21 +91,37 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
       .catch((err) => console.warn(err.message));
   };
 
+  const scrollToBottom = () => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollIntoView();
+    }
+  };
+
   useEffect(() => {
     onLoad();
+    // socket.on('message', () => {
+    //   onLoad();
+    // });
   }, []);
+
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     socket.emit('room', activeThread);
+  //   });
+  // }, [activeThread]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setNewMessage(e.target.value);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const params = {
       activeThread,
       newMessage,
       userId: user.id,
     };
-    axios.post('/message/newMessage', { params });
+    await axios.post('/message/newMessage', { params });
+    socket.emit('message', { room: activeThread, msg: newMessage });
     setNewMessage('');
   };
 
@@ -122,7 +146,12 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
           </Grid>
           <Grid className={classes.scrollStyle}>
             <Grid>
-              <MessageList thread={activeThread} userId={user.id} />
+              <MessageList
+                thread={activeThread}
+                userId={user.id}
+                stb={scrollToBottom}
+              />
+              <div ref={messageListRef} />
             </Grid>
           </Grid>
           <Grid className={classes.newMessageStyle}>
