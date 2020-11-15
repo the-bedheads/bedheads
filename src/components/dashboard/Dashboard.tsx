@@ -41,14 +41,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     padding: 10,
   },
   upcoming: {
-    backgroundColor: '#f9c94f',
+    backgroundColor: 'rgba(249, 201, 79, 0.4)',
     padding: 10,
     textAlign: 'center',
     marginBottom: 10,
     border: '2px black',
   },
   requests: {
-    backgroundColor: '#9ab11e',
+    backgroundColor: 'rgba(249, 201, 79, 0.8)',
     padding: 10,
     textAlign: 'center',
     marginBottom: 10,
@@ -95,7 +95,6 @@ const Dashboard: React.FC<AuthProps> = ({
   const [photoUrl, setPhotoUrl] = useState('');
 
   const getRandomAvlb = () => {
-    console.log('randomListings', randomListings);
     const len = randomListings.length;
     return Math.floor(Math.random() * len);
   };

@@ -65,7 +65,6 @@ dashboardRouter
         const userUrl = `http://${h}:${p}/user/byId/${hostId}`;
         await axios.get(listingUrl)
           .then(({ data }) => {
-            console.log('current listing data: ', data);
             newObj.city = data.listingCity;
             newObj.title = data.listingTitle;
             newObj.url = data.listingPhoto.url;
