@@ -18,7 +18,6 @@ let result;
 reviewRouter
   .get('/getReviews/:listingId', async (req, res) => {
     const { listingId } = req.params;
-
     reviews = await Availability.findAll({
       where: {
         listingId: listingId,
@@ -33,16 +32,17 @@ reviewRouter
         })
         result = Reviews.findAll({
           where: {
-            [Op.and]: [{ revieweeId: hostId }, { reviewerId: guestId }],
+            // [Op.and]: [{ revieweeId: hostId }, { reviewerId: guestId }],
+            revieweeId: hostId,
           },
           order: [
             ['createdAt', 'DESC'],
           ],
           include: {
             model: User,
-            where: {
-              id: guestId,
-            }
+            // where: {
+            //   id: guestId,
+            // }
           },
         })
         return result;
