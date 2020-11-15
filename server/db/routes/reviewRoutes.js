@@ -21,7 +21,7 @@ reviewRouter
 
     reviews = await Availability.findAll({
       where: {
-        listing_id: listingId,
+        listingId: listingId,
       }
     })
       .then(res => {
