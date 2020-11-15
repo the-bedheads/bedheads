@@ -1,6 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 import { Grid, makeStyles, Button } from '@material-ui/core';
+
+// let socket;
 
 const useStyles = makeStyles({
   main: {
@@ -29,6 +32,8 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({
     axios.get('message/getName/', { params })
       .then(({ data }) => setName(data))
       .catch((err) => console.warn(err.message));
+    // socket = io('localhost:3000');
+    // socket.emit('create', `${thread}`);
   }, []);
 
   const threadSetter = (selectedThread: number) => {

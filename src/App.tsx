@@ -120,7 +120,7 @@ const App: FC = (): JSX.Element => {
             />
             <Route
               exact
-              path="/view-listing/:id/:avbId/:startAvail/:endAvail"
+              path="/view-listing/:id/:avbId"
               component={() => <Listing user={user} />}
             />
             <Route

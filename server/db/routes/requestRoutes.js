@@ -56,11 +56,10 @@ requestRouter
     // does host have availability for same days?
     const requesterListingId = await Listing.findOne({
       where: {
-        user_id: userId,
+        userId,
       },
     })
-      .then(({ dataValues }) => dataValues.id)
-      .catch((err) => res.status(500).send(err));
+      .then(({ dataValues }) => dataValues.id);
     const avbCheck = await Availability.findOne({
       where: {
         listingId: requesterListingId,
@@ -73,8 +72,7 @@ requestRouter
           return false;
         }
         return true;
-      })
-      .catch((err) => res.status(500).send(err));
+      });
     if (!avbCheck) {
       Availability.create({
         listingId: requesterListingId,
@@ -82,11 +80,7 @@ requestRouter
         endDate: dates.endAvail,
         host_id: userId,
         accepted: false,
-      })
-        .then(() => {
-          res.status(201).send('complete');
-        })
-        .catch((err) => err);
+      });
     }
     // does request already exist?
     await Request.findOne({

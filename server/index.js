@@ -68,8 +68,9 @@ const io = socketio(server);
 
 io.on('connection', (socket) => {
   console.info('we have a new connection');
-  socket.on('disconnect', () => {
-    console.info('user has left');
+  socket.on('create', (room) => {
+    socket.join(room);
+    console.info(`someone joined room ${room}`);
   });
 });
 
