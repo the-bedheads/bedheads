@@ -40,25 +40,47 @@ interface DefaultListProps {
   title: string;
   city: string;
   state: string;
-  avail: Date;
+  listingAvail: { startAvail: string, endAvail: string },
+  avbId: number;
   photo: string;
   matchPercentage: number;
 }
 
 const DefaultListEntry: React.FC<DefaultListProps> = ({
-  listingId, user, title, city, state, avail, photo, matchPercentage,
+  user, title, city, state, listingAvail, avbId, photo, matchPercentage,
 }) => {
   const classes = useStyles();
+  const { startAvail, endAvail } = listingAvail;
+
   const location = `${city}, ${state}`;
-  const availMessage = `available ${avail}`;
+  const availMessage = `available ${startAvail}`;
   const matchMsg = `${matchPercentage}% match`;
 
   return (
     <div className={classes.root}>
-      <ButtonBase className={classes.image} component={Link} to={`/view-listing/${user}`}>
+      <ButtonBase
+        className={classes.image}
+        component={Link}
+        to={
+              {
+                pathname: `/view-listing/${user}/${avbId}`,
+                state: { startAvail, endAvail },
+              }
+            }
+      >
         <img className={classes.img} alt="complex" src={photo} />
       </ButtonBase>
-      <Grid item xs component={Link} to={`/view-listing/${user}`}>
+      <Grid
+        item
+        xs
+        component={Link}
+        to={
+              {
+                pathname: `/view-listing/${user}/${avbId}`,
+                state: { startAvail, endAvail },
+              }
+            }
+      >
         <Typography variant="h6">
           {title}
         </Typography>
