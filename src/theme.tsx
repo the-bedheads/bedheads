@@ -5,6 +5,9 @@ const theme = createMuiTheme({
     primary: { 500: '#467fcf' },
   },
   typography: {
+    h3: {
+      fontWeight: 'bold',
+    },
     h6: {
       fontWeight: 'bold',
       lineHeight: 1.65,
