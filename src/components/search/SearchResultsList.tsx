@@ -104,6 +104,7 @@ const ResultsList: React.FC<SearchProps> = ({
   return (
     <div className={classes.root}>
       <Grid className={classes.paper} item xs={7}>
+        {setMessage}
         {availListings.map((listing: {
           userId: number; listingId: number; avbId: number; listingTitle: string;
           listingCity: string; listingState: string; startAvail: string;

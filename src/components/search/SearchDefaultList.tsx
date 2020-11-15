@@ -75,24 +75,28 @@ const SearchDefaultList: React.FC = () => {
         <Grid container justify="center" spacing={4}>
           {defaultListings.map((random: {
             id: number;
-            user_id: number;
+            userId: number;
             listingTitle: string;
             listingCity: string;
             listingState: string;
             user: any;
             availabilities: [{
-              startDate: Date,
+              id: number,
+              startDate: string,
+              endDate: string,
             }];
             listingPhoto: {
               url: string;
             }
           }) => {
             const {
-              id, user_id: userId, listingTitle, listingCity,
+              id, userId, listingTitle, listingCity,
               listingState, availabilities, listingPhoto,
             } = random;
             const matchPercentage = getMatchPercentage(random.user.personalityScale);
-            const earliestAvail = availabilities[0].startDate;
+            const startAvail = availabilities[0].startDate;
+            const endAvail = availabilities[0].endDate;
+            const avbId = availabilities[0].id;
             const { url } = listingPhoto;
             return (
               <Grid key={id} item>
@@ -103,7 +107,8 @@ const SearchDefaultList: React.FC = () => {
                     title={listingTitle}
                     city={listingCity}
                     state={listingState}
-                    avail={earliestAvail}
+                    listingAvail={{ startAvail, endAvail }}
+                    avbId={avbId}
                     photo={url}
                     matchPercentage={matchPercentage}
                   />

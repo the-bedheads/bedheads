@@ -53,7 +53,7 @@ interface SearchListProps {
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates, photo, avbId, listingId, matchPercentage,
+  user, title, location, listingAvail, queriedDates, photo, avbId, matchPercentage,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
