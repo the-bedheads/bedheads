@@ -60,7 +60,10 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
         guestRating: any;
       }) => (
         <div className={classes.root}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            elevation={0}
+          >
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar
@@ -81,6 +84,12 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
                     m={1}
                   >
                     {review.user.first_name}
+                  </Box>
+                  <Box
+                    component="fieldset"
+                    borderColor="transparent"
+                    m={1}
+                  >
                     <StyledRating
                       icon={(
                         <FavoriteIcon
@@ -94,7 +103,7 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
                   </Box>
                 </Typography>
                 <Typography>
-                  <Box fontSize={13} m={1}>
+                  <Box fontSize={13} m={2}>
                     {review.guestComments}
                   </Box>
                 </Typography>
@@ -103,7 +112,7 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
           </Paper>
           <Divider
             light={false}
-            orientation="vertical"
+            orientation="horizontal"
           />
         </div>
       ));

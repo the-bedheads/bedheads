@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Grid,
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): JSX.Element => {
+const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): JSX.Element => {
   const classes = useStyles();
 
   const postReviews = () => {
@@ -60,7 +60,10 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
         hostRating: any;
       }) => (
         <div className={classes.root}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            elevation={0}
+          >
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar
@@ -81,6 +84,12 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
                     m={1}
                   >
                     {review.user.first_name}
+                  </Box>
+                  <Box
+                    component="fieldset"
+                    borderColor="transparent"
+                    m={1}
+                  >
                     <StyledRating
                       icon={(
                         <FavoriteIcon
@@ -94,7 +103,7 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
                   </Box>
                 </Typography>
                 <Typography>
-                  <Box fontSize={13}>
+                  <Box fontSize={13} m={2}>
                     {review.hostComments}
                   </Box>
                 </Typography>
@@ -103,7 +112,7 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
           </Paper>
           <Divider
             light={false}
-            orientation="vertical"
+            orientation="horizontal"
           />
         </div>
       ));
@@ -117,4 +126,4 @@ const GuestReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }):
   );
 };
 
-export default GuestReviews;
+export default HostReviews;

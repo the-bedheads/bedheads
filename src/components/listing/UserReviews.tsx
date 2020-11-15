@@ -89,7 +89,6 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
       <Grid item xs={12}>
-        <Typography align="center" variant="h5">Reviews</Typography>
         <Paper className={classes.root}>
           <AppBar position="static" color="default">
             <Tabs
@@ -99,8 +98,8 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
               textColor="primary"
               centered
             >
-              <Tab label="Host" icon={<Home />} />
-              <Tab label="Guest" icon={<Hotel />} />
+              <Tab fullWidth label="Host" icon={<Home />} />
+              <Tab fullWidth label="Guest" icon={<Hotel />} />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
