@@ -5,23 +5,71 @@ import {
   Container,
   Grid,
 } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
 import { Link } from 'react-router-dom';
-import Navbar from '../global/Navbar';
+import moment from 'moment';
 import ListingModal from '../listing/ListingModal';
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  handleLogin: [React.Dispatch<React.SetStateAction<boolean>>],
   user: AppType,
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    flexGrow: 1,
+    padding: '25px',
+  },
+  component: {
+    backgroundColor: 'white',
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: 100,
+  },
+  container: {
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  greeting: {
+    // backgroundColor: '#6e8010',
+    padding: 10,
+  },
+  upcoming: {
+    backgroundColor: '#f9c94f',
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+    border: '2px black',
+  },
+  requests: {
+    backgroundColor: '#9ab11e',
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  msg: {
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  randomBtn: {
+    margin: 'auto',
+    padding: 10,
+  },
+
+}));
+
 const Dashboard: React.FC<AuthProps> = ({
-  handleLogin: [isAuth, setAuth],
+  handleLogin: [setAuth],
   user,
 }) => {
-  // const listingId = 1;
+  const classes = useStyles();
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
@@ -47,6 +95,7 @@ const Dashboard: React.FC<AuthProps> = ({
   const [photoUrl, setPhotoUrl] = useState('');
 
   const getRandomAvlb = () => {
+    console.log('randomListings', randomListings);
     const len = randomListings.length;
     return Math.floor(Math.random() * len);
   };
@@ -184,7 +233,6 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
-    // setRandomLink(randomListings[shownIndex].listingId);
     const { id, listingId } = randomListings[shownIndex];
     setRandomLink(`${listingId}/${id}`);
   };
@@ -201,6 +249,12 @@ const Dashboard: React.FC<AuthProps> = ({
       });
   };
 
+  const greeting = `hi ${user.firstName},`;
+  const swapMsg = `You have ${swapCount} upcoming trips`;
+  const requestMsg = `You have ${pendingRequestCount} requests to swap rooms`;
+  const createNotif = 'it\'s probably because you don\'t have a listing yet...';
+  const suggestionMsg = 'need some plans?';
+
   useEffect(() => {
     getDashboardInfo();
     getProfile();
@@ -209,74 +263,109 @@ const Dashboard: React.FC<AuthProps> = ({
 
   // This should eventually live in another component. Or something. This is messy.
   const listingCheck = () => {
-    if (hasListing) {
+    if (hasListing && randomListings.length) {
+      const humanDates = {
+        startDate: moment(randomListings[shownIndex].startDate, 'YYYY-MM-DD').format('dddd, MMM Do YYYY'),
+        endDate: moment(randomListings[shownIndex].endDate, 'YYYY-MM-DD').format('dddd, MMM Do YYYY'),
+      };
       return (
-        <Grid id="random-listing">
-          <p>Need a weekend getaway?</p>
-          {
+        // <Grid id="random-listing">
+        <Grid item className={classes.msg} xs={10}>
+          <Grid item xs={12} style={{ paddingBottom: 5 }}>
+            <Typography variant="body1">
+              {suggestionMsg}
+            </Typography>
+            {
             randomListings.length > 0
             && (
-              <Grid>
-                <p>
-                  {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
-                </p>
-                <p>
-                  {`${randomListings[shownIndex].startDate} to ${randomListings[shownIndex].endDate}`}
-                </p>
+              <Grid container item xs={12}>
+                <Grid item xs={12}>
+                  <Typography variant="body1">
+                    {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body1">
+                    {`${humanDates.startDate} to ${humanDates.endDate}`}
+                  </Typography>
+                </Grid>
               </Grid>
             )
           }
-          <Link to={`/view-listing/${randomLink}`}>
-            <Button type="button">
-              View Listing!
-            </Button>
-          </Link>
-          <button type="submit" onClick={getNewListing}>Show me another!</button>
+            <Grid item xs={12} className={classes.randomBtn}>
+              <Link to={`/view-listing/${randomLink}`}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleOpen}
+                >
+                  View listing
+                </Button>
+              </Link>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={getNewListing}
+              >
+                Show me another
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       );
     }
     return (
       <>
-        <Grid>
-          It looks like you don&apos;t have a listing yet.
-        </Grid>
-        <Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleOpen}
-          >
-            Let&apos;s fix that!
-          </Button>
-          <ListingModal
-            handleClose={handleClose}
-            handleClickOff={handleClickOff}
-            handleTextChange={handleTextChange}
-            toggleSwitch={toggleSwitch}
-            setPhotoUrl={setPhotoUrl}
-            open={open}
-          />
+        <Grid item className={classes.msg} xs={10}>
+          <Grid item xs={12} style={{ paddingBottom: 5 }}>
+            <Typography variant="body1">
+              {createNotif}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOpen}
+            >
+              Let&apos;s fix that!
+            </Button>
+            <ListingModal
+              handleClose={handleClose}
+              handleClickOff={handleClickOff}
+              handleTextChange={handleTextChange}
+              toggleSwitch={toggleSwitch}
+              setPhotoUrl={setPhotoUrl}
+              open={open}
+            />
+          </Grid>
         </Grid>
       </>
     );
   };
 
   return (
-    <Container>
-      <Grid>
-        <h4>
-          {`Hello, ${user.firstName}!!`}
-        </h4>
+    <Container className={classes.root}>
+      <Grid container className={classes.component} xs={11} spacing={3}>
+        <Grid container item className={classes.container} xs={8}>
+          <Grid item className={classes.greeting} xs={10}>
+            <Typography variant="h3">
+              {greeting}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.upcoming} xs={10}>
+            <Typography variant="h5">
+              {swapMsg}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.requests} xs={10}>
+            <Typography variant="h5">
+              {requestMsg}
+            </Typography>
+          </Grid>
+          {listingCheck()}
+        </Grid>
       </Grid>
-      <Grid id="user-notifications">
-        <p>
-          {`You have ${swapCount} upcoming trips`}
-        </p>
-        <p>
-          {`You have ${pendingRequestCount} requests to swap rooms`}
-        </p>
-      </Grid>
-      {listingCheck()}
     </Container>
   );
 };

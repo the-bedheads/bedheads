@@ -34,7 +34,7 @@ import WriteAReview from './components/listing/WriteAReview';
 toast.configure();
 
 const App: FC = (): JSX.Element => {
-  const [isAuth, setAuth] = useState(false);
+  const [isAuth, setAuth] = useState(true);
   const [listingId, setListingId] = useState(0);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
@@ -83,7 +83,7 @@ const App: FC = (): JSX.Element => {
       <div className={darkMode ? 'dark-mode' : 'light-mode'}>
         <BrowserRouter>
           {isAuth
-          && <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />}
+          && <Navbar handleLogin={[setAuth]} toggleMode={[darkMode, setDarkMode]} />}
           <Switch>
             <Route
               exact
@@ -108,7 +108,7 @@ const App: FC = (): JSX.Element => {
               strict
               path="/dashboard"
               render={() => (isAuth ? (
-                <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
+                <Dashboard handleLogin={[setAuth]} user={user} />) : (
                   <Redirect to="/" />
               ))}
             />
