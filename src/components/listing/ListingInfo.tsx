@@ -13,6 +13,11 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  imgStyle: {
+    height: '69%',
+    width: '69%',
+    padding: '10px 10px 5px',
+  },
 });
 
 interface ListingProps {
@@ -21,7 +26,7 @@ interface ListingProps {
 
 const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
   const classes = useStyles();
-  const [listingData, setListingData] = useState({
+  const [listingData, setListingData] = useState<any>({
     listingTitle: null,
     listingDescription: null,
     listingAddress: null,
@@ -31,8 +36,10 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
     privateBath: false,
     roommates: true,
     smoking: true,
+    hostId: null,
   });
-  const [accommodations, setAccommodations] = useState(['']);
+  const [accommodations, setAccommodations] = useState<any>(['']);
+  const [listingPhoto, setListingPhoto] = useState<string>('');
 
   const displayAccommodations = async () => {
     const iconsToRender = [];
@@ -67,6 +74,7 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
   const getListing = () => {
     axios.get(`/listing/user/${listingId}`)
       .then((listingInfo) => {
+        console.info(listingInfo.data);
         const {
           listingTitle,
           listingDescription,
@@ -90,6 +98,10 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
           smoking,
         });
         displayAccommodations();
+        axios.get(`/listingPhotos/${listingInfo.data.userId}`)
+          .then((results) => {
+            setListingPhoto(results.data.url);
+          });
       })
       .catch((err) => err);
   };
@@ -104,13 +116,13 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
         <Paper>
           <br />
           <Typography variant="h5" align="center">{listingData.listingTitle}</Typography>
-          <br />
-          <Paper>
-            <Typography>
-              Enter Listing Photos Here.
-            </Typography>
-          </Paper>
-          <br />
+          <Grid container justify="center" item xs={12}>
+            <img
+              src={listingPhoto}
+              alt="This person hasn't uploaded any pics of their place yet!"
+              className={classes.imgStyle}
+            />
+          </Grid>
           <Typography variant="h6" align="center">{listingData.listingAddress}</Typography>
           <br />
           <Typography>{`Description: ${listingData.listingDescription}`}</Typography>
