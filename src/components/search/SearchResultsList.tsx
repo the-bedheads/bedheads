@@ -106,18 +106,19 @@ const ResultsList: React.FC<SearchProps> = ({
       <Grid className={classes.paper} item xs={7}>
         {setMessage}
         {availListings.map((listing: {
-          userId: number; listingId: number; avbId: number; listingTitle: string;
+          userId: number; id: number; avbId: number; listingTitle: string;
           listingCity: string; listingState: string; startAvail: string;
-          endAvail: string; matchPercentage: number; listingPhoto: { url: string } }) => {
+          endAvail: string; matchPercentage: number; listingPhoto: { url: string }
+        }) => {
           const {
-            userId, listingId, listingTitle, listingCity, listingState,
+            userId, id, listingTitle, listingCity, listingState,
             startAvail, endAvail, listingPhoto, avbId, matchPercentage,
           } = listing;
           const { url } = listingPhoto;
           return (
             <ResultsListEntry
               user={userId}
-              listingId={listingId}
+              listingId={id}
               title={listingTitle}
               location={{ listingCity, listingState }}
               listingAvail={{ startAvail, endAvail }}

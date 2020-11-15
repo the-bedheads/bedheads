@@ -53,7 +53,7 @@ interface SearchListProps {
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates, photo, avbId, matchPercentage,
+  user, title, location, listingAvail, queriedDates, photo, avbId, listingId, matchPercentage,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
@@ -84,7 +84,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
             component={Link}
             to={
               {
-                pathname: `/view-listing/${user}/${avbId}`,
+                pathname: `/view-listing/${listingId}/${avbId}`,
                 state: { startAvail, endAvail },
               }
             }
@@ -102,7 +102,7 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
         component={Link}
         to={
           {
-            pathname: `/view-listing/${user}/${avbId}`,
+            pathname: `/view-listing/${listingId}/${avbId}`,
             state: { startAvail, endAvail },
           }
         }
