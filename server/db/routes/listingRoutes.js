@@ -66,6 +66,7 @@ listingRouter
       where: {
         id: listingId,
       },
+      include: { model: ListingPhotos },
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
