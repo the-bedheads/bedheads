@@ -1,10 +1,4 @@
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 form {
   max-width: 800px;
@@ -43,7 +37,7 @@ input[type="submit"] {
   padding: 20px;
   font-size: 16px;
   font-weight: 100;
-  letter-spacing: 10px;
+  /* letter-spacing: 10px; */
 }
 
 /* button {
@@ -83,7 +77,7 @@ input[type="submit"] {
 }
 
 .login-container {
-  /* background-image: url('../src/assets/nightbed.jpg'); */
+  background-image: url('../src/assets/hangin\ on\ bed.jpeg');
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -91,7 +85,7 @@ input[type="submit"] {
 }
 
 .signup-container {
-  /* background-image: url('../src/assets/realisticbed.jpg'); */
+  background-image: url('../src/assets/hangin\ on\ bed.jpeg');  
   height: 100vh;
   background-position: center;
   background-size: cover;
