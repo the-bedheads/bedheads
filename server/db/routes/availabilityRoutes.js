@@ -57,6 +57,9 @@ availabilityRouter
     Availability.findAndCountAll({
       where: {
         [Op.and]: [{ accepted: true }, { host_id: userId }],
+        startDate: {
+          [Op.gt]: new Date(),
+        },
       },
     })
       .then((swaps) => res.send(swaps))

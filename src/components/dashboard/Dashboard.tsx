@@ -93,6 +93,8 @@ const Dashboard: React.FC<AuthProps> = ({
   const [internet, setInternet] = useState(false);
   const [privateBath, setPrivateBath] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [startAvail, setRandomStart] = useState();
+  const [endAvail, setRandomEnd] = useState();
 
   const getRandomAvlb = () => {
     const len = randomListings.length;
@@ -234,8 +236,15 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
-    const { id, listingId } = randomListings[shownIndex];
+    const {
+      id,
+      listingId,
+      startDate,
+      endDate,
+    } = randomListings[shownIndex];
     setRandomLink(`${listingId}/${id}`);
+    setRandomStart(startDate);
+    setRandomEnd(endDate);
   };
 
   const postUserInfo = () => {
@@ -294,7 +303,13 @@ const Dashboard: React.FC<AuthProps> = ({
             )
           }
             <Grid item xs={12} className={classes.randomBtn}>
-              <Link to={`/view-listing/${randomLink}`}>
+              <Link to={
+                {
+                  pathname: `/view-listing/${randomLink}`,
+                  state: { startAvail, endAvail },
+                }
+              }
+              >
                 <Button
                   variant="contained"
                   color="primary"

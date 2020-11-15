@@ -77,7 +77,6 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
     axios.get(`/reviews/getReviews/${listingId}`)
       .then((reviewInfo) => {
         setAllReviews(reviewInfo.data);
-        console.info(allReviews);
       })
       .catch((err) => err.message);
   };
