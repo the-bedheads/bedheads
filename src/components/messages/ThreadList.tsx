@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
+import { Socket } from 'socket.io-client/build/socket';
 import ThreadListEntry from './ThreadListEntry';
 
 const useStyles = makeStyles({
@@ -14,6 +15,8 @@ interface ThreadProps {
   userId: number,
   setActiveThread: React.Dispatch<React.SetStateAction<number>>,
   setName: React.Dispatch<React.SetStateAction<string>>,
+  threadSocket: Socket | null,
+  activeThread: number,
 }
 
 const ThreadList: FC<ThreadProps> = ({
@@ -21,6 +24,8 @@ const ThreadList: FC<ThreadProps> = ({
   userId,
   setActiveThread,
   setName,
+  threadSocket,
+  activeThread,
 }): JSX.Element => {
   const classes = useStyles();
 
@@ -31,6 +36,8 @@ const ThreadList: FC<ThreadProps> = ({
         setActiveThread={setActiveThread}
         setThreadName={setName}
         userId={userId}
+        threadSocket={threadSocket}
+        activeThread={activeThread}
       />
     </Grid>
   ));

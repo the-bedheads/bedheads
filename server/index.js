@@ -69,9 +69,14 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.sockets.on('connection', (socket) => {
+  console.info('socket connected');
   socket.on('room', (room) => {
     socket.join(room);
     console.info(`someone joined room ${room}`);
+  });
+  socket.on('leave', (room) => {
+    socket.leave(room);
+    console.info(`someone left room ${room}`);
   });
   socket.on('message', (data) => {
     const { room, msg } = data;

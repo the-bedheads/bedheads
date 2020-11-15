@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
 // import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client/build/socket';
 import { Grid, makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -14,6 +15,8 @@ interface ThreadTypeInt {
   userId: number,
   setActiveThread: React.Dispatch<React.SetStateAction<number>>,
   setThreadName: React.Dispatch<React.SetStateAction<string>>,
+  threadSocket: Socket | null,
+  activeThread: number,
 }
 
 const ThreadListEntry: FC<ThreadTypeInt> = ({
@@ -21,6 +24,8 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({
   userId,
   setActiveThread,
   setThreadName,
+  threadSocket,
+  activeThread,
 }): JSX.Element => {
   const classes = useStyles();
   const [name, setName] = useState('');
@@ -36,6 +41,7 @@ const ThreadListEntry: FC<ThreadTypeInt> = ({
   }, []);
 
   const threadSetter = (selectedThread: number) => {
+    threadSocket?.emit('leave', activeThread);
     setThreadName(name);
     setActiveThread(selectedThread);
   };
