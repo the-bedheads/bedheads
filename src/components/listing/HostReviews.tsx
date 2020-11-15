@@ -94,7 +94,7 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
                   </Box>
                 </Typography>
                 <Typography>
-                  <Box fontSize={13}>
+                  <Box fontSize={13} m={1}>
                     {review.guestComments}
                   </Box>
                 </Typography>
