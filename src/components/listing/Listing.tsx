@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  withStyles,
+  createStyles,
+  Theme,
+} from '@material-ui/core/styles';
 import {
   Paper,
   Grid,
@@ -8,7 +13,6 @@ import {
 } from '@material-ui/core';
 import {
   AppInterface,
-  ListingLocationState,
   ListingLocationInterface,
 } from 'goldilocksTypes';
 import UserReviews from './UserReviews';
