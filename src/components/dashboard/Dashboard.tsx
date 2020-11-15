@@ -198,7 +198,9 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getProfile = async () => {
     try {
-      const res = await fetch(`http://${process.env.HOST}:${process.env.PORT}/dashboard`, {
+      const rh = process.env.REACT_APP_HOST;
+      const rp = process.env.REACT_APP_PORT;
+      const res = await fetch(`http://${rh}:${rp}/dashboard`, {
         method: 'POST',
         headers: { jwt_token: localStorage.token, email: user.email },
       });

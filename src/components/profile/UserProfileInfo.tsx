@@ -9,6 +9,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import { Link } from 'react-router-dom';
 import { AppInterface } from 'goldilocksTypes';
 import EditBio from './EditBio';
 
@@ -146,13 +147,15 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
           <Grid className={classes.botMargStyle}>
             It looks like you haven&apos;t made a listing yet.
           </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.botMargStyle}
-          >
-            Create a listing
-          </Button>
+          <Link to="/dashboard">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.botMargStyle}
+            >
+              Create a listing
+            </Button>
+          </Link>
         </Container>
       );
     }

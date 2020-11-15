@@ -18,7 +18,7 @@ const radarChart: FC<RadarChartInterface> = ({ hostData, hostName }): JSX.Elemen
     localStorage.neuroticism,
   ];
   const personalityLabels = [
-    'Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Emotional Range',
+    'O', 'C', 'Ex', 'A', 'Em',
   ];
 
   const radarData = {
