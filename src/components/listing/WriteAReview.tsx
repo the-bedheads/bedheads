@@ -174,7 +174,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
         >
           Comments?
         </Typography>
-        {/* <br /> */}
         <TextField
           name="host-review"
           autoFocus
@@ -184,7 +183,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           fullWidth
           onChange={(e) => handleHostReview(e, hostReview)}
         />
-        {/* <br /> */}
         <Typography
           component="legend"
           className={classes.root}
@@ -208,7 +206,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           }}
         />
         {guestRating !== null && <Box ml={2}>{gLabels[gHover !== -1 ? gHover : guestRating]}</Box>}
-        {/* <br /> */}
         <Typography
           component="legend"
           className={classes.root}

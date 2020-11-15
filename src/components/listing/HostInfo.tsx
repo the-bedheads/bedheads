@@ -1,18 +1,40 @@
 import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  withStyles,
+} from '@material-ui/core/styles';
 import {
   Button,
   Box,
   Typography,
+  Card,
+  CardMedia,
+  CardActions,
+  CardContent,
+  CardActionArea,
 } from '@material-ui/core';
+import { Rating } from '@material-ui/lab';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link } from 'react-router-dom';
 import { HostInfoInterface } from 'goldilocksTypes';
 import MessageModal from '../messages/MessageModal';
 
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#ff6d75',
+  },
+  iconHover: {
+    color: '#ff3d47',
+  },
+})(Rating);
+
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    maxWidth: 500,
+  },
+  media: {
+    height: 140,
   },
   bullet: {
     display: 'inline-block',
@@ -39,7 +61,7 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
     firstName: '',
     lastName: '',
     pronouns: '',
-    hostRating: '',
+    hostRating: 0,
     id: 0,
     profilePhoto: '',
     userBio: '',
@@ -116,71 +138,72 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
 
   return (
     <div className="host-info">
-      <Box
-        textAlign="center"
-        color="inherited"
-        margin="normal"
-        className={classes.pos}
+      <Card
+        className={classes.root}
+        elevation={0}
       >
-        <Button
-          component={Link}
-          to={
-            {
-              pathname: '/view-hostProfile',
-              state: { hostData, userId },
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={hostData.profilePhoto}
+            title="Profile Photo"
+            component={Link}
+            to={
+              {
+                pathname: '/view-hostProfile',
+                state: { hostData, userId },
+              }
             }
-          }
-          variant="contained"
-        >
-          <img
-            src={hostData.profilePhoto}
-            alt="dog portrait"
-            width="100%"
           />
-        </Button>
-      </Box>
-      <Typography>
-        {`Host: ${hostData.firstName} ${hostData.lastName}`}
-      </Typography>
-      <Typography className={classes.pos}>
-        {`Rating: ${hostData.hostRating}`}
-      </Typography>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={handleOpen}
-        className={classes.pos}
-      >
-        message host
-      </Button>
-      <MessageModal
-        handleClose={handleClose}
-        handleClickOff={handleClickOff}
-        handleTextChange={handleTextChange}
-        message={message}
-        open={open}
-        name={hostData.firstName}
-      />
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={requestSwap}
-        className={classes.pos}
-      >
-        request swap
-      </Button>
-      <Button
-        variant="outlined"
-        color="secondary"
-        component={Link}
-        to={
-          {
-            pathname: '/writeReview',
-          }
-        }
-      >
-        write review
-      </Button>
+          <CardContent>
+            <Typography>
+              {hostData.firstName}
+            </Typography>
+            <Box
+              component="fieldset"
+              borderColor="transparent"
+              m={1}
+            >
+              <StyledRating
+                icon={(
+                  <FavoriteIcon
+                    fontSize="small"
+                  />
+                )}
+                name="read-only"
+                value={hostData.hostRating}
+                readOnly
+              />
+            </Box>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={handleOpen}
+          >
+            contact
+          </Button>
+          <MessageModal
+            handleClose={handleClose}
+            handleClickOff={handleClickOff}
+            handleTextChange={handleTextChange}
+            message={message}
+            open={open}
+            name={hostData.firstName}
+          />
+          <Button
+            size="small"
+            variant="outlined"
+            color="secondary"
+            onClick={requestSwap}
+          >
+            request
+          </Button>
+        </CardActions>
+      </Card>
     </div>
   );
 };
