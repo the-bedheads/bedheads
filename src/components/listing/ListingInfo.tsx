@@ -84,7 +84,6 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
   const getListing = () => {
     axios.get(`/listing/user/${listingId}`)
       .then((listingInfo) => {
-        console.info(listingInfo.data);
         const {
           listingTitle,
           listingDescription,

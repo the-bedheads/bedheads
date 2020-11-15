@@ -80,8 +80,6 @@ io.sockets.on('connection', (socket) => {
   });
   socket.on('message', (data) => {
     const { room, msg } = data;
-    console.log(`room: ${room}`);
-    console.log(`msg: ${msg}`);
     socket.to(room).emit('message', { msg });
   });
   socket.on('disconnect', () => {

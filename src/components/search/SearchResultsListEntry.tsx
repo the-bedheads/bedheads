@@ -63,8 +63,6 @@ const ResultsListEntry: React.FC<SearchListProps> = ({
   const locationStr = `${listingCity}, ${listingState}`;
   const matchStr = `${matchPercentage}% match`;
 
-  console.log(listingId);
-
   const getAvailMessage = () => {
     if (start !== startAvail || end !== endAvail) {
       setAvailMessage(`flexible? this is available from ${startAvail} to ${endAvail}`);

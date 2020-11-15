@@ -35,7 +35,6 @@ const MessageList: FC<ThreadTypeInt> = ({
     if (socket) {
       socket.emit('room', thread);
       socket.on('message', (data: string) => {
-        console.info(data);
         getMessages();
       });
     }
