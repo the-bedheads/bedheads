@@ -16,6 +16,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link, NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
+import { ReactComponent as Goldilocks } from '../../assets/goldilocks.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +33,8 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   logo: {
-    maxWidth: 35,
+    maxHeight: 35,
+    marginRight: 5,
   },
 });
 
@@ -74,10 +76,11 @@ const Navbar: React.FC<AuthProps> = ({
     <div className="toggle-container">
       <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
+          <Goldilocks className={classes.logo} />
           <Typography component={Link} to="/" color="inherit">
             <img src={logo} alt="logo" className={classes.logo} />
           </Typography>
-          <Button component={Link} to="/" color="inherit">Dashboard</Button>
+          {/* <Button component={Link} to="/" color="inherit">Dashboard</Button> */}
           <div className={classes.grow} />
           <IconButton component={Link} to="/view-searches" color="inherit">
             <SearchIcon className="icon" />
