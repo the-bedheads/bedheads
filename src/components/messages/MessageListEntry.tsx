@@ -44,7 +44,7 @@ const MessageListEntry: FC<ThreadTypeInt> = ({ message }): JSX.Element => {
   useEffect(() => {
     const data = 'words';
     // socket = io('localhost:3000');
-    // socket.emit('create', `${}`);
+    // socket.emit('message', { name: 'mike', room: 'mikes room' });
   }, [messageBody]);
 
   return (

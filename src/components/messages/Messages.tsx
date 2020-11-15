@@ -1,4 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import axios from 'axios';
 import {
   Grid,
@@ -10,6 +15,8 @@ import {
   Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client/build/socket';
 import { MessageProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
@@ -67,13 +74,20 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
   const [activeThread, setActiveThread] = useState(0);
   const [newMessage, setNewMessage] = useState('');
   const [name, setName] = useState('');
+  const [threadSocket, setThreadSocket] = useState<Socket | null>(null);
+  const messageListRef = useRef<HTMLInputElement>(null);
+
+  const threadSetter = (thread: number) => {
+    setThreadSocket(io('localhost:3000'));
+    setActiveThread(thread);
+  };
 
   const onLoad = async () => {
     const params = { thread: activeThread, userId: user.id };
     await axios.get(`/message/getThreads/${user.id}`)
       .then(({ data }) => {
         setThreads(data);
-        setActiveThread(data[0]);
+        threadSetter(data[0]);
         const num = data[0];
         params.thread = num;
       })
@@ -81,6 +95,12 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
     await axios.get('message/getName/', { params })
       .then(({ data }) => setName(data))
       .catch((err) => console.warn(err.message));
+  };
+
+  const scrollToBottom = () => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollIntoView();
+    }
   };
 
   useEffect(() => {
@@ -91,13 +111,21 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
     setNewMessage(e.target.value);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const params = {
       activeThread,
       newMessage,
       userId: user.id,
     };
-    axios.post('/message/newMessage', { params });
+    await axios.post('/message/newMessage', { params });
+    const socket = io('localhost:3000');
+    socket.on('connect', () => {
+      socket.emit('room', activeThread);
+    });
+    socket.emit('message', { room: activeThread, msg: newMessage });
+    socket.on('message', () => {
+      socket.disconnect();
+    });
     setNewMessage('');
   };
 
@@ -114,6 +142,8 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
             setActiveThread={setActiveThread}
             setName={setName}
             userId={user.id}
+            threadSocket={threadSocket}
+            activeThread={activeThread}
           />
         </Grid>
         <Grid item xs={9} className={classes.messageListStyle}>
@@ -122,7 +152,13 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
           </Grid>
           <Grid className={classes.scrollStyle}>
             <Grid>
-              <MessageList thread={activeThread} userId={user.id} />
+              <MessageList
+                thread={activeThread}
+                userId={user.id}
+                stb={scrollToBottom}
+                socket={threadSocket}
+              />
+              <div ref={messageListRef} />
             </Grid>
           </Grid>
           <Grid className={classes.newMessageStyle}>

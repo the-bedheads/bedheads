@@ -286,47 +286,41 @@ const Dashboard: React.FC<AuthProps> = ({
               {suggestionMsg}
             </Typography>
             {
-            randomListings.length > 0
-            && (
-              <Grid container item xs={12}>
-                <Grid item xs={12}>
-                  <Typography variant="body1">
-                    {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
-                  </Typography>
+              randomListings.length > 0
+              && (
+                <Grid container item xs={12}>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      {`${humanDates.startDate} to ${humanDates.endDate}`}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body1">
-                    {`${humanDates.startDate} to ${humanDates.endDate}`}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )
-          }
-            <Grid item xs={12} className={classes.randomBtn}>
-              <Link to={
+              )
+            }
+          </Grid>
+          <Link to={`/view-listing/${randomLink}`}>
+            <Button
+              type="button"
+              component={Link}
+              to={
                 {
                   pathname: `/view-listing/${randomLink}`,
-                  state: { startAvail, endAvail },
+                  state: {
+                    startAvail: randomListings[shownIndex] ? randomListings[shownIndex].startDate : '0',
+                    endAvail: randomListings[shownIndex] ? randomListings[shownIndex].endDate : '0',
+                  },
                 }
               }
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleOpen}
-                >
-                  View listing
-                </Button>
-              </Link>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={getNewListing}
-              >
-                Show me another
-              </Button>
-            </Grid>
-          </Grid>
+            >
+              View Listing!
+            </Button>
+          </Link>
+          <button type="submit" onClick={getNewListing}>Show me another!</button>
         </Grid>
       );
     }

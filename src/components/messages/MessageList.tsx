@@ -1,30 +1,43 @@
 import React, { FC, useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, makeStyles } from '@material-ui/core';
+import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client/build/socket';
 import MessageListEntry from './MessageListEntry';
-
-const useStyles = makeStyles({
-  sent: {
-    justifyContent: 'right',
-  },
-  received: {
-    justifyContent: 'left',
-  },
-});
 
 interface ThreadTypeInt {
   thread: number,
   userId: number,
+  stb: () => void,
+  socket: Socket | null,
 }
 
-const MessageList: FC<ThreadTypeInt> = ({ thread, userId }): JSX.Element => {
+const MessageList: FC<ThreadTypeInt> = ({
+  thread,
+  userId,
+  stb,
+  socket,
+}): JSX.Element => {
   const [messages, setMessages] = useState([{ body: '', sender: true }]);
-  const classes = useStyles();
+
+  const getMessages = async () => {
+    const params = { thread, userId };
+    const newMessages = await axios.get('message/getMessages', { params })
+      .then(({ data }) => data);
+    setMessages(newMessages);
+    stb();
+  };
 
   useEffect(() => {
-    const params = { thread, userId };
-    axios.get('message/getMessages', { params })
-      .then(({ data }) => setMessages(data));
+    getMessages();
+  }, [thread]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('room', thread);
+      socket.on('message', (data: string) => {
+        getMessages();
+      });
+    }
   }, [thread]);
 
   const renderMessage = () => messages.map((message) => (
