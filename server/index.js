@@ -31,10 +31,12 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 app.use(cors());
+app.use(express.json({ limit: '100mb' }));
 app.use(cookieParser());
 const DIR = path.join(__dirname, '../build');
 const htmlFile = path.join(DIR, 'index.html');
 app.use(express.static(DIR));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.engine('html', require('ejs').renderFile);
 
 app.set('view engine', 'html');

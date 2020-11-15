@@ -1,5 +1,8 @@
 const { Router } = require('express');
+const { Op } = require('sequelize');
 const {
+  User,
+  Listing,
   Availability,
   Reviews
 } = require('../index');
@@ -7,21 +10,45 @@ const reviewRouter = Router();
 
 // TODO: GET ALL REVIEWS: Get all of a user's reviews about them as a GUEST or HOST
 
+let reviews;
+let hostId;
+let guestId;
+let result;
+
 reviewRouter
-  .get('/allReviews/:userId', async (req, res) => {
-    const { userId } = req.body.params;
-    await Reviews.findAll({
-      order: [
-        ['updatedAt', 'DESC'],
-      ],
+  .get('/getReviews/:listingId', async (req, res) => {
+    const { listingId } = req.params;
+
+    reviews = await Availability.findAll({
       where: {
-        revieweeId: userId,
-      },
+        listing_id: listingId,
+      }
     })
-      .then((dataValues) => {
-        res.send(dataValues);
+      .then(res => {
+        res.map(info => {
+          if (info.dataValues.accepted) {
+            guestId = info.dataValues.guest_id;
+            hostId = info.dataValues.host_id;
+          }
+        })
+        result = Reviews.findAll({
+          where: {
+            [Op.and]: [{ revieweeId: hostId }, { reviewerId: guestId }],
+          },
+          order: [
+            ['createdAt', 'DESC'],
+          ],
+          include: {
+            model: User,
+            where: {
+              id: guestId,
+            }
+          },
+        })
+        return result;
       })
-      .catch(err => console.warn('Error loading reviews...'))
+      .catch(err => err.message);
+    res.send(reviews);
   })
 
 // TODO: Write a review
@@ -57,6 +84,18 @@ reviewRouter
       .catch(err => res.send(err.message));
 
   });
+
+// TODO: Find the author of a review
+reviewRouter
+  .get('/getAuthor', async (req, res) => {
+    const { reviewerId } = req.body.params;
+    const author = await User.findOne({
+      where: {
+        id: reviewerId,
+      },
+    })
+    res.send(author);
+  })
 
 module.exports = {
   reviewRouter,

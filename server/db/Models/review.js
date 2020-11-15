@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     });
     Reviews.associate = (models) => {
         Reviews.belongsTo(models.User, { // Reviewer
-            foreignKey: 'reviewerId',
+            foreignKey: 'revieweeId',
         });
         Reviews.belongsTo(models.User, { // Reviewer
-            foreignKey: 'revieweeId',
+            foreignKey: 'reviewerId',
         });
         Reviews.belongsTo(models.Availability, { // The swapped room
             foreignKey: 'availabilityId',

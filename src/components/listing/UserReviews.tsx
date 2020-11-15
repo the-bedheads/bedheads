@@ -11,13 +11,18 @@ import {
 } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { Hotel, Home } from '@material-ui/icons';
-import { UserProps, AppInterface } from 'goldilocksTypes';
 import axios from 'axios';
+import HostReviews from './HostReviews';
+import GuestReviews from './GuestReviews';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
+}
+
+interface ListingProps {
+  listingId: number
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -55,31 +60,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserReviews: FC<AppInterface> = ({ user }): JSX.Element => {
+const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [guestReviews, setGuestReviews] = useState([]);
-  const [hostReviews, setHostReviews] = useState([]);
-  const [allReviews, setAllReviews] = useState<any>();
-  const [userId] = useState(user.id);
+  const [allReviews, setAllReviews] = useState([]);
+  const [reviewer, setRevId] = useState<number>();
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
     setValue(newValue);
   };
 
-  const userAsHostReviews = () => {
-    axios.get(`reviews/allReviews/${userId}`)
-      .then((data) => {
-        console.info(data);
-        setAllReviews(data);
-      });
+  const renderReviews = () => {
+    axios.get(`/reviews/getReviews/${listingId}`)
+      .then((reviewInfo) => {
+        setAllReviews(reviewInfo.data);
+        console.info(allReviews);
+      })
+      .catch((err) => err.message);
   };
 
-  const userAsGuestReviews = () => { };
-
-  // TODO: Working on this code
-  // useEffect(() => {
-  //   userAsHostReviews();
-  // }, []);
+  useEffect(() => {
+    renderReviews();
+  }, []);
 
   return (
     <Grid container spacing={2} className={classes.main} direction="row" justify="center">
@@ -99,10 +100,10 @@ const UserReviews: FC<AppInterface> = ({ user }): JSX.Element => {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            Reviews left by users about User as a Host.
+            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {allReviews}
+            <GuestReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
           </TabPanel>
         </Paper>
       </Grid>

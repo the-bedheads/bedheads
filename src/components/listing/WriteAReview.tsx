@@ -167,7 +167,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
           }}
         />
         {hostRating !== null && <Box ml={2}>{hLabels[hHover !== -1 ? hHover : hostRating]}</Box>}
-        {/* <br /> */}
         <Typography
           component="legend"
           align="center"
