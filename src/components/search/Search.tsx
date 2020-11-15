@@ -11,11 +11,23 @@ import SearchDefaultList from './SearchDefaultList';
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     flexGrow: 1,
+    // margin: 'auto',
+    padding: '25px',
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  container: {
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  search: {
+    padding: '20px',
+    marginBottom: '20px',
+    backgroundColor: 'white',
   },
 }));
 
@@ -34,8 +46,8 @@ const Search: React.FC = () => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
+        <Grid container className={classes.container} spacing={3}>
+          <Grid item className={classes.search} xs={8}>
             <SearchBar
               xs={6}
               onSubmit={(value: string) => setLocationQuery(value)}

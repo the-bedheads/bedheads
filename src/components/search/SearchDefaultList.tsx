@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     backgroundColor: theme.palette.background.paper,
   },
   paper: {
-    height: 275,
+    height: 320,
     width: 250,
     padding: theme.spacing(2),
     margin: 'auto',
@@ -22,8 +22,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   inline: {
     display: 'inline',
   },
-  text: {
+  container: {
     margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
   },
 }));
 
@@ -64,15 +66,20 @@ const SearchDefaultList: React.FC = () => {
   if (defaultListings.length) {
     return (
       <>
-        <Grid container justify="center" xs={12}>
-          <Grid item xs={8} alignItems="center">
+        {/* <Grid container justify="center" xs={10}>
+          <Grid item xs={12} alignItems="center">
             <Typography className={classes.text} variant="h5">
               rooms available for swapping now:
             </Typography>
           </Grid>
         </Grid>
-        <Grid item xs={12} />
-        <Grid container justify="center" spacing={4}>
+        <Grid item xs={12} /> */}
+        <Grid container className={classes.container} justify="center" spacing={4}>
+          {/* <Grid item xs={9}>
+            <Typography variant="h5">
+              rooms available for swapping now:
+            </Typography>
+          </Grid> */}
           {defaultListings.map((random: {
             id: number;
             userId: number;
