@@ -18,9 +18,16 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     paddingBottom: 100,
   },
+  // {
+  //   border: 1,
+  //   borderRadius: 2,
+  //   borderStyle: 'solid',
+  //   justifyContent: 'center',
+  //   paddingBottom: 100,
+  // },
   imgStyle: {
-    height: '100%',
-    width: '100%',
+    height: '62.5%',
+    width: '62.5%',
     padding: '10px 10px 5px',
     justifyContent: 'center',
   },
