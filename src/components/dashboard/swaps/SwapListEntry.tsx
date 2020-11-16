@@ -13,10 +13,7 @@ import { flexibleCompare } from '@fullcalendar/react';
 
 const useStyles = makeStyles({
   main: {
-    borderStyle: 'solid',
     width: '75%',
-    borderWidth: 'thin',
-    borderRadius: '10px',
   },
   boxStyle: {
     display: 'flex',
@@ -25,17 +22,21 @@ const useStyles = makeStyles({
     margin: '15px 0px',
   },
   imageStyle: {
-    borderStyle: 'none solid none none',
-    borderWidth: 'thin',
+    width: '240px',
+    height: '170px',
+    margin: 'auto',
+    overflow: 'hidden',
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
   },
   imgStyle: {
+    margin: 'auto',
+    display: 'block',
+    position: 'absolute',
+    objectFit: 'cover',
+    width: '80%',
     height: '100%',
-    width: '100%',
-    objectFit: 'contain',
   },
   bottomBorder: {
     borderStyle: 'none none solid none',

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Post from './Post';
 import CreatePost from './CreatePost';
 
@@ -54,7 +55,11 @@ const BulletinBoard: React.FC = (): JSX.Element => {
 
   return (
     <div className={classes.root}>
-      <h4>community bulletins</h4>
+      <Grid container item xs={11}>
+        <Typography variant="h6">
+          community bulletins
+        </Typography>
+      </Grid>
       <Grid container className={classes.container} xs={11} spacing={3}>
         <Grid container item className={classes.sidebar} xs={3}>
           <CreatePost user={loggedInUser} />

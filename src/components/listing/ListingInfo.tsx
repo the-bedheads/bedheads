@@ -29,10 +29,25 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     minWidth: 650,
     alignItems: 'left',
   },
+  imageStyle: {
+    width: '500px',
+    height: '350px',
+    margin: 'auto',
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+  },
   imgStyle: {
-    height: '100%',
+    // height: '100%',
+    // width: '100%',
+    // padding: '10px 10px 5px',
+    margin: 'auto',
+    display: 'block',
+    position: 'absolute',
+    objectFit: 'cover',
     width: '100%',
-    padding: '10px 10px 5px',
+    height: '100%',
   },
   msg: {
     padding: 10,
@@ -238,6 +253,7 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
           <Grid
             item
             alignItems="center"
+            className={classes.imageStyle}
             xs={8}
             justify="center"
           >

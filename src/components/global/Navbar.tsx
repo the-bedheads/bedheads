@@ -118,9 +118,9 @@ const Navbar: React.FC<AuthProps> = ({
             >
               Messages
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
               Manage Listing
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               component={Link}
               to="/view-swaps"

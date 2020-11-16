@@ -102,7 +102,7 @@ const Post: React.FC<BulletinProps> = ({
           component={Link}
           to={
             {
-              pathname: '/hostProfile',
+              pathname: '/view-hostProfile',
               state: { hostData, userId },
             }
           }
