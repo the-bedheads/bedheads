@@ -5,14 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import ResultsListEntry from './SearchResultsListEntry';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
   paper: {
+    margin: 'auto',
+  },
+  listing: {
     padding: theme.spacing(2),
     margin: 'auto',
   },
@@ -102,20 +98,19 @@ const ResultsList: React.FC<SearchProps> = ({
   }, [locationQuery, dateRange]);
 
   return (
-    <div className={classes.root}>
-      <Grid className={classes.paper} item xs={7}>
-        {setMessage}
-        {availListings.map((listing: {
-          userId: number; id: number; avbId: number; listingTitle: string;
-          listingCity: string; listingState: string; startAvail: string;
-          endAvail: string; matchPercentage: number; listingPhoto: { url: string }
-        }) => {
-          const {
-            userId, id, listingTitle, listingCity, listingState,
-            startAvail, endAvail, listingPhoto, avbId, matchPercentage,
-          } = listing;
-          const { url } = listingPhoto;
-          return (
+    <Grid className={classes.paper} container item xs={6}>
+      {setMessage}
+      {availListings.map((listing: {
+        userId: number; listingId: number; avbId: number; listingTitle: string;
+        listingCity: string; listingState: string; startAvail: string;
+        endAvail: string; matchPercentage: number; listingPhoto: { url: string } }) => {
+        const {
+          userId, listingId, listingTitle, listingCity, listingState,
+          startAvail, endAvail, listingPhoto, avbId, matchPercentage,
+        } = listing;
+        const { url } = listingPhoto;
+        return (
+          <Grid container item className={classes.listing}>
             <ResultsListEntry
               user={userId}
               listingId={id}
@@ -127,10 +122,10 @@ const ResultsList: React.FC<SearchProps> = ({
               photo={url}
               matchPercentage={matchPercentage}
             />
-          );
-        })}
-      </Grid>
-    </div>
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 };
 

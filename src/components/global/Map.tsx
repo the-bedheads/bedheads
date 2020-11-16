@@ -5,10 +5,9 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
+  map: {
     position: '-webkit-sticky',
-    // position: 'sticky',
-    maxWidth: '400px',
+    padding: '10px',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
@@ -74,7 +73,7 @@ const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
 
   if (listings.length) {
     return (
-      <Grid className={classes.root} item xs={5}>
+      <Grid className={classes.map} item xs={6}>
         <ReactMapGL
           latitude={viewport.latitude}
           longitude={viewport.longitude}
