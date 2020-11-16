@@ -1,6 +1,6 @@
 module.exports = [
   {
-    user_id: 1,
+    userId: 1,
     openness: 0.244,
     conscientiousness: 0.494,
     extraversion: 0.426,
@@ -8,7 +8,7 @@ module.exports = [
     neuroticism: 0.485,
   },
   {
-    user_id: 2,
+    userId: 2,
     openness: 0.363,
     conscientiousness: 0.685,
     extraversion: 0.233,
@@ -16,7 +16,7 @@ module.exports = [
     neuroticism: 0.854,
   },
   {
-    user_id: 3,
+    userId: 3,
     openness: 0.757,
     conscientiousness: 0.895,
     extraversion: 0.457,
@@ -24,7 +24,7 @@ module.exports = [
     neuroticism: 0.778,
   },
   {
-    user_id: 4,
+    userId: 4,
     openness: 0.971,
     conscientiousness: 0.417,
     extraversion: 0.594,
@@ -32,7 +32,7 @@ module.exports = [
     neuroticism: 0.692,
   },
   {
-    user_id: 5,
+    userId: 5,
     openness: 0.830,
     conscientiousness: 0.452,
     extraversion: 0.782,

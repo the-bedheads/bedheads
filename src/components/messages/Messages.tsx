@@ -1,34 +1,52 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import axios from 'axios';
 import {
-  Grid, makeStyles, TextField, FormControl, InputAdornment,
-  InputLabel, Input, IconButton, Container,
+  Grid,
+  makeStyles,
+  FormControl,
+  InputAdornment,
+  Input,
+  IconButton,
+  Container,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { UserProps } from 'goldilocksTypes';
+import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client/build/socket';
+import { MessageProps } from 'goldilocksTypes';
 import ThreadList from './ThreadList';
 import MessageList from './MessageList';
 
 const useStyles = makeStyles({
   main: {
     borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderRadius: '10px',
     align: 'center',
     justify: 'center',
     height: '100%',
   },
   outer: {
-    marginTop: '10px',
+    marginTop: '25px',
     marginBottom: '10px',
     align: 'center',
     justify: 'center',
-    height: '85vh',
+    height: '90vh',
+    backgroundColor: 'white',
+    paddingTop: '10px',
+    paddingBottom: '10px',
   },
   rightBorder: {
     borderStyle: 'none solid none none',
+    borderWidth: 'thin',
   },
   scrollStyle: {
     overflow: 'auto',
-    maxHeight: '90%',
+    maxHeight: '85%',
     display: 'flex',
     flexDirection: 'column-reverse',
   },
@@ -43,35 +61,87 @@ const useStyles = makeStyles({
     maxHeight: '10%',
     minHeight: '10%',
     borderStyle: 'solid none none none',
+    borderWidth: 'thin',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  currentThreadStyle: {
+    width: '100%',
+    height: '37px',
+    borderStyle: 'none none solid none',
+    borderWidth: 'thin',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
-const Messages: FC<UserProps> = ({ user }): JSX.Element => {
+const Messages: FC<MessageProps> = (props): JSX.Element => {
+  const { user } = props;
   const classes = useStyles();
   const [threads, setThreads] = useState([]);
   const [activeThread, setActiveThread] = useState(0);
   const [newMessage, setNewMessage] = useState('');
+  const [name, setName] = useState('');
+  const [threadSocket, setThreadSocket] = useState<Socket | null>(null);
+  const messageListRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    axios.get(`message/getThreads/${user.id}`)
-      .then(({ data }) => {
-        setThreads(data);
-        setActiveThread(data[0]);
-      });
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setNewMessage(e.target.value);
+  const threadSetter = (thread: number) => {
+    setThreadSocket(io('localhost:3000'));
+    setActiveThread(thread);
   };
 
-  const sendMessage = () => {
+  const onLoad = async () => {
+    const params = { thread: activeThread, userId: user.id };
+    await axios.get(`/message/getThreads/${user.id}`)
+      .then(({ data }) => {
+        setThreads(data);
+        threadSetter(data[0]);
+        const num = data[0];
+        params.thread = num;
+      })
+      .catch((err) => console.warn(err.message));
+    await axios.get('message/getName/', { params })
+      .then(({ data }) => setName(data))
+      .catch((err) => console.warn(err.message));
+  };
+
+  const scrollToBottom = () => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollIntoView();
+    }
+  };
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  const sendMessage = async () => {
     const params = {
       activeThread,
       newMessage,
       userId: user.id,
     };
-    axios.post('message/newMessage', { params });
+    await axios.post('/message/newMessage', { params });
+    const socket = io('localhost:3000');
+    socket.on('connect', () => {
+      socket.emit('room', activeThread);
+    });
+    socket.emit('message', { room: activeThread, msg: newMessage });
+    socket.on('message', () => {
+      socket.disconnect();
+    });
     setNewMessage('');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+  };
+
+  const keyCheck = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
   };
 
   return (
@@ -82,12 +152,28 @@ const Messages: FC<UserProps> = ({ user }): JSX.Element => {
           xs={3}
           className={classes.rightBorder}
         >
-          <ThreadList threads={threads} setActiveThread={setActiveThread} userId={user.id} />
+          <ThreadList
+            threads={threads}
+            setActiveThread={setActiveThread}
+            setName={setName}
+            userId={user.id}
+            threadSocket={threadSocket}
+            activeThread={activeThread}
+          />
         </Grid>
         <Grid item xs={9} className={classes.messageListStyle}>
+          <Grid className={classes.currentThreadStyle}>
+            {`Your message history with ${name}`}
+          </Grid>
           <Grid className={classes.scrollStyle}>
             <Grid>
-              <MessageList thread={activeThread} userId={user.id} />
+              <MessageList
+                thread={activeThread}
+                userId={user.id}
+                stb={scrollToBottom}
+                socket={threadSocket}
+              />
+              <div ref={messageListRef} />
             </Grid>
           </Grid>
           <Grid className={classes.newMessageStyle}>
@@ -98,6 +184,7 @@ const Messages: FC<UserProps> = ({ user }): JSX.Element => {
                 type="text"
                 value={newMessage}
                 onChange={(e) => handleChange(e)}
+                onKeyPress={(e) => keyCheck(e)}
                 disableUnderline
                 multiline
                 margin="dense"

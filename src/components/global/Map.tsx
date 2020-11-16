@@ -1,9 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import axios from 'axios';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
-const Map = (props: any) => {
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  map: {
+    position: '-webkit-sticky',
+    padding: '10px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+interface SearchProps {
+  locationQuery: string;
+  listings: [];
+}
+
+const Map: React.FC<SearchProps> = ({ locationQuery, listings }) => {
   const [viewport, setViewport] = useState({
     latitude: 29.959021,
     longitude: -90.065285,
@@ -11,13 +29,14 @@ const Map = (props: any) => {
     bearing: 0,
     pitch: 0,
   });
-  const { locationQuery, listings } = props;
   const [listingMarkers, setListingMarkers] = useState([]);
+
+  const classes = useStyles();
 
   const getMarkers = useCallback(() => {
     const markerCollector: any = [];
     if (listings.length) {
-      listings.forEach((listing: any) => {
+      listings.forEach((listing: {latitude: string, longitude: string}) => {
         const { latitude, longitude } = listing;
         const location = {
           latitude: Number(latitude),
@@ -52,9 +71,9 @@ const Map = (props: any) => {
     }
   }, [locationQuery]);
 
-  if (locationQuery.length) {
+  if (listings.length) {
     return (
-      <div className="mapbox-react">
+      <Grid className={classes.map} item xs={6}>
         <ReactMapGL
           latitude={viewport.latitude}
           longitude={viewport.longitude}
@@ -85,12 +104,11 @@ const Map = (props: any) => {
             return <Marker className="map-marker" latitude={latitude} longitude={longitude} />;
           })}
         </ReactMapGL>
-      </div>
+      </Grid>
     );
   }
   return (
-    <>
-    </>
+    <Grid className="mapbox-react" item xs={5} />
   );
 };
 

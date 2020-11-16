@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { UserProps } from 'goldilocksTypes';
+import { useParams, useLocation } from 'react-router-dom';
+import {
+  makeStyles,
+  withStyles,
+  createStyles,
+  Theme,
+} from '@material-ui/core/styles';
+import {
+  Paper,
+  Grid,
+  Container,
+} from '@material-ui/core';
+import {
+  AppInterface,
+  ListingLocationInterface,
+} from 'goldilocksTypes';
 import UserReviews from './UserReviews';
 import ListingInfo from './ListingInfo';
 import HostInfo from './HostInfo';
@@ -19,35 +30,45 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const Listing: React.FC<UserProps> = (Props: UserProps): JSX.Element => {
+const Listing: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
+  const location = useLocation<ListingLocationInterface>();
   const [userId] = useState(localStorage.userId);
   const { id } = useParams<{ id: any }>();
-  const [avbId] = useState(3);
-  const { user } = Props;
+  const { avbId } = useParams<{ avbId: any }>();
+  const [startAvail] = useState(location.state.startAvail);
+  const [endAvail] = useState(location.state.endAvail);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={8}>
-          <Paper className={classes.paper}>
-            <ListingInfo listingId={id} />
-          </Paper>
-          <UserReviews
-            user={user}
-          />
-        </Grid>
-        <Grid item xs={12} sm={2}>
-          <Paper className={classes.paper}>
-            <HostInfo
-              hostId={id}
-              userId={userId}
-              avbId={avbId}
+    <Container>
+      <div className={classes.root}>
+        <Grid
+          container
+          justify="center"
+          alignItems="flex-start"
+          spacing={3}
+        >
+          <Grid item xs={6} sm={8}>
+            <Paper className={classes.paper}>
+              <ListingInfo listingId={id} />
+            </Paper>
+            <UserReviews
+              listingId={id}
             />
-          </Paper>
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <Paper className={classes.paper}>
+              <HostInfo
+                hostId={id}
+                userId={userId}
+                avbId={avbId}
+                dates={{ startAvail, endAvail }}
+              />
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </Container>
   );
 };
 

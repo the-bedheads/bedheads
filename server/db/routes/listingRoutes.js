@@ -1,27 +1,39 @@
 const { Router } = require('express');
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const axios = require('axios');
 
 const {
   User,
-  Survey,
-  Request,
   ListingPhotos,
   Listing,
-  Invite,
   Availability,
   Geolocation,
-  models,
+  PersonalityScale,
 } = require('../index');
 
 const listingRouter = Router();
 
 listingRouter
-  .get('/', async (req, res) => {
+  .get('/randomFour/:currentUser', async (req, res) => {
+    const { currentUser } = req.params;
     await Listing.findAll({
-      include: {
-        model: Availability,
+      where: {
+        userId: { [Op.not]: currentUser },
       },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: Availability,
+          where: { accepted: false },
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
+      ],
       order: [
         [Availability, 'startDate', 'ASC'],
         [Sequelize.literal('random()')],
@@ -40,7 +52,7 @@ listingRouter
     const { userId } = req.params;
     Listing.findOne({
       where: {
-        user_id: userId,
+        userId,
       },
     })
       .then((listing) => {
@@ -54,17 +66,27 @@ listingRouter
       where: {
         id: listingId,
       },
+      include: { model: ListingPhotos },
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
   })
-  .get('/fullSearch/:listingId/:location', (req, res) => {
+  .get('/fullSearch/:listingId/:location', async (req, res) => {
     const { listingId, location } = req.params;
     Listing.findOne({
       where: {
         id: listingId,
         listingCity: location,
       },
+      include: [
+        {
+          model: ListingPhotos,
+        },
+        {
+          model: User,
+          include: { model: PersonalityScale },
+        },
+      ],
     })
       .then((listing) => res.send(listing))
       .catch((err) => res.status(500).send(err));
@@ -82,12 +104,26 @@ listingRouter.get('/geocode', (req, res) => {
 listingRouter
   .post('/', (req, res) => {
     const {
-      listingAddress, listingCity, listingState, listingZipCode, listingTitle,
-      listingDescription, pets, ada, smoking, roommates, internet, privateBath, userId,
+      listingAddress,
+      listingCity,
+      listingState,
+      listingZipCode,
+      listingTitle,
+      listingDescription,
+      pets,
+      ada,
+      smoking,
+      roommates,
+      internet,
+      privateBath,
+      userId,
+      photoUrl,
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
-    axios.get(`http://${process.env.HOST}:${process.env.PORT}/map/listing/geocode/${listingLocation}`)
-      .then((geocoded => {
+    const h = process.env.HOST;
+    const p = process.env.PORT;
+    axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
+      .then(((geocoded) => {
         Listing.create({
           userId,
           listingAddress,
@@ -105,6 +141,17 @@ listingRouter
           latitude: geocoded.data[1],
           longitude: geocoded.data[0],
         })
+          .then(({ dataValues }) => {
+            const { id } = dataValues;
+            if (photoUrl) {
+              ListingPhotos.create({
+                url: photoUrl,
+                userId,
+                listingId: id,
+              });
+            }
+          })
+          .catch((err) => res.send(err));
       }))
       .catch((err) => res.send(err));
   });

@@ -1,19 +1,11 @@
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
-
-.login-container {
-  /* background-color: black; */
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 form {
   max-width: 800px;
   margin: 0 auto;
 }
 
-input {
+/* input {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -22,7 +14,7 @@ input {
   padding: 10px 15px;
   margin-bottom: 10px;
   font-size: 14px;
-}
+} */
 
 label {
   line-height: 2;
@@ -45,7 +37,7 @@ input[type="submit"] {
   padding: 20px;
   font-size: 16px;
   font-weight: 100;
-  letter-spacing: 10px;
+  /* letter-spacing: 10px; */
 }
 
 /* button {
@@ -85,7 +77,7 @@ input[type="submit"] {
 }
 
 .login-container {
-  /* background-image: url('../src/assets/nightbed.jpg'); */
+  background-image: url('../src/assets/hangin\ on\ bed.jpeg');
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -93,7 +85,7 @@ input[type="submit"] {
 }
 
 .signup-container {
-  /* background-image: url('../src/assets/realisticbed.jpg'); */
+  background-image: url('../src/assets/hangin\ on\ bed.jpeg');
   height: 100vh;
   background-position: center;
   background-size: cover;
@@ -107,12 +99,14 @@ input[type="submit"] {
 }
 
 .light-mode {
-  background-color: #fff;
+  min-height: 100vh;
+  background-color: #e9f6f9;
   color: #333;
   transition: background-color 0.25s ease-out;
 }
 
 .dark-mode {
+  min-height: 100vh;
   background-color: #1a1919;
   color: #999;
   transition: background-color 0.25s ease-out;

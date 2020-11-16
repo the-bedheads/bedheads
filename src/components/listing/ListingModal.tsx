@@ -16,6 +16,7 @@ interface BioProps {
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     string: string) => void,
   toggleSwitch: (string: string) => void,
+  setPhotoUrl: React.Dispatch<React.SetStateAction<string>>,
   open: boolean,
 }
 
@@ -32,16 +33,19 @@ const CreateListing: FC<BioProps> = (Props: BioProps): JSX.Element => {
     handleClickOff,
     handleTextChange,
     toggleSwitch,
+    setPhotoUrl,
     open,
   } = Props;
+  const rh = process.env.REACT_APP_HOST;
+  const rp = process.env.REACT_APP_PORT;
 
   const uploadPhoto = (photoString: any) => {
-    axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/image/newListingPhoto`, {
+    axios.post(`http://${rh}:${rp}/image/newPhoto`, {
       data: photoString,
     })
-      .then((response) => console.log(response))
-      // TODO: GETTING A GOOD RESPONSE, NOW JUST NEED TO GET IT BACK TO THE DASHBOARD
-      // IE URL IS SHOWING BACK UP ON CLIENT SIDE!!
+      .then(({ data }) => {
+        setPhotoUrl(data);
+      })
       .catch((err) => console.warn(err));
   };
 

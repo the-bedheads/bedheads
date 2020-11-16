@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Thread);
     User.hasMany(models.Message);
     User.hasMany(models.Bulletin);
+    User.hasMany(models.Reviews);
+    User.hasOne(models.PersonalityScale);
+    User.hasOne(models.Listing);
   };
 
   return User;

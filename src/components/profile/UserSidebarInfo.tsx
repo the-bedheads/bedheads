@@ -3,16 +3,16 @@ import {
   Grid, Container, Box, makeStyles, IconButton,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import { UserProps } from 'goldilocksTypes';
+import PersonIcon from '@material-ui/icons/Person';
+import { AppInterface } from 'goldilocksTypes';
 import EditProfilePic from './EditProfilePic';
 import EditUserInfo from './EditUserInfo';
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
     justifyContent: 'center',
+    maxWidth: '100%',
   },
   imgStyle: {
     height: '100%',
@@ -20,16 +20,13 @@ const useStyles = makeStyles({
     padding: '10px 10px 5px',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
     justifyContent: 'center',
-    width: '50%',
     marginTop: '5px',
     marginBottom: '5px',
   },
   textStyle: {
     textAlign: 'center',
+    justifyContent: 'center',
     wordWrap: 'break-word',
   },
   buttonStyle: {
@@ -59,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element => {
+const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element => {
   const classes = useStyles();
   const [picOpen, setPicOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
@@ -70,7 +67,6 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
   const [tempPic, setTempPic] = useState(pic);
   const [tempName, setTempName] = useState(user.firstName);
   const [tempPronouns, setTempPronouns] = useState(user.pronouns);
-  const [tempLocation, setTempLocation] = useState('New Orleans, LA');
 
   const handleOpen = (type: string) => {
     if (type === 'pic') {
@@ -87,8 +83,6 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
   ) => {
     if (type === 'pic') {
       if (check) {
-        // save changes to DB
-        // update field on screen
         setPic(tempPic);
       }
       setPicOpen(false);
@@ -100,11 +94,6 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
         if (pronouns !== tempPronouns) {
           setPronouns(tempPronouns);
         }
-        if (location !== tempLocation) {
-          setLocation(tempLocation);
-        }
-        // save changes to DB
-        // update field on screen
       }
       setInfoOpen(false);
     }
@@ -118,6 +107,21 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
     }
   };
 
+  const renderImage = () => {
+    if (pic === 'undefined') {
+      return (
+        <PersonIcon className={classes.imgStyle} />
+      );
+    }
+    return (
+      <img
+        src={pic}
+        alt="ya dun goofed"
+        className={classes.imgStyle}
+      />
+    );
+  };
+
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     type: string,
@@ -128,19 +132,13 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
       setTempName(e.target.value);
     } else if (type === 'pronouns') {
       setTempPronouns(e.target.value);
-    } else if (type === 'location') {
-      setTempLocation(e.target.value);
     }
   };
 
   return (
-    <Container className={classes.main}>
+    <Container className={classes.main} disableGutters>
       <Grid item xs={12} className={classes.picOverlayStyle}>
-        <img
-          src={pic}
-          alt="ya dun goofed"
-          className={classes.imgStyle}
-        />
+        {renderImage()}
         <IconButton className={classes.editStyle} onClick={() => handleOpen('pic')}>
           <EditIcon className={classes.overlayStyle} />
         </IconButton>
@@ -153,16 +151,13 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
         />
       </Grid>
       <Grid item xs={12} className={classes.picOverlayStyle}>
-        <Container className={classes.infoStyle}>
-          <Box className={classes.textStyle}>
-            {name}
-          </Box>
-          <Box className={classes.textStyle}>
-            {pronouns}
-          </Box>
-          <Box className={classes.textStyle}>
+        <Container className={classes.infoStyle} disableGutters>
+          <Grid container className={classes.textStyle}>
+            {`${name} (${pronouns})`}
+          </Grid>
+          <Grid container className={classes.textStyle}>
             {location}
-          </Box>
+          </Grid>
           <IconButton className={classes.editStyle} onClick={() => handleOpen('info')}>
             <EditIcon className={classes.overlayStyle} />
           </IconButton>
@@ -172,7 +167,6 @@ const UserSidebarInfo: FunctionComponent<UserProps> = ({ user }): JSX.Element =>
             handleTextChange={handleTextChange}
             name={name}
             pronouns={pronouns}
-            location={location}
             infoOpen={infoOpen}
             picOpen={picOpen}
           />

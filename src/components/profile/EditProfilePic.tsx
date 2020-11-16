@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import axios from 'axios';
 import {
   Button, Dialog, DialogTitle, DialogActions,
 } from '@material-ui/core';
@@ -24,10 +25,44 @@ const EditProfilePic: FunctionComponent<BioProps> = (Props: BioProps): JSX.Eleme
     handleClickOff,
     picOpen,
   } = Props;
+  const rh = process.env.REACT_APP_HOST;
+  const rp = process.env.REACT_APP_PORT;
+
+  const uploadPhoto = (photoString: any) => {
+    axios.put(`http://${rh}:${rp}/image/editProfilePic/${localStorage.userId}`, {
+      data: photoString,
+    })
+      .then(({ data }) => {
+        localStorage.setItem('profilePhoto', data);
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  const handleFileChange = (e: any) => {
+    const image = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onloadend = () => {
+      uploadPhoto(reader.result);
+    };
+  };
 
   return (
     <Dialog open={picOpen} onClose={() => handleClickOff('pic')} fullWidth maxWidth="md" aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Something here to let you pick a new picture</DialogTitle>
+      {/* <DialogTitle id="form-dialog-title">
+        Something here to let you pick a new picture
+      </DialogTitle> */}
+      <Button
+        variant="contained"
+        component="label"
+      >
+        Update Profile Photo
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          onChange={(e) => handleFileChange(e)}
+        />
+      </Button>
       <DialogActions>
         <Button onClick={(i) => handleClose(i, false, 'pic')} color="primary">
           Cancel

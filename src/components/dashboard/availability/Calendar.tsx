@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 import FullCalendar, { DateSelectArg } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
-import { UserProps, AppInterface } from 'goldilocksTypes';
+import { UserProps, CalendarInterface } from 'goldilocksTypes';
 
-const UserCalendar: React.FC<AppInterface> = ({ user }): JSX.Element => {
+const useStyles = makeStyles({
+  calendarMain: {
+    height: '90vh',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    marginTop: '25px',
+    backgroundColor: 'white',
+  },
+});
+
+const UserCalendar: React.FC<CalendarInterface> = ({ user, listingId }): JSX.Element => {
+  const classes = useStyles();
   const [userId] = useState(user.id);
-  const [listingId, setListingId] = useState(1);
   const [avbs, setAvbs] = useState([]);
-
-  const getListingId = () => axios.get(`listing/user/${userId}`)
-    .then(({ data }) => setListingId(data.id));
 
   const getAvailabilities = () => axios.get(`availability/allAvailabilities/${listingId}`)
     .then(({ data }) => {
@@ -21,8 +28,7 @@ const UserCalendar: React.FC<AppInterface> = ({ user }): JSX.Element => {
     });
 
   useEffect(() => {
-    getListingId()
-      .then(() => getAvailabilities());
+    getAvailabilities();
   }, [userId]);
 
   // select function
@@ -68,15 +74,17 @@ const UserCalendar: React.FC<AppInterface> = ({ user }): JSX.Element => {
   };
 
   return (
-    <Container>
+    <Container className={classes.calendarMain}>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        height="100%"
         events={avbs}
         selectable
         eventOverlap={false}
         select={(info) => onSelect(info)}
-        eventBackgroundColor="green"
+        eventBackgroundColor="#7ad9ec"
+        eventTextColor="black"
       />
     </Container>
   );

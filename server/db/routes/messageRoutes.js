@@ -1,21 +1,12 @@
 const { Router } = require('express');
-const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const axios = require('axios');
 
 const {
   User,
-  Survey,
-  Request,
-  ListingPhotos,
-  Listing,
-  Invite,
-  Availability,
-  Geolocation,
-  models,
   Message,
   Thread,
 } = require('../index');
-const { send } = require('emailjs-com');
 
 const messageRouter = Router();
 
@@ -23,18 +14,22 @@ const messageRouter = Router();
 messageRouter
   .get('/getThreads/:userId', async (req, res) => {
     const { userId } = req.params;
-    const test = await Message.findAll({
+    const test = await Thread.findAll({
+      where: {
+        [Op.or]: [
+          { user1_id: Number(userId) },
+          { user2_id: Number(userId) },
+        ],
+      },
+    },
+    {
       order: [
         ['updatedAt', 'DESC'],
       ],
-    },
-    {
-      where: {
-        user_id: userId,
-      },
     })
-      .then((threadList) => threadList.map((singleThread) => singleThread.thread_id));
-    res.send([...new Set(test)]);
+      .catch((err) => console.info('GET message/getThreads/:userId failed'));
+    const result = test.map((thread) => thread.id);
+    res.send(result);
   });
 
 // get users name
@@ -60,7 +55,8 @@ messageRouter
         })
           .then((foundUser) => foundUser.first_name);
         return foundName;
-      });
+      })
+      .catch((err) => console.info('GET message/getName failed'));
     res.send(userName);
   });
 
@@ -86,6 +82,10 @@ messageRouter
           return intermediate;
         });
         return result;
+      })
+      .catch((err) => {
+        console.info('GET message/getMessages failed');
+        res.send([]);
       });
     res.send(messages);
   });
@@ -98,8 +98,42 @@ messageRouter
       thread_id: Number(activeThread),
       body: newMessage,
       user_id: userId,
-    });
+    })
+      .catch((err) => console.info('POST message/newMessage failed'));
     res.send('success!');
+  });
+
+// get thread back, or create one if it doesn't exist
+messageRouter
+  .get('/thread', async (req, res) => {
+    const { hostId, userId } = req.query;
+    let thread = await Thread.findOne({
+      where: {
+        [Op.or]: [
+          {
+            user1_id: Number(hostId),
+            user2_id: Number(userId),
+          },
+          {
+            user1_id: Number(userId),
+            user2_id: Number(hostId),
+          },
+        ],
+      },
+    })
+      .catch((err) => console.info('GET message/thread failed'));
+    if (!thread) {
+      thread = await Thread.create({
+        user1_id: Number(userId),
+        user2_id: Number(hostId),
+      })
+        .then((data) => {
+          console.info('Thread created');
+          return data;
+        })
+        .catch(() => console.info('Unable to create thread'));
+    }
+    res.send(thread);
   });
 
 module.exports = {

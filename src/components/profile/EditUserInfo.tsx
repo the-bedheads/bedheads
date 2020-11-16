@@ -16,7 +16,6 @@ interface BioProps {
   ) => void,
   name: string,
   pronouns: string,
-  location: string,
   infoOpen: boolean,
   picOpen: boolean,
 }
@@ -28,7 +27,6 @@ const EditUserInfo: FunctionComponent<BioProps> = (Props: BioProps): JSX.Element
     handleTextChange,
     name,
     pronouns,
-    location,
     infoOpen,
   } = Props;
 
@@ -57,18 +55,6 @@ const EditUserInfo: FunctionComponent<BioProps> = (Props: BioProps): JSX.Element
           defaultValue={pronouns}
           fullWidth
           onChange={(e) => handleTextChange(e, 'pronouns')}
-        />
-      </DialogContent>
-      <DialogContent>
-        <TextField
-          autoFocus
-          multiline
-          rows={3}
-          variant="outlined"
-          label="Listing location"
-          defaultValue={location}
-          fullWidth
-          onChange={(e) => handleTextChange(e, 'location')}
         />
       </DialogContent>
       <DialogActions>

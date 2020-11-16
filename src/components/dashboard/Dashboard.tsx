@@ -1,27 +1,83 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
 import axios from 'axios';
-import { createGenerateClassName, Button } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Grid,
+} from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppType } from 'goldilocksTypes';
-import Navbar from '../global/Navbar';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 import ListingModal from '../listing/ListingModal';
 
 interface AuthProps {
-  handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  handleLogin: [React.Dispatch<React.SetStateAction<boolean>>],
   user: AppType,
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    flexGrow: 1,
+    padding: '25px',
+  },
+  component: {
+    backgroundColor: 'white',
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: 100,
+  },
+  container: {
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  greeting: {
+    // backgroundColor: '#6e8010',
+    padding: 10,
+  },
+  upcoming: {
+    backgroundColor: 'rgba(249, 201, 79, 0.4)',
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+    border: '2px black',
+  },
+  requests: {
+    backgroundColor: 'rgba(249, 201, 79, 0.8)',
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  msg: {
+    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  randomBtn: {
+    backgroundColor: '10px',
+    border: '1px',
+    borderRadius: '2px',
+    margin: 'auto',
+    padding: 10,
+  },
+
+}));
+
 const Dashboard: React.FC<AuthProps> = ({
-  handleLogin: [isAuth, setAuth],
+  handleLogin: [setAuth],
   user,
 }) => {
-  const listingId = 1;
+  const classes = useStyles();
   const [randomListings, setRandomListings] = useState<any>([]);
   const [shownIndex, setShownIndex] = useState(0);
   const [swapCount, setSwapCount] = useState(0);
   const [pendingRequestCount, setPendingRequestCount] = useState(0);
-
+  const [randomLink, setRandomLink] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(user.id);
@@ -40,6 +96,37 @@ const Dashboard: React.FC<AuthProps> = ({
   const [internet, setInternet] = useState(false);
   const [privateBath, setPrivateBath] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [startAvail, setRandomStart] = useState();
+  const [endAvail, setRandomEnd] = useState();
+
+  const getRandomAvlb = () => {
+    const len = randomListings.length;
+    return Math.floor(Math.random() * len);
+  };
+
+  const getDashboardInfo = () => {
+    axios.get('/dashboardInfo', {
+      params: {
+        userId: localStorage.userId,
+      },
+    })
+      .then(({ data }) => {
+        const {
+          confirmedSwapCount,
+          pendingRequests,
+          openAvailabilities,
+        } = data;
+        setSwapCount(confirmedSwapCount);
+        setPendingRequestCount(pendingRequests.count);
+        setRandomListings(openAvailabilities);
+        const i = 0;
+        setShownIndex(i);
+        if (randomListings.length) {
+          const { id, listingId } = randomListings[shownIndex];
+          setRandomLink(`${listingId}/${id}`);
+        }
+      });
+  };
 
   const handleTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -57,10 +144,6 @@ const Dashboard: React.FC<AuthProps> = ({
       setListingZipCode(e.target.value);
     } else if (string === 'listingTitle') {
       setListingTitle(e.target.value);
-    } else if (string === 'listingPhoto') {
-      const target = e.target as HTMLInputElement;
-      const file: File = (target.files as FileList)[0];
-      console.log(file);
     }
   };
 
@@ -85,7 +168,12 @@ const Dashboard: React.FC<AuthProps> = ({
         privateBath,
         userId,
         photoUrl,
-      });
+      })
+        .then(() => {
+          getDashboardInfo();
+          setHasListing(true);
+        })
+        .catch((err) => console.warn(err));
       // save changes to DB
       // update field on screen
     }
@@ -114,7 +202,9 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getProfile = async () => {
     try {
-      const res = await fetch(`http://${process.env.HOST}:${process.env.PORT}/dashboard`, {
+      const rh = process.env.REACT_APP_HOST;
+      const rp = process.env.REACT_APP_PORT;
+      const res = await fetch(`http://${rh}:${rp}/dashboard`, {
         method: 'POST',
         headers: { jwt_token: localStorage.token, email: user.email },
       });
@@ -147,13 +237,17 @@ const Dashboard: React.FC<AuthProps> = ({
     }
   };
 
-  const getRandomAvlb = () => {
-    const len = randomListings.length;
-    return Math.floor(Math.random() * len);
-  };
-
   const getNewListing = () => {
     setShownIndex(getRandomAvlb());
+    const {
+      id,
+      listingId,
+      startDate,
+      endDate,
+    } = randomListings[shownIndex];
+    setRandomLink(`${listingId}/${id}`);
+    setRandomStart(startDate);
+    setRandomEnd(endDate);
   };
 
   const postUserInfo = () => {
@@ -167,21 +261,12 @@ const Dashboard: React.FC<AuthProps> = ({
         console.warn('hit post User info');
       });
   };
-  const getDashboardInfo = () => {
-    axios.get('/dashboardInfo', {
-      params: {
-        userId,
-        listingId,
-      },
-    })
-      .then((results) => {
-        const { data } = results;
-        setSwapCount(data.confirmedSwapCount);
-        setPendingRequestCount(data.pendingRequests.count);
-        setRandomListings(data.openAvailabilities);
-        setShownIndex(getRandomAvlb());
-      });
-  };
+
+  const greeting = `hi ${user.firstName},`;
+  const swapMsg = `You have ${swapCount} upcoming trips`;
+  const requestMsg = `You have ${pendingRequestCount} requests to swap rooms`;
+  const createNotif = 'it\'s probably because you don\'t have a listing yet...';
+  const suggestionMsg = 'need some plans?';
 
   useEffect(() => {
     getDashboardInfo();
@@ -191,84 +276,117 @@ const Dashboard: React.FC<AuthProps> = ({
 
   // This should eventually live in another component. Or something. This is messy.
   const listingCheck = () => {
-    if (hasListing) {
+    if (hasListing && randomListings.length) {
+      const humanDates = {
+        startDate: moment(randomListings[shownIndex].startDate, 'YYYY-MM-DD').format('dddd, MMM Do YYYY'),
+        endDate: moment(randomListings[shownIndex].endDate, 'YYYY-MM-DD').format('dddd, MMM Do YYYY'),
+      };
       return (
-        <div id="random-listing">
-          <p>Need a weekend getaway?</p>
-          {
-            randomListings.length > 0
-            && (
-              <div>
-                <p>
-                  {randomListings[shownIndex].hostName}
-                  {' '}
-                  has a room open in
-                  {' '}
-                  {randomListings[shownIndex].city}
-                </p>
-                <p>
-                  {randomListings[shownIndex].startDate}
-                  {' to '}
-                  {randomListings[shownIndex].endDate}
-                </p>
-              </div>
-            )
-          }
-          <button type="submit">View Listing!</button>
-          <button type="submit" onClick={getNewListing}>Show me another!</button>
-        </div>
+        // <Grid id="random-listing">
+        <Grid item className={classes.msg} xs={10}>
+          <Grid item xs={12} style={{ paddingBottom: 5 }}>
+            <Typography variant="body1">
+              {suggestionMsg}
+            </Typography>
+            {
+              randomListings.length > 0
+              && (
+                <Grid container item xs={12}>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      {`${randomListings[shownIndex].hostName} has a room open in ${randomListings[shownIndex].city}`}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="body1">
+                      {`${humanDates.startDate} to ${humanDates.endDate}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              )
+            }
+          </Grid>
+          <Link to={`/view-listing/${randomLink}`}>
+            <Button
+              className={classes.randomBtn}
+              type="button"
+              component={Link}
+              to={
+                {
+                  pathname: `/view-listing/${randomLink}`,
+                  state: {
+                    startAvail: randomListings[shownIndex] ? randomListings[shownIndex].startDate : '0',
+                    endAvail: randomListings[shownIndex] ? randomListings[shownIndex].endDate : '0',
+                  },
+                }
+              }
+            >
+              View Listing!
+            </Button>
+          </Link>
+          <Button
+            className={classes.randomBtn}
+            type="submit"
+            onClick={getNewListing}
+          >
+            Show me another!
+          </Button>
+        </Grid>
       );
     }
     return (
-      <div>
-        It looks like you don&apos;t have a listing yet. Lets fix that!
-        <Button onClick={handleOpen}>
-          Create Listing
-        </Button>
-        <ListingModal
-          handleClose={handleClose}
-          handleClickOff={handleClickOff}
-          handleTextChange={handleTextChange}
-          toggleSwitch={toggleSwitch}
-          open={open}
-        />
-      </div>
+      <>
+        <Grid item className={classes.msg} xs={10}>
+          <Grid item xs={12} style={{ paddingBottom: 5 }}>
+            <Typography variant="body1">
+              {createNotif}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOpen}
+            >
+              Let&apos;s fix that!
+            </Button>
+            <ListingModal
+              handleClose={handleClose}
+              handleClickOff={handleClickOff}
+              handleTextChange={handleTextChange}
+              toggleSwitch={toggleSwitch}
+              setPhotoUrl={setPhotoUrl}
+              open={open}
+            />
+          </Grid>
+        </Grid>
+      </>
     );
   };
 
   return (
-    <>
-      <h4>
-        Hello,
-        {' '}
-        {user.firstName}
-        !!
-      </h4>
-      <div id="user-notifications">
-        <p>
-          You have
-          {' '}
-          {swapCount}
-          {' '}
-          upcoming trips.
-        </p>
-        <p>
-          You have
-          {' '}
-          {pendingRequestCount}
-          {' '}
-          requests to swap rooms
-        </p>
-      </div>
-      {listingCheck()}
-      <button
-        className="btn btn-success btn-block"
-        type="submit"
-        onClick={(e) => logout(e)}
-      >
-        Logout
-      </button>
-    </>
+    <Container className={classes.root}>
+      <Grid container className={classes.component} xs={11} spacing={3}>
+        <Grid container item className={classes.container} xs={8}>
+          <Grid item className={classes.greeting} xs={10}>
+            <Typography variant="h3">
+              {greeting}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.upcoming} xs={10}>
+            <Typography variant="h5">
+              {swapMsg}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.requests} xs={10}>
+            <Typography variant="h5">
+              {requestMsg}
+            </Typography>
+          </Grid>
+          {listingCheck()}
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

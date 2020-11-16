@@ -23,9 +23,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Listing.associate = (models) => {
     Listing.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
     Listing.hasMany(models.Availability);
+    Listing.hasMany(models.Reviews);
+    Listing.hasOne(models.ListingPhotos);
   };
 
   return Listing;

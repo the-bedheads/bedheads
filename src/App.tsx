@@ -8,8 +8,13 @@ import {
 } from 'react-router-dom';
 import { AppType, UserType } from 'goldilocksTypes';
 
-// Components
+// theming
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { toast } from 'react-toastify';
+import theme from './theme';
+
+// Components
 import 'react-toastify/dist/ReactToastify.css';
 import SignUp from './components/landing/auth/Signup';
 import Login from './components/landing/auth/Login';
@@ -28,24 +33,9 @@ import WriteAReview from './components/listing/WriteAReview';
 
 toast.configure();
 
-const initUser = {
-  dob: '1',
-  email: '1',
-  firstName: '1',
-  guestRating: 1,
-  hostRating: 1,
-  id: 1,
-  inviteCount: 1,
-  lastName: '1',
-  password: '1',
-  profilePhoto: '1',
-  pronouns: '1',
-  swapCount: 1,
-  userBio: '1',
-};
 const App: FC = (): JSX.Element => {
   const [isAuth, setAuth] = useState(false);
-  const [testUser, setTestUser] = useState(initUser);
+  const [listingId, setListingId] = useState(0);
   const [user, setUser] = useState<AppType>({
     id: localStorage.userId,
     firstName: localStorage.firstName,
@@ -57,6 +47,11 @@ const App: FC = (): JSX.Element => {
     swapCount: localStorage.swapCount,
     userBio: localStorage.userBio,
     email: localStorage.email,
+    openness: localStorage.openness,
+    conscientiousness: localStorage.conscientiousness,
+    extraversion: localStorage.extraversion,
+    agreeableness: localStorage.agreeableness,
+    neuroticism: localStorage.neuroticism,
   });
   const [darkMode, setDarkMode] = useState(false);
 
@@ -78,100 +73,101 @@ const App: FC = (): JSX.Element => {
 
   useEffect(() => {
     checkAuth();
-    axios.get('user/')
-      .then(({ data }) => {
-        const userList = data.filter((tempUser: UserType) => tempUser.id === 1);
-        setTestUser(userList[0]);
-      });
+    axios.get(`listing/user/${user.id}`)
+      .then(({ data }) => setListingId(data.id));
   }, [user]);
 
   return (
-    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-      <BrowserRouter>
-        <Navbar handleLogin={[isAuth, setAuth]} toggleMode={[darkMode, setDarkMode]} />
-        <Switch>
-          <Route
-            exact
-            strict
-            path="/"
-            render={() => (!isAuth ? (
-              <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
-                <Redirect to="/dashboard" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/register"
-            render={() => (!isAuth ? (
-              <SignUp handleLogin={[isAuth, setAuth]} />) : (
-                <Redirect to="/dashboard" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/dashboard"
-            render={() => (isAuth ? (
-              <Dashboard handleLogin={[isAuth, setAuth]} user={user} />) : (
-                <Redirect to="/" />
-            ))}
-          />
-          <Route
-            exact
-            strict
-            path="/search"
-            component={Search}
-          />
-          <Route
-            exact
-            path="/listing/:id"
-            component={Listing}
-          />
-          <Route
-            exact
-            strict
-            path="/messages"
-            component={() => <Messages user={testUser} />}
-          />
-          <Route
-            exact
-            path="/profile"
-            component={() => <UserProfile user={testUser} />}
-          />
-          <Route
-            exact
-            path="/hostProfile"
-            component={Profile}
-          />
-          <Route
-            exact
-            path="/calendar"
-            component={() => <UserCalendar user={testUser} />}
-          />
-          <Route
-            exact
-            path="/swaps"
-            component={() => <Swaps user={testUser} />}
-          />
-          <Route
-            exact
-            path="/invite"
-            component={Invite}
-          />
-          <Route
-            exact
-            path="/bulletins"
-            component={BulletinBoard}
-          />
-          <Route
-            exact
-            path="/writeReview"
-            component={WriteAReview}
-          />
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+        <BrowserRouter>
+          {isAuth
+          && <Navbar handleLogin={[setAuth]} toggleMode={[darkMode, setDarkMode]} />}
+          <Switch>
+            <Route
+              exact
+              strict
+              path="/"
+              render={() => (!isAuth ? (
+                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
+                  <Redirect to="/dashboard" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/register"
+              render={() => (!isAuth ? (
+                <SignUp handleLogin={[isAuth, setAuth]} />) : (
+                  <Redirect to="/dashboard" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/dashboard"
+              render={() => (isAuth ? (
+                <Dashboard handleLogin={[setAuth]} user={user} />) : (
+                  <Redirect to="/" />
+              ))}
+            />
+            <Route
+              exact
+              strict
+              path="/view-searches"
+              component={Search}
+            />
+            <Route
+              exact
+              path="/view-listing/:id/:avbId"
+              component={() => <Listing user={user} />}
+            />
+            <Route
+              exact
+              strict
+              path="/view-messages"
+              component={() => <Messages user={user} />}
+            />
+            <Route
+              exact
+              path="/view-profile"
+              component={() => <UserProfile user={user} />}
+            />
+            <Route
+              exact
+              path="/view-hostProfile"
+              component={Profile}
+            />
+            <Route
+              exact
+              path="/view-calendar"
+              component={() => <UserCalendar user={user} listingId={listingId} />}
+            />
+            <Route
+              exact
+              path="/view-swaps"
+              component={() => <Swaps user={user} />}
+            />
+            <Route
+              exact
+              path="/view-invites"
+              component={Invite}
+            />
+            <Route
+              exact
+              path="/view-bulletins"
+              component={BulletinBoard}
+            />
+            <Route
+              exact
+              path="/writeReview"
+              component={() => <WriteAReview user={user} />}
+            />
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </MuiThemeProvider>
   );
 };
 
