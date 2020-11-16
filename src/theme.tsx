@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const font = "'Montserrat', 'sans-serif'";
+const font2 = 'FredokaOne-Regular, Fredoka One';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,6 +21,9 @@ const theme = createMuiTheme({
     h6: {
       fontWeight: 'bold',
       lineHeight: 1.65,
+    },
+    h1: {
+      fontFamily: font2,
     },
     subtitle1: {
       lineHeight: 1.25,

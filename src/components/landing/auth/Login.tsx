@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { AppType } from 'goldilocksTypes';
 import { toast } from 'react-toastify';
+import { Typography } from '@material-ui/core';
 import LoginExistingUser from './ts-utils/types';
+import { ReactComponent as Goldilocks } from '../../../assets/purplegoldi.svg';
 import '../../../App.css';
 
 interface AuthProps {
@@ -94,7 +96,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
 
   return (
     <div className="login-container">
-      <h1 className="text-center my-5">Login</h1>
+      <Typography variant="h1">goldilocks</Typography>
       <div className="row justify-content-center">
         <form>
           <div className="form-group">
@@ -134,7 +136,15 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
             >
               Start Swapping
             </button>
-            <a href="/register">Have a verification code? Sign Up Here</a>
+            <a href="/register">
+              <button
+                className="btn btn-success btn-block"
+                type="button"
+              >
+                Sign Up
+              </button>
+            </a>
+            {/* <a href="/register">Sign Up Here</a> */}
           </div>
         </form>
       </div>

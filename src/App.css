@@ -18,7 +18,7 @@ label {
 
 button,
 input[type="submit"] {
-  background: #ec5990;
+  background: #ffbb00;
   color: white;
   text-transform: uppercase;
   border: none;
@@ -86,10 +86,12 @@ input[type="submit"] {
 }
 
 .signup-container {
-  background-image: url('../src/assets/hangin\ on\ bed.jpeg');
-  height: 100vh;
-  background-position: center;
+   background-image: url('../src/assets/hangin\ on\ bed.jpeg');
+  background-repeat: no-repeat;
+  background-position: fixed;
   background-size: cover;
+  height: 100%;
+  overflow: hidden;
 }
 .map-marker{
   background-image: url('./assets/map_marker.png');
@@ -115,4 +117,11 @@ input[type="submit"] {
 
 .toggle-container {
 overflow: auto;
+}
+
+.logo-text{
+  text-align: center;
+  color: #f8c009;
+  font-weight: bold;
+  font-family: "FredokaOne-Regular, Fredoka One";
 }
