@@ -16,13 +16,6 @@ const useStyles = makeStyles({
     justify: 'center',
     marginBottom: '10px',
   },
-  // {
-  //   border: 1,
-  //   borderRadius: 2,
-  //   borderStyle: 'solid',
-  //   align: 'center',
-  //   justify: 'center',
-  // },
   buttonStyle: {
     padding: '5px 10px 10px',
     justifyContent: 'center',
