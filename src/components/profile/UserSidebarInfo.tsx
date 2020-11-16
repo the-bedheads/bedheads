@@ -10,9 +10,7 @@ import EditUserInfo from './EditUserInfo';
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
     justifyContent: 'center',
     maxWidth: '100%',
   },
