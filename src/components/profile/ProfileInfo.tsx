@@ -11,11 +11,10 @@ import {
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
     align: 'center',
     justify: 'center',
+    marginBottom: '10px',
   },
   buttonStyle: {
     padding: '5px 10px 10px',
@@ -23,10 +22,7 @@ const useStyles = makeStyles({
     display: 'flex',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
     position: 'relative',
-    borderStyle: 'solid',
     justifyContent: 'center',
     width: '50%',
     marginTop: '5px',
@@ -38,8 +34,8 @@ const useStyles = makeStyles({
     },
   },
   imgStyle: {
-    height: '30%',
-    width: '30%',
+    height: '60%',
+    width: '60%',
     padding: '10px 10px 5px',
   },
 });

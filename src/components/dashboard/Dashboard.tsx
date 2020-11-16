@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     marginBottom: 10,
   },
   randomBtn: {
+    backgroundColor: '10px',
+    border: '1px',
+    borderRadius: '2px',
     margin: 'auto',
     padding: 10,
   },
@@ -305,6 +308,7 @@ const Dashboard: React.FC<AuthProps> = ({
           </Grid>
           <Link to={`/view-listing/${randomLink}`}>
             <Button
+              className={classes.randomBtn}
               type="button"
               component={Link}
               to={
@@ -320,7 +324,13 @@ const Dashboard: React.FC<AuthProps> = ({
               View Listing!
             </Button>
           </Link>
-          <button type="submit" onClick={getNewListing}>Show me another!</button>
+          <Button
+            className={classes.randomBtn}
+            type="submit"
+            onClick={getNewListing}
+          >
+            Show me another!
+          </Button>
         </Grid>
       );
     }

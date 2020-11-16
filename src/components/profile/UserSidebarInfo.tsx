@@ -10,9 +10,7 @@ import EditUserInfo from './EditUserInfo';
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
     justifyContent: 'center',
     maxWidth: '100%',
   },
@@ -85,8 +83,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   ) => {
     if (type === 'pic') {
       if (check) {
-        // save changes to DB
-        // update field on screen
         setPic(tempPic);
       }
       setPicOpen(false);
