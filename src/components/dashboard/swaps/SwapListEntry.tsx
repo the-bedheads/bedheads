@@ -184,15 +184,16 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   };
 
   const getRecInfo = async () => {
-    await axios.get(`listing/user/${guestId}`)
+    const tempListId = await axios.get(`listing/user/${guestId}`)
       .then(({ data }) => {
         setListingId(data.id);
+        return data.id;
       });
     await axios.get(`user/${guestId}`)
       .then(({ data }) => {
         setSwappee(data);
       });
-    await axios.get(`listingPhotos/${guestId}`)
+    await axios.get(`listingPhotos/byListingId/${tempListId}`)
       .then(({ data }) => {
         setPhoto(data.url);
       });
