@@ -15,9 +15,7 @@ import EditBio from './EditBio';
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
     align: 'center',
     justify: 'center',
   },
@@ -27,10 +25,10 @@ const useStyles = makeStyles({
     display: 'flex',
   },
   infoStyle: {
-    border: 1,
-    borderRadius: 2,
+    // border: 1,
+    // borderRadius: 2,
     position: 'relative',
-    borderStyle: 'solid',
+    // borderStyle: 'solid',
     justifyContent: 'center',
     width: '50%',
     marginTop: '5px',
@@ -42,8 +40,8 @@ const useStyles = makeStyles({
     },
   },
   imgStyle: {
-    height: '30%',
-    width: '30%',
+    height: '50%',
+    width: '50%',
     padding: '10px 10px 5px',
   },
   overlayStyle: {
