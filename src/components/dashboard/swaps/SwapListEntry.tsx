@@ -72,6 +72,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   const [address, setAddress] = useState('');
   const [userId] = useState(localStorage.userId);
   const [listingId, setListingId] = useState(0);
+  const [swappeeAvbId, setSwappeeAvbId] = useState(0);
 
   const approveSwap = () => {
     const params = {
@@ -94,11 +95,33 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   const renderInfo = () => {
     if (type === 'con') {
       return (
-        <Grid xs={12}>
-          Stuff
-          <br />
-          <br />
-          <br />
+        <Grid className={classes.outerStyle}>
+          <Container className={classes.innerStyle}>
+            <Grid
+              className={classes.buttonGridStyle}
+              container
+              direction="row"
+            >
+              <Grid item xs={12} className={classes.centerStyle}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to={
+                    {
+                      pathname: `/view-listing/${swap.guestId}/${swappeeAvbId}`,
+                      state: {
+                        startAvail: swap.start,
+                        endAvail: swap.end,
+                      },
+                    }
+                  }
+                >
+                  View Room!
+                </Button>
+              </Grid>
+            </Grid>
+          </Container>
         </Grid>
       );
     }
@@ -204,9 +227,26 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       });
   };
 
+  const getAvbId = async () => {
+    const avbs = await axios.get(`availability/allAvbs/${guestId}`)
+      .then(({ data }) => data);
+    const match = avbs.filter((avb: { startDate: string; endDate: string; }) => {
+      if (avb.startDate === swap.start && avb.endDate === swap.end) {
+        console.log(avb);
+        return avb;
+      }
+      return [];
+    });
+    console.log(avbs, match);
+    setSwappeeAvbId(match.id);
+  };
+
   useEffect(() => {
     if (guestId) {
       getRecInfo();
+    }
+    if (type === 'con') {
+      getAvbId();
     }
   }, [guestId]);
 

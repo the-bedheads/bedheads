@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     marginBottom: '10px',
     align: 'center',
     justify: 'center',
-    height: '90%',
+    height: '90vh',
     backgroundColor: 'white',
     paddingTop: '10px',
     paddingBottom: '10px',

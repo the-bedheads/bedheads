@@ -8,8 +8,8 @@ import moment from 'moment';
 import { UserProps, CalendarInterface } from 'goldilocksTypes';
 
 const useStyles = makeStyles({
-  main: {
-    height: '90%',
+  calendarMain: {
+    height: '90vh',
     paddingTop: '10px',
     paddingBottom: '10px',
     marginTop: '25px',
@@ -74,7 +74,7 @@ const UserCalendar: React.FC<CalendarInterface> = ({ user, listingId }): JSX.Ele
   };
 
   return (
-    <Container className={classes.main}>
+    <Container className={classes.calendarMain}>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -83,7 +83,8 @@ const UserCalendar: React.FC<CalendarInterface> = ({ user, listingId }): JSX.Ele
         selectable
         eventOverlap={false}
         select={(info) => onSelect(info)}
-        eventBackgroundColor="green"
+        eventBackgroundColor="#7ad9ec"
+        eventTextColor="black"
       />
     </Container>
   );

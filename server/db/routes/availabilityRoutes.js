@@ -108,7 +108,8 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
         start: startDate,
         end: endDate,
         title: 'Availability',
-        backgroundColor: 'green',
+        backgroundColor: '#7ad9ec',
+        textColor: 'black',
         id,
         listingId: item.listingId,
         type: 'avb',
@@ -119,7 +120,7 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
         start: startDate,
         end: endDate,
         title: 'Complete',
-        backgroundColor: 'yellow',
+        backgroundColor: '#9a4432',
         id,
         listingId: item.listingId,
         guestId: item.guest_id,
@@ -130,7 +131,7 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
       start: startDate,
       end: endDate,
       title: 'Swap Confirmed',
-      backgroundColor: 'purple',
+      backgroundColor: '#8b98de',
       id,
       listingId: item.listingId,
       guestId: item.guest_id,
@@ -175,7 +176,8 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
           availability_id: request.availability_id,
           requester_ids: request.requester_ids,
           title,
-          backgroundColor: 'blue',
+          backgroundColor: '#fac94f',
+          textColor: 'black',
           start: availability.dataValues.startDate,
           end: availability.dataValues.endDate,
           type: 'req',
@@ -260,6 +262,18 @@ availabilityRouter
         res.send(err);
       });
     res.status(201).send(final);
+  });
+
+// get all of a users availabilities
+availabilityRouter
+  .get('/allAvbs/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const response = await Availability.findAll({
+      where: {
+        host_id: userId,
+      },
+    });
+    res.send(response);
   });
 
 module.exports = {
