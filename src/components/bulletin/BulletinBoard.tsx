@@ -11,16 +11,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     padding: '10px',
   },
   container: {
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     margin: 'auto',
     display: 'flex',
     justify: 'space-around',
   },
   sidebar: {
-    backgroundColor: 'green',
+    backgroundColor: 'white',
   },
   bulletins: {
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
     align: 'center',
     alignItems: 'center',
   },
