@@ -15,20 +15,12 @@ const useStyles = makeStyles({
   main: {
     backgroundColor: 'white',
     margin: 'auto',
-    // display: 'flex',
     justifyContent: 'center',
     paddingBottom: 100,
   },
-  // {
-  //   border: 1,
-  //   borderRadius: 2,
-  //   borderStyle: 'solid',
-  //   justifyContent: 'center',
-  //   paddingBottom: 100,
-  // },
   imgStyle: {
-    height: '62.5%',
-    width: '62.5%',
+    height: '100%',
+    width: '100%',
     padding: '10px 10px 5px',
     justifyContent: 'center',
   },
@@ -113,14 +105,14 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
 
   return (
     <Container className={classes.main} disableGutters>
-      <Grid item xs={12}>
-        <Container className={classes.infoStyle} disableGutters>
+      <Grid container item xs={12}>
+        <Grid container className={classes.infoStyle}>
           <img
             src={host.profilePhoto}
             alt="Not found"
             className={classes.imgStyle}
           />
-        </Container>
+        </Grid>
       </Grid>
       <Grid item xs={12}>
         <Container className={classes.infoStyle} disableGutters>
