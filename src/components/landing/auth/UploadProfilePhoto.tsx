@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import {
   Button,
@@ -57,6 +58,7 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     })
       .then(({ data }) => {
         setProfilePhotoUrl(data);
+        toast.success('Photo successfully uploaded!');
       })
       .catch((err) => console.warn(err));
   };
@@ -98,7 +100,6 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
         </Button>
         <br />
         <Grid container alignContent="center" justify="center" className={clsx(classes.margin, classes.root)}>
-          <Typography>Gregs Upload Button Here</Typography>
           <Button
             className={clsx(classes.buttonMargin, classes.root)}
             onClick={(event) => continueStep(event)}

@@ -47,6 +47,9 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: '20px',
   },
+  button: {
+    padding: 1,
+  },
 });
 
 const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
@@ -179,6 +182,8 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
         </CardActionArea>
         <CardActions>
           <Button
+            className={classes.button}
+            fullWidth
             size="small"
             variant="outlined"
             color="secondary"
@@ -195,6 +200,8 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
             name={hostData.firstName}
           />
           <Button
+            className={classes.button}
+            fullWidth
             size="small"
             variant="outlined"
             color="secondary"
