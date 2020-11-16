@@ -185,7 +185,7 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
             className={classes.imgStyle}
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Box className={classes.buttonStyle}>
             <Button
               variant="contained"
@@ -194,7 +194,7 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
               Update your listing
             </Button>
           </Box>
-        </Grid>
+        </Grid> */}
       </>
     );
   };
