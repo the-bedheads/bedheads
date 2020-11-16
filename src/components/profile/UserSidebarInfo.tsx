@@ -83,8 +83,6 @@ const UserSidebarInfo: FunctionComponent<AppInterface> = ({ user }): JSX.Element
   ) => {
     if (type === 'pic') {
       if (check) {
-        // save changes to DB
-        // update field on screen
         setPic(tempPic);
       }
       setPicOpen(false);
