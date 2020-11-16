@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import theme from '../../theme';
 
 interface BulletinProps {
   user: number,
@@ -49,7 +50,7 @@ const CreatePost: React.FC<BulletinProps> = ({ user }): JSX.Element => {
         body: postBody,
         userId: user,
       })
-        .then(() => setPostMsg('good job.'))
+        .then(() => setPostMsg('ok, good going.'))
         .catch(() => setPostMsg('hmm that did not work.'));
     }
   };
@@ -63,7 +64,9 @@ const CreatePost: React.FC<BulletinProps> = ({ user }): JSX.Element => {
         <TextField multiline rows={5} id="bulletin-body" type="post" variant="outlined" required onChange={saveBody} fullWidth />
       </Grid>
       <Grid className={classes.button} item xs={12}>
-        <Button variant="contained" color="primary" onClick={submitPost} disableElevation disableFocusRipple>hey.</Button>
+        <Button variant="contained" onClick={submitPost} disableElevation disableFocusRipple>throw it out there.</Button>
+      </Grid>
+      <Grid className={classes.button} item xs={12}>
         {postMsg}
       </Grid>
     </Container>

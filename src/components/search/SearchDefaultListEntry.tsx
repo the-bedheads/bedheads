@@ -4,16 +4,11 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    flexWrap: 'nowrap',
-  },
-  inline: {
-    display: 'inline',
   },
   image: {
     width: '240px',
@@ -31,6 +26,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     'object-fit': 'cover',
     width: '100%',
     height: '100%',
+  },
+  listing: {
+    color: 'black',
+  },
+  title: {
+    lineHeight: '1.35',
+    paddingTop: '10px',
+    paddingBottom: '5px',
   },
 }));
 
@@ -51,29 +54,34 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
 }) => {
   const classes = useStyles();
   const { startAvail, endAvail } = listingAvail;
-
   const location = `${city}, ${state}`;
-  const availMessage = `available ${startAvail}`;
+  const availMessage = `available ${moment(startAvail, 'YYYY-MM-DD').format('MMM Do YYYY')}`;
   const matchMsg = `${matchPercentage}% match`;
 
   return (
     <div className={classes.root}>
-      <ButtonBase
-        className={classes.image}
-        component={Link}
-        to={
+      <Grid container className={classes.listing} item xs={12}>
+        <ButtonBase
+          className={classes.image}
+          component={Link}
+          to={
               {
                 pathname: `/view-listing/${user}/${avbId}`,
                 state: { startAvail, endAvail },
               }
             }
-      >
-        <img className={classes.img} alt="complex" src={photo} />
-      </ButtonBase>
+        >
+          <img className={classes.img} alt="complex" src={photo} />
+        </ButtonBase>
+
+      </Grid>
       <Grid
+        container
         item
-        xs
+        direction="column"
+        xs={12}
         component={Link}
+        className={classes.listing}
         to={
               {
                 pathname: `/view-listing/${user}/${avbId}`,
@@ -81,19 +89,27 @@ const DefaultListEntry: React.FC<DefaultListProps> = ({
               }
             }
       >
-        <Typography variant="h6">
-          {title}
-        </Typography>
-        <Typography variant="subtitle1">
-          {location}
+        <Grid item xs={12}>
+          <Typography className={classes.title} variant="h6">
+            {title}
+          </Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <Typography variant="subtitle1" style={{ paddingBottom: '10px' }}>
+            {location}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid item xs={10}>
+        <Typography variant="overline">
+          {availMessage}
         </Typography>
       </Grid>
-      <Typography variant="overline" display="block">
-        {availMessage}
-      </Typography>
-      <Typography variant="overline" display="block">
-        {matchMsg}
-      </Typography>
+      <Grid item xs={10}>
+        <Typography variant="overline">
+          {matchMsg}
+        </Typography>
+      </Grid>
     </div>
   );
 };

@@ -5,6 +5,12 @@ const font = "'Montserrat', 'sans-serif'";
 const theme = createMuiTheme({
   palette: {
     primary: { 500: '#467fcf' },
+    secondary: {
+      main: '#d5ff2c',
+    },
+    background: {
+      default: '#e9f6f9',
+    },
   },
   typography: {
     fontFamily: font,

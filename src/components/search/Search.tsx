@@ -11,11 +11,29 @@ import SearchDefaultList from './SearchDefaultList';
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     flexGrow: 1,
+    padding: '25px',
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  container: {
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  search: {
+    padding: '20px',
+    marginBottom: '20px',
+    backgroundColor: 'white',
+  },
+  results: {
+    backgroundColor: 'white',
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
 }));
 
@@ -34,10 +52,11 @@ const Search: React.FC = () => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
+        <Grid container className={classes.container} spacing={3}>
+          <Grid item className={classes.search} xs={8}>
             <SearchBar
               xs={6}
+              setLocationQuery={setLocationQuery}
               onSubmit={(value: string) => setLocationQuery(value)}
               setDefaultView={setDefaultView}
               startDate={startDate}
@@ -50,10 +69,10 @@ const Search: React.FC = () => {
           {defaultView ? <Grid container spacing={4}><SearchDefaultList /></Grid>
             : (
               <>
-                <Grid container justify="center" xs={12} spacing={3}>
+                <Grid container item className={classes.results} xs={8}>
                   <ResultsList
-                    dateRange={dateRange} // necessary for error message
-                    locationQuery={locationQuery} // necessary for error message
+                    dateRange={dateRange}
+                    locationQuery={locationQuery}
                     handleAvailListings={[availListings, setAvailListings]}
                   />
                   <Map locationQuery={locationQuery} listings={availListings} />

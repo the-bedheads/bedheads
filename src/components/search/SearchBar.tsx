@@ -1,5 +1,6 @@
 import React, { SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 
 import DatePicker from './SearchDatePicker';
@@ -10,22 +11,23 @@ type Search = {
   setDefaultView: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  input: {
+    background: 'white',
+  },
+}));
+
 const SearchBar = (props: any) => {
+  const classes = useStyles();
   const {
     startDate, setStartDate, endDate, setEndDate, setDateRange, setDefaultView,
   } = props;
   const { register, handleSubmit } = useForm<Search>();
+
   const onSubmit = (data: Search) => {
     if (data.locationQuery && startDate && endDate) {
       props.onSubmit(data.locationQuery);
       setDefaultView(false);
-    } else if (!data.locationQuery && !startDate && !endDate) {
-      // TODO: render these as messages
-      console.error('sorry, that didn\'t work. please complete a new query.');
-    } else if (!data.locationQuery) {
-      console.error('please enter a destination.');
-    } else if (!startDate || !endDate) {
-      console.error('please enter a valid date range.');
     }
   };
 
@@ -35,9 +37,11 @@ const SearchBar = (props: any) => {
         <TextField
           name="locationQuery"
           inputRef={register}
+          className={classes.input}
           placeholder="where to?"
           fullWidth
           margin="normal"
+          variant="outlined"
           aria-describedby="search by location"
         />
         <DatePicker
