@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { SwapListEntryInterface } from 'goldilocksTypes';
 import {
@@ -80,6 +81,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.post('/availability/confirm', { params })
+      .then((result) => (result ? toast.success('Swap approved!') : toast.warn('Problem approving swap!')))
       .catch((err) => console.warn(err.message));
   };
 
@@ -89,6 +91,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.delete('/request/decline', { params })
+      .then((result) => (result ? toast.success('Swap declined!') : toast.warn('Trouble declining swap!')))
       .catch((err) => console.warn(err.message));
   };
 
