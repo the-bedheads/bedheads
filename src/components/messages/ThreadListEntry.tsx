@@ -7,6 +7,7 @@ import { Grid, makeStyles, Button } from '@material-ui/core';
 const useStyles = makeStyles({
   main: {
     borderStyle: 'none none solid none',
+    borderWidth: 'thin',
   },
 });
 

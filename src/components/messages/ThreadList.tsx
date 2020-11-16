@@ -6,6 +6,7 @@ import ThreadListEntry from './ThreadListEntry';
 const useStyles = makeStyles({
   main: {
     borderStyle: 'none none solid none',
+    borderWidth: 'thin',
     padding: '0px',
   },
 });

@@ -19,12 +19,21 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'flex-start',
   },
-  bubble: {
+  senderBubble: {
     border: '0.5px solid black',
     borderRadius: '10px',
     margin: '5px',
     padding: '10px',
     display: 'inline-block',
+    backgroundColor: '#7ad9ec',
+  },
+  receivedBubble: {
+    border: '0.5px solid black',
+    borderRadius: '10px',
+    margin: '5px',
+    padding: '10px',
+    display: 'inline-block',
+    backgroundColor: '#fac94f',
   },
 });
 
@@ -43,13 +52,11 @@ const MessageListEntry: FC<ThreadTypeInt> = ({ message }): JSX.Element => {
 
   useEffect(() => {
     const data = 'words';
-    // socket = io('localhost:3000');
-    // socket.emit('message', { name: 'mike', room: 'mikes room' });
   }, [messageBody]);
 
   return (
     <Box className={message.sender ? classes.sent : classes.received}>
-      <Box className={classes.bubble}>
+      <Box className={message.sender ? classes.senderBubble : classes.receivedBubble}>
         {message.body}
       </Box>
     </Box>

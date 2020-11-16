@@ -24,19 +24,25 @@ import MessageList from './MessageList';
 const useStyles = makeStyles({
   main: {
     borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderRadius: '10px',
     align: 'center',
     justify: 'center',
     height: '100%',
   },
   outer: {
-    marginTop: '10px',
+    marginTop: '25px',
     marginBottom: '10px',
     align: 'center',
     justify: 'center',
-    height: '85vh',
+    height: '90%',
+    backgroundColor: 'white',
+    paddingTop: '10px',
+    paddingBottom: '10px',
   },
   rightBorder: {
     borderStyle: 'none solid none none',
+    borderWidth: 'thin',
   },
   scrollStyle: {
     overflow: 'auto',
@@ -55,12 +61,15 @@ const useStyles = makeStyles({
     maxHeight: '10%',
     minHeight: '10%',
     borderStyle: 'solid none none none',
+    borderWidth: 'thin',
+    display: 'flex',
+    alignItems: 'center',
   },
   currentThreadStyle: {
     width: '100%',
-    maxHeight: '5%',
-    minHeight: '5%',
+    height: '37px',
     borderStyle: 'none none solid none',
+    borderWidth: 'thin',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -107,10 +116,6 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
     onLoad();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setNewMessage(e.target.value);
-  };
-
   const sendMessage = async () => {
     const params = {
       activeThread,
@@ -127,6 +132,16 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
       socket.disconnect();
     });
     setNewMessage('');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+  };
+
+  const keyCheck = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
   };
 
   return (
@@ -169,6 +184,7 @@ const Messages: FC<MessageProps> = (props): JSX.Element => {
                 type="text"
                 value={newMessage}
                 onChange={(e) => handleChange(e)}
+                onKeyPress={(e) => keyCheck(e)}
                 disableUnderline
                 multiline
                 margin="dense"
