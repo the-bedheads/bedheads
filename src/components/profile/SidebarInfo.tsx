@@ -13,15 +13,24 @@ import RadarChart from './RadarChart';
 
 const useStyles = makeStyles({
   main: {
-    border: 1,
-    borderRadius: 2,
-    borderStyle: 'solid',
+    backgroundColor: 'white',
+    margin: 'auto',
+    // display: 'flex',
     justifyContent: 'center',
+    paddingBottom: 100,
   },
+  // {
+  //   border: 1,
+  //   borderRadius: 2,
+  //   borderStyle: 'solid',
+  //   justifyContent: 'center',
+  //   paddingBottom: 100,
+  // },
   imgStyle: {
-    height: '100%',
-    width: '100%',
+    height: '62.5%',
+    width: '62.5%',
     padding: '10px 10px 5px',
+    justifyContent: 'center',
   },
   infoStyle: {
     justifyContent: 'center',
@@ -105,11 +114,13 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
   return (
     <Container className={classes.main} disableGutters>
       <Grid item xs={12}>
-        <img
-          src={host.profilePhoto}
-          alt="Not found"
-          className={classes.imgStyle}
-        />
+        <Container className={classes.infoStyle} disableGutters>
+          <img
+            src={host.profilePhoto}
+            alt="Not found"
+            className={classes.imgStyle}
+          />
+        </Container>
       </Grid>
       <Grid item xs={12}>
         <Container className={classes.infoStyle} disableGutters>
@@ -140,10 +151,10 @@ const Sidebar: FC<ProfileSidebarInterface> = ({ host, userId }): JSX.Element => 
           />
         </Box>
       </Grid>
-      <Grid>
+      <Grid container className={classes.textStyle}>
         {`Your match profile with ${host.firstName}`}
       </Grid>
-      <Grid>
+      <Grid className={classes.infoStyle}>
         <RadarChart hostData={personalityData} hostName={host.firstName} />
       </Grid>
     </Container>
