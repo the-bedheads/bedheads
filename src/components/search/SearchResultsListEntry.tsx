@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 interface SearchListProps {
   user: number,
   avbId: number,
-  listingId: number,
   title: string,
   location: { listingCity: string, listingState: string },
   listingAvail: { startAvail: string, endAvail: string },
@@ -52,7 +51,7 @@ interface SearchListProps {
 }
 
 const ResultsListEntry: React.FC<SearchListProps> = ({
-  user, title, location, listingAvail, queriedDates, photo, avbId, listingId, matchPercentage,
+  user, title, location, listingAvail, queriedDates, photo, avbId, matchPercentage,
 }) => {
   const classes = useStyles();
   const { listingCity, listingState } = location;
