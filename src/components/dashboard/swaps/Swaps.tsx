@@ -9,9 +9,8 @@ const useStyles = makeStyles({
     paddingTop: '10px',
     paddingBottom: '10px',
     marginTop: '25px',
+    marginBottom: '25px',
     backgroundColor: 'white',
-    maxHeight: '90%',
-    overflow: 'auto',
   },
 });
 
