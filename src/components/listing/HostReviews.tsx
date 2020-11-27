@@ -68,7 +68,7 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
               <Grid item>
                 <Avatar
                   className={classes.large}
-                  src={review.user.profile_photo}
+                  src={review.user.profilePhoto}
                 />
               </Grid>
               <Grid item xs>
@@ -83,7 +83,7 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
                     borderColor="transparent"
                     m={1}
                   >
-                    {review.user.first_name}
+                    {review.user.firstName}
                   </Box>
                   <Box
                     component="fieldset"

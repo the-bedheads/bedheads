@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-const UserProfile: FC<AppInterface> = ({ user }): JSX.Element => {
+const UserProfile: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
   const classes = useStyles();
 
   return (
@@ -23,7 +23,7 @@ const UserProfile: FC<AppInterface> = ({ user }): JSX.Element => {
           <UserSidebarInfo user={user} />
         </Grid>
         <Grid item xs={9}>
-          <UserProfileInfo user={user} />
+          <UserProfileInfo user={user} setUser={setUser} />
         </Grid>
       </Grid>
     </Container>

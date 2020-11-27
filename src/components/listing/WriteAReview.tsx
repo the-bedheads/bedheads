@@ -194,11 +194,9 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                       icon={<FavoriteIcon fontSize="large" />}
                       onChange={(event, newValue) => {
                         setHostRating(newValue);
-                        console.info('hostRating', newValue);
                       }}
                       onChangeActive={(event, newHover) => {
                         setHostHover(newHover);
-                        console.info('hover', newHover);
                       }}
                     />
                     {hostRating !== null && (
@@ -238,11 +236,9 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                       icon={<FavoriteIcon fontSize="large" />}
                       onChange={(event, newValue) => {
                         setGuestRating(newValue);
-                        console.info('guestRating', newValue);
                       }}
                       onChangeActive={(event, hover) => {
                         setGuestHover(hover);
-                        console.info('hover', hover);
                       }}
                     />
                     {guestRating !== null && (

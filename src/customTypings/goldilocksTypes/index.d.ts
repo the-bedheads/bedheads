@@ -36,8 +36,8 @@ declare module 'goldilocksTypes' {
     listingId: number,
     type: string,
     guestId: number,
-    availability_id: number,
-    requester_ids: Array<number>,
+    availabilityId: number,
+    requesterIds: Array<number>,
   };
 
   interface ProfileProps {
@@ -83,6 +83,7 @@ declare module 'goldilocksTypes' {
 
   interface AppInterface {
     user: AppType,
+    setUser?: React.Dispatch<React.SetStateAction<AppType>>,
   }
 
   interface CalendarInterface {

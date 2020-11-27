@@ -20,14 +20,14 @@ reviewRouter
     const { listingId } = req.params;
     reviews = await Availability.findAll({
       where: {
-        listingId: listingId,
+        listingId,
       }
     })
-      .then(res => {
-        res.map(info => {
+      .then((res) => {
+        res.map((info) => {
           if (info.dataValues.accepted) {
-            guestId = info.dataValues.guest_id;
-            hostId = info.dataValues.host_id;
+            guestId = info.dataValues.guestId;
+            hostId = info.dataValues.hostId;
           }
         })
         result = Reviews.findAll({
@@ -47,21 +47,30 @@ reviewRouter
         })
         return result;
       })
-      .catch(err => err.message);
+      .catch((err) => err.message);
     res.send(reviews);
   })
 
 // TODO: Write a review
 reviewRouter
   .post('/newReview', async (req, res) => {
-    let { guestRating, hostRating, guestReview, hostReview, isComplete, userId, hostId, avyId } = req.body.params;
+    let {
+      guestRating,
+      hostRating,
+      guestReview,
+      hostReview,
+      isComplete,
+      userId,
+      hostId,
+      avyId,
+    } = req.body.params;
     await Availability.findOne({
       where: {
-        guest_id: Number(userId)
-      }
+        guestId: Number(userId),
+      },
     })
       .then(({ dataValues }) => {
-        hostId = dataValues.host_id;
+        hostId = dataValues.hostId;
         avyId = dataValues.id;
 
         Reviews.create({

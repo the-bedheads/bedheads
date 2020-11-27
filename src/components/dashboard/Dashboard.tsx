@@ -211,7 +211,7 @@ const Dashboard: React.FC<AuthProps> = ({
       const parseData = await res.json();
       setAuth(true);
       setUserEmail(parseData.email);
-      setUserName(parseData.first_name);
+      setUserName(parseData.firstName);
     } catch (err) {
       console.warn(err.message);
     }

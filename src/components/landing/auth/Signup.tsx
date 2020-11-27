@@ -9,8 +9,8 @@ const rh = process.env.REACT_APP_HOST;
 const rp = process.env.REACT_APP_PORT;
 
 type RegisterNewUser = {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   verification_code: number;

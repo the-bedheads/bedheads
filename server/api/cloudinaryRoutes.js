@@ -38,7 +38,7 @@ imageRouter.post('/addListingPhoto/:userId', async (req, res) => {
     .then(({ dataValues }) => {
       const { id } = dataValues;
       ListingPhotos.create({
-        user_id: userId,
+        userId,
         url: image.url,
         listingId: id,
       })
@@ -67,7 +67,7 @@ imageRouter.put('/editProfilePic/:userId', async (req, res) => {
   const newImage = await cloudinary.uploader
     .upload(data);
   const newUserStuff = await User.update({
-    profile_photo: newImage.url,
+    profilePhoto: newImage.url,
   }, {
     where: { id: userId },
   });

@@ -77,7 +77,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
 
   const approveSwap = () => {
     const params = {
-      avbId: swap.availability_id,
+      avbId: swap.availabilityId,
       guestId,
     };
     axios.post('/availability/confirm', { params })
@@ -87,7 +87,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
 
   const declineSwap = () => {
     const params = {
-      avbId: swap.availability_id,
+      avbId: swap.availabilityId,
       guestId,
     };
     axios.delete('/request/decline', { params })
@@ -184,7 +184,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
                 component={Link}
                 to={
                   {
-                    pathname: `/view-listing/${listingId}/${swap.availability_id}`,
+                    pathname: `/view-listing/${listingId}/${swap.availabilityId}`,
                     state: {
                       startAvail: swap.start,
                       endAvail: swap.end,
@@ -235,12 +235,10 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       .then(({ data }) => data);
     const match = avbs.filter((avb: { startDate: string; endDate: string; }) => {
       if (avb.startDate === swap.start && avb.endDate === swap.end) {
-        console.log(avb);
         return avb;
       }
       return [];
     });
-    console.log(avbs, match);
     setSwappeeAvbId(match.id);
   };
 

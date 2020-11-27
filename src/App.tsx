@@ -132,7 +132,7 @@ const App: FC = (): JSX.Element => {
             <Route
               exact
               path="/view-profile"
-              component={() => <UserProfile user={user} />}
+              component={() => <UserProfile user={user} setUser={setUser} />}
             />
             <Route
               exact

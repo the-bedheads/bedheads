@@ -19,6 +19,9 @@ userRouter
             hostRating,
             inviteCount,
             userBio,
+            firstName,
+            lastName,
+            profilePhoto,
           } = user.dataValues;
           return {
             id,
@@ -26,14 +29,14 @@ userRouter
             dob,
             email,
             password,
-            profilePhoto: user.dataValues.profile_photo,
+            profilePhoto,
             swapCount,
             guestRating,
             hostRating,
             inviteCount,
             userBio,
-            firstName: user.dataValues.first_name,
-            lastName: user.dataValues.last_name,
+            firstName,
+            lastName,
           };
         });
         res.send(result);
@@ -60,20 +63,23 @@ userRouter
           inviteCount,
           userBio,
           personalityScale,
+          firstName,
+          lastName,
+          profilePhoto,
         } = dataValues;
         const result = {
           id,
           pronouns,
           dob,
           email,
-          profilePhoto: dataValues.profile_photo,
+          profilePhoto,
           swapCount,
           guestRating,
           hostRating,
           inviteCount,
           userBio,
-          firstName: dataValues.first_name,
-          lastName: dataValues.last_name,
+          firstName,
+          lastName,
           personalityScale,
         };
         res.send(result);
@@ -111,6 +117,9 @@ userRouter.get('/:userId', (req, res) => {
         hostRating,
         inviteCount,
         userBio,
+        firstName,
+        lastName,
+        profilePhoto,
       } = dataValues;
       const result = {
         id,
@@ -118,14 +127,14 @@ userRouter.get('/:userId', (req, res) => {
         dob,
         email,
         password,
-        profilePhoto: dataValues.profile_photo,
+        profilePhoto,
         swapCount,
         guestRating,
         hostRating,
         inviteCount,
         userBio,
-        firstName: dataValues.first_name,
-        lastName: dataValues.last_name,
+        firstName,
+        lastName,
       };
       res.send(result);
     })

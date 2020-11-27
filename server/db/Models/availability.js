@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'listingId',
     });
     Availability.belongsTo(models.User, {
-      foreignKey: 'guest_id',
+      foreignKey: 'guestId',
     });
     Availability.belongsTo(models.User, {
-      foreignKey: 'host_id',
+      foreignKey: 'hostId',
     });
   };
 

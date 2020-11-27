@@ -41,7 +41,7 @@ const UserCalendar: React.FC<CalendarInterface> = ({ user, listingId }): JSX.Ele
       start: info.startStr,
       end: info.endStr,
       overlap: false,
-      backgroundColor: 'green',
+      backgroundColor: '#7ad9ec',
       userId,
     };
     // logic to prevent duplicate availabilities

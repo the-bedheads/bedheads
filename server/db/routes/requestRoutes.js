@@ -22,7 +22,7 @@ requestRouter
     const { availabilityId } = req.params;
     Request.findAll({
       where: {
-        availability_id: availabilityId,
+        availabilityId,
       },
     })
       .then((requests) => res.send(requests))
@@ -32,7 +32,7 @@ requestRouter
     const { availabilityId } = req.params;
     Request.findAndCountAll({
       where: {
-        availability_id: availabilityId,
+        availabilityId,
       },
     })
       .then((count) => res.send(count))
@@ -42,7 +42,7 @@ requestRouter
     const { arr } = req.query;
     Request.findAndCountAll({
       where: {
-        availability_id: arr,
+        availabilityId: arr,
       },
     })
       .then((count) => res.send(count))
@@ -78,15 +78,15 @@ requestRouter
         listingId: requesterListingId,
         startDate: dates.startAvail,
         endDate: dates.endAvail,
-        host_id: userId,
+        hostId: userId,
         accepted: false,
       });
     }
     // does request already exist?
     await Request.findOne({
       where: {
-        requester_id: userId,
-        availability_id: avbId,
+        requesterId: userId,
+        availabilityId: avbId,
       },
     })
       .then((request) => {
@@ -96,8 +96,8 @@ requestRouter
         }
         // else, create request
         Request.create({
-          requester_id: userId,
-          availability_id: avbId,
+          requesterId: userId,
+          availabilityId: avbId,
         })
           .then(() => res.status(201).send('Request sent!'));
       })
@@ -110,8 +110,8 @@ requestRouter
     const { avbId, guestId } = req.query;
     await Request.destroy({
       where: {
-        requester_id: guestId,
-        availability_id: avbId,
+        requesterId: guestId,
+        availabilityId: avbId,
       },
     })
       .catch((err) => {

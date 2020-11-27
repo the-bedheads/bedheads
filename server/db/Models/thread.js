@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Thread.associate = (models) => {
     Thread.belongsTo(models.User, {
-      foreignKey: 'user1_id',
+      foreignKey: 'user1Id',
     });
     Thread.belongsTo(models.User, {
-      foreignKey: 'user2_id',
+      foreignKey: 'user2Id',
     });
     Thread.hasMany(models.Message);
   };

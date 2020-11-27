@@ -6,10 +6,9 @@ const listingPhotosRouter = Router();
 listingPhotosRouter
   .get('/:userId', (req, res) => {
     const { userId } = req.params;
-    console.log(userId);
     ListingPhotos.findOne({
       where: {
-        user_id: Number(userId),
+        userId: Number(userId),
       },
     })
       .then((listing) => {
@@ -22,7 +21,6 @@ listingPhotosRouter
 listingPhotosRouter
   .get('/byListingId/:listingId', (req, res) => {
     const { listingId } = req.params;
-    console.log(listingId);
     ListingPhotos.findOne({
       where: {
         listingId,

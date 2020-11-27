@@ -38,7 +38,7 @@ const BulletinBoard: React.FC = (): JSX.Element => {
   const [posts, setPosts] = useState([{
     body: '',
     title: '',
-    author: { id: 1, first_name: '', listing: { listingCity: '' } },
+    author: { id: 1, firstName: '', listing: { listingCity: '' } },
     userCity: '',
   }]);
 
@@ -67,7 +67,7 @@ const BulletinBoard: React.FC = (): JSX.Element => {
         <Grid container item className={classes.bulletins} xs={9}>
           {posts.map((post, idx) => {
             if (post.author.listing) {
-              const author = post.author.first_name;
+              const author = post.author.firstName;
               const authorCity = post.author.listing.listingCity;
               const { title, body } = post;
               const authorId = post.author.id;
