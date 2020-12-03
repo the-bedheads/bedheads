@@ -1,10 +1,10 @@
 module.exports = [
   {
-    user1_id: 1,
-    user2_id: 2,
+    user1Id: 1,
+    user2Id: 2,
   },
   {
-    user1_id: 1,
-    user2_id: 5,
+    user1Id: 1,
+    user2Id: 5,
   },
 ];

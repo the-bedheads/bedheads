@@ -17,8 +17,8 @@ messageRouter
     const test = await Thread.findAll({
       where: {
         [Op.or]: [
-          { user1_id: Number(userId) },
-          { user2_id: Number(userId) },
+          { user1Id: Number(userId) },
+          { user2Id: Number(userId) },
         ],
       },
     },
@@ -42,10 +42,10 @@ messageRouter
       },
     })
       .then(({ dataValues }) => {
-        if (dataValues.user1_id.toString() !== userId) {
-          return dataValues.user1_id;
+        if (dataValues.user1Id.toString() !== userId) {
+          return dataValues.user1Id;
         }
-        return dataValues.user2_id;
+        return dataValues.user2Id;
       })
       .then(async (foundId) => {
         const foundName = await User.findOne({
@@ -53,7 +53,7 @@ messageRouter
             id: foundId,
           },
         })
-          .then((foundUser) => foundUser.first_name);
+          .then((foundUser) => foundUser.firstName);
         return foundName;
       })
       .catch((err) => console.info('GET message/getName failed'));
@@ -66,7 +66,7 @@ messageRouter
     const { thread, userId } = req.query;
     const messages = await Message.findAll({
       where: {
-        thread_id: Number(thread),
+        threadId: Number(thread),
       },
     }, {
       order: '"updatedAt" DESC',
@@ -74,7 +74,7 @@ messageRouter
       .then((messageList) => {
         const result = messageList.map((message) => {
           const intermediate = { body: message.dataValues.body };
-          if (message.dataValues.user_id === Number(userId)) {
+          if (message.dataValues.userId === Number(userId)) {
             intermediate.sender = true;
           } else {
             intermediate.sender = false;
@@ -95,9 +95,9 @@ messageRouter
   .post('/newMessage', async (req, res) => {
     const { activeThread, newMessage, userId } = req.body.params;
     await Message.create({
-      thread_id: Number(activeThread),
+      threadId: Number(activeThread),
       body: newMessage,
-      user_id: userId,
+      userId,
     })
       .catch((err) => console.info('POST message/newMessage failed'));
     res.send('success!');
@@ -111,12 +111,12 @@ messageRouter
       where: {
         [Op.or]: [
           {
-            user1_id: Number(hostId),
-            user2_id: Number(userId),
+            user1Id: Number(hostId),
+            user2Id: Number(userId),
           },
           {
-            user1_id: Number(userId),
-            user2_id: Number(hostId),
+            user1Id: Number(userId),
+            user2Id: Number(hostId),
           },
         ],
       },
@@ -124,8 +124,8 @@ messageRouter
       .catch((err) => console.info('GET message/thread failed'));
     if (!thread) {
       thread = await Thread.create({
-        user1_id: Number(userId),
-        user2_id: Number(hostId),
+        user1Id: Number(userId),
+        user2Id: Number(hostId),
       })
         .then((data) => {
           console.info('Thread created');

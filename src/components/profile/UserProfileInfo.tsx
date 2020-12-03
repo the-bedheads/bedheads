@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   },
 });
 
-const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
+const UserProfileInfo: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [bio, setBio] = useState(user.userBio);
@@ -99,6 +99,12 @@ const UserProfileInfo: FC<AppInterface> = ({ user }): JSX.Element => {
   const handleClose = (i: React.MouseEvent<HTMLButtonElement, MouseEvent>, check: boolean) => {
     if (check) {
       axios.patch(`user/bio/${user.id}`, { params: { newBio: tempBio } });
+      const tempUser = { ...user };
+      tempUser.userBio = tempBio;
+      if (setUser) {
+        setUser(tempUser);
+      }
+      localStorage.setItem('userBio', tempBio);
       setBio(tempBio);
     }
     setOpen(false);

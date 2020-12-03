@@ -51,7 +51,7 @@ const models = {
   Message,
   Thread,
   Bulletin,
-  Reviews
+  Reviews,
 };
 
 Object.keys(models).forEach((model) => {

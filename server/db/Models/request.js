@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Request.associate = (models) => {
     Request.belongsTo(models.User, {
-      foreignKey: 'requester_id',
+      foreignKey: 'requesterId',
     });
     Request.belongsTo(models.Availability, {
-      foreignKey: 'availability_id',
+      foreignKey: 'availabilityId',
     });
   };
 

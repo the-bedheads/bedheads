@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, { timestamps: false });
   Survey.associate = (models) => {
     Survey.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
   };
   return Survey;

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Invite.associate = (models) => {
     Invite.belongsTo(models.User, {
-      foreignKey: 'sender_id',
+      foreignKey: 'senderId',
     });
   };
 

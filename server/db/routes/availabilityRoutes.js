@@ -17,7 +17,7 @@ availabilityRouter
       where: {
         [Op.and]: [
           { accepted: false },
-          { host_id: hostId },
+          { hostId },
         ],
       },
     })
@@ -31,7 +31,7 @@ availabilityRouter
         [Op.and]: [
           { accepted: false },
           {
-            host_id: {
+            hostId: {
               [Op.not]: hostId,
             },
           },
@@ -46,7 +46,7 @@ availabilityRouter
     Availability.findAll({
       attributes: ['id'],
       where: {
-        [Op.and]: [{ accepted: false }, { host_id: hostId }],
+        [Op.and]: [{ accepted: false }, { hostId }],
       },
     })
       .then((availabilities) => res.send(availabilities.map((a) => a.id)))
@@ -56,7 +56,7 @@ availabilityRouter
     const { userId } = req.params;
     Availability.findAndCountAll({
       where: {
-        [Op.and]: [{ accepted: true }, { host_id: userId }],
+        [Op.and]: [{ accepted: true }, { hostId: userId }],
         startDate: {
           [Op.gt]: new Date(),
         },
@@ -82,7 +82,7 @@ availabilityRouter.post('/setAvailability', async (req, res) => {
     listingId,
     startDate: start,
     endDate: end,
-    host_id: userId,
+    hostId: userId,
     accepted: false,
   })
     .then(() => {
@@ -99,98 +99,106 @@ availabilityRouter.get('/allAvailabilities/:listingId', async (req, res) => {
       listingId,
     },
   })
-    .then((data) => data.map((avb) => avb.dataValues))
-    .catch(() => console.warn('GET availability/allAvailabilities: Availability.findAll'));
-  const final = availabilities.map((item) => {
-    const { id, startDate, endDate } = item;
-    if (!item.accepted) {
-      return {
-        start: startDate,
-        end: endDate,
-        title: 'Availability',
-        backgroundColor: '#7ad9ec',
-        textColor: 'black',
-        id,
-        listingId: item.listingId,
-        type: 'avb',
-      };
-    }
-    if (item.accepted && moment(endDate).isBefore(new Date())) {
-      return {
-        start: startDate,
-        end: endDate,
-        title: 'Complete',
-        backgroundColor: '#9a4432',
-        id,
-        listingId: item.listingId,
-        guestId: item.guest_id,
-        type: 'complete',
-      };
-    }
-    return {
-      start: startDate,
-      end: endDate,
-      title: 'Swap Confirmed',
-      backgroundColor: '#8b98de',
-      id,
-      listingId: item.listingId,
-      guestId: item.guest_id,
-      type: 'swap',
-    };
-  });
-  const getRequests = async () => Promise.all(
-    availabilities.map((item) => Request.findAll({
-      where: {
-        availability_id: item.id,
-      },
-    })
-      .then((data) => data)
-      .catch(() => console.warn('GET availability/allAvailabilities: getRequests'))),
-  );
-  const requests = await getRequests()
-    .then((data) => data.filter((item) => item.length))
-    .then((filteredData) => filteredData)
-    .catch(() => console.warn('GET availability/allAvailabilities: getRequests()'));
-  const requestArr = [];
-  requests.forEach((requestGroup) => {
-    const nestedObj = {
-      availability_id: null,
-      requester_ids: [],
-    };
-    requestGroup.forEach((request) => {
-      nestedObj.availability_id = request.dataValues.availability_id;
-      nestedObj.requester_ids.push(request.dataValues.requester_id);
+    .then((data) => {
+      if (!data) {
+        throw new TypeError('No availabilities found');
+      }
+      return data.map((avb) => avb.dataValues);
     });
-    requestArr.push(nestedObj);
-  });
-  const createReq = async () => Promise.all(
-    requestArr.map((request) => Availability.findOne({
-      where: {
-        id: request.availability_id,
-      },
-    })
-      .then((availability) => {
-        const reqLength = request.requester_ids.length;
-        const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
-        const reqObj = {
-          availability_id: request.availability_id,
-          requester_ids: request.requester_ids,
-          title,
-          backgroundColor: '#fac94f',
+  if (availabilities) {
+    const final = availabilities.map((item) => {
+      const { id, startDate, endDate } = item;
+      if (!item.accepted) {
+        return {
+          start: startDate,
+          end: endDate,
+          title: 'Availability',
+          backgroundColor: '#7ad9ec',
           textColor: 'black',
-          start: availability.dataValues.startDate,
-          end: availability.dataValues.endDate,
-          type: 'req',
+          id,
+          listingId: item.listingId,
+          type: 'avb',
         };
-        return reqObj;
+      }
+      if (item.accepted && moment(endDate).isBefore(new Date())) {
+        return {
+          start: startDate,
+          end: endDate,
+          title: 'Complete',
+          backgroundColor: '#9a4432',
+          id,
+          listingId: item.listingId,
+          guestId: item.guestId,
+          type: 'complete',
+        };
+      }
+      return {
+        start: startDate,
+        end: endDate,
+        title: 'Swap Confirmed',
+        backgroundColor: '#8b98de',
+        id,
+        listingId: item.listingId,
+        guestId: item.guestId,
+        type: 'swap',
+      };
+    });
+    const getRequests = async () => Promise.all(
+      availabilities.map((item) => Request.findAll({
+        where: {
+          availabilityId: item.id,
+        },
       })
-      .catch(() => console.warn('GET availability/allAvailabilities: createReq'))),
-  );
-  const reqs = await createReq()
-    .then((data) => data)
-    .catch(() => console.warn('GET availability/allAvailabilities: createReq()'));
-  reqs.forEach((request) => final.push(request));
-  res.send(final);
+        .then((data) => data)
+        .catch(() => console.warn('GET availability/allAvailabilities: getRequests'))),
+    );
+    const requests = await getRequests()
+      .then((data) => data.filter((item) => item.length))
+      .then((filteredData) => filteredData)
+      .catch(() => console.warn('GET availability/allAvailabilities: getRequests()'));
+    const requestArr = [];
+    requests.forEach((requestGroup) => {
+      const nestedObj = {
+        availabilityId: null,
+        requesterIds: [],
+      };
+      requestGroup.forEach((request) => {
+        nestedObj.availabilityId = request.dataValues.availabilityId;
+        nestedObj.requesterIds.push(request.dataValues.requesterId);
+      });
+      requestArr.push(nestedObj);
+    });
+    const createReq = async () => Promise.all(
+      requestArr.map((request) => Availability.findOne({
+        where: {
+          id: request.availabilityId,
+        },
+      })
+        .then((availability) => {
+          const reqLength = request.requesterIds.length;
+          const title = reqLength > 1 ? `${reqLength} requests` : '1 request';
+          const reqObj = {
+            availabilityId: request.availabilityId,
+            requesterIds: request.requesterIds,
+            title,
+            backgroundColor: '#fac94f',
+            textColor: 'black',
+            start: availability.dataValues.startDate,
+            end: availability.dataValues.endDate,
+            type: 'req',
+          };
+          return reqObj;
+        })
+        .catch(() => console.warn('GET availability/allAvailabilities: createReq'))),
+    );
+    const reqs = await createReq()
+      .then((data) => data)
+      .catch(() => console.warn('GET availability/allAvailabilities: createReq()'));
+    reqs.forEach((request) => final.push(request));
+    res.send(final);
+  } else {
+    res.send('no availabilities found');
+  }
 });
 
 // delete availability
@@ -241,7 +249,7 @@ availabilityRouter
     const { avbId, guestId } = req.body.params;
     const final = await Availability.update({
       accepted: true,
-      guest_id: guestId,
+      guestId,
     }, {
       where: {
         id: avbId,
@@ -254,7 +262,7 @@ availabilityRouter
       });
     await Request.destroy({
       where: {
-        availability_id: avbId,
+        availabilityId: avbId,
       },
     })
       .catch((err) => {
@@ -270,7 +278,7 @@ availabilityRouter
     const { userId } = req.params;
     const response = await Availability.findAll({
       where: {
-        host_id: userId,
+        hostId: userId,
       },
     });
     res.send(response);

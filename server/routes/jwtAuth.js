@@ -43,9 +43,15 @@ router.post('/register', async (req, res) => {
     if (existingUser === null && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // TODO: refactor to use User.create
-      await db.query(`INSERT INTO users (first_name, last_name, pronouns, email, password, profile_photo, "userBio") 
-      VALUES ('${firstName}', '${lastName}', '${pronouns}', '${email}', '${hashedPassword}', '${pic}', 'No bio created yet');`);
+      await User.create({
+        firstName,
+        lastName,
+        pronouns,
+        email,
+        password: hashedPassword,
+        profilePhoto: pic,
+        userBio: 'No bio created yet',
+      });
 
       const user = await User.findOne({
         where: {
@@ -54,7 +60,7 @@ router.post('/register', async (req, res) => {
       });
 
       await Survey.create({
-        user_id: user.id,
+        userId: user.id,
         q1response: q1,
         q2response: q2,
         q3response: q3,
@@ -144,7 +150,7 @@ router.post('/invite', (req, res) => {
   })
     .then((results) => {
       const senderId = results.id;
-      const query = db.query(`INSERT INTO invites (verificationCode, newUserEmail, sender_id) 
+      const query = db.query(`INSERT INTO invites (verificationCode, newUserEmail, senderId) 
       VALUES ('${verificationCode}', '${newUserEmail}', '${senderId}');`);
       res.status(200).send('Invited friend to Goldilocks!');
     })

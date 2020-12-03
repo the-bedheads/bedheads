@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
   ListingPhotos.associate = (models) => {
     ListingPhotos.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
     ListingPhotos.belongsTo(models.Listing, {
       foreignKey: 'listingId',

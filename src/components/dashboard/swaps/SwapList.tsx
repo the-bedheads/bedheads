@@ -9,8 +9,8 @@ interface Swaps {
 
 const SwapList: FC<Swaps> = ({ swaps }) => {
   const swapRender = (someSwaps: Array<Availability>) => someSwaps.map((swap) => {
-    if (swap.requester_ids) {
-      return swap.requester_ids.map((requester: number) => {
+    if (swap.requesterIds) {
+      return swap.requesterIds.map((requester: number) => {
         const guestId = requester;
         return (
           <div>
