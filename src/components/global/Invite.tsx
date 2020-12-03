@@ -7,9 +7,9 @@ import realisticbed from '../../assets/realisticbed.jpg';
 import generateVerificationCode from '../../invite/verificationCode';
 
 // Will need this later for deployment
-// const {
-//   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
-// } = process.env; // hello
+const {
+  EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
+} = process.env; // hello
 
 const Invite: React.FC = (props: any): JSX.Element => {
   const [friendEmail, setFriendEmail] = useState<string>('');
@@ -31,11 +31,15 @@ const Invite: React.FC = (props: any): JSX.Element => {
     event.preventDefault();
     emailjs.sendForm('service_53v3f4a', 'template_r379ghv', event.target, 'user_sr6OphdGbk92U9vz6P8xA')
       .then((result) => {
-        toast.success('Invite sent!');
+        toast.success('Invite sent!', {
+          position: 'bottom-right'
+        });
         event.target.reset();
       })
       .catch((err) => {
-        toast.error('There was a problem sending your invite...');
+        toast.error('There was a problem sending your invite :(', {
+          position: 'bottom-right'
+        });
       });
   };
 

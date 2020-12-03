@@ -229,7 +229,9 @@ const Dashboard: React.FC<AuthProps> = ({
     try {
       localStorage.removeItem('token');
       setAuth(false);
-      toast.success('Successfully logged out!');
+      toast.success('You have logged out!', {
+        position: 'bottom-right',
+      });
     } catch (err) {
       console.warn(err.message);
     }

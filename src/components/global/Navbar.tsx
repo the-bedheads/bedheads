@@ -67,7 +67,9 @@ const Navbar: React.FC<AuthProps> = ({
       localStorage.clear();
       handleClose();
       setAuth(false);
-      toast.success('Successfully logged out!');
+      toast.success('You are now logged out.', {
+        position: 'bottom-right'
+      });
     } catch (err) {
       console.warn(err.message);
     }

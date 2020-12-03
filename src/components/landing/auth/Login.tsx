@@ -154,13 +154,19 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
         loginUser();
-        toast.success('Logged in successfully!');
+        toast.warn('Welcome to Goldilocks!', {
+          position: 'bottom-right'
+        });
       } else {
         setAuth(false);
-        toast.error(parseRes);
+        toast.error(parseRes, {
+          position: 'bottom-right'
+        });
       }
     } catch (err) {
-      toast.error('Invalid credentials entered!');
+      toast.error('Invalid credentials entered.', {
+        position: 'bottom-right'
+      });
       console.warn(err.message);
     }
   };

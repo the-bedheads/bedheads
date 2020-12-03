@@ -135,10 +135,14 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
     axios.post('reviews/newReview', { params })
       .then((result) => {
         if (result) {
-          toast.success('Review submitted!');
+          toast.success('Review submitted.', {
+            position: 'bottom-right'
+          });
         }
       })
-      .catch((err) => toast.warn('You must complete a swap to write a review!'));
+      .catch((err) => toast.warn('You must complete a swap to write a review!', {
+        position: 'bottom-right'
+      }));
   };
 
   return (

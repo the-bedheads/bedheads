@@ -70,9 +70,11 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     })
       .then(({ data }) => {
         setProfilePhotoUrl(data);
-        toast.success('Photo successfully uploaded!');
+        toast.success('Photo uploaded.', {
+          position: 'bottom-right'
+        });
       })
-      .catch((err) => console.warn(err));
+      .catch((err) => toast.warn(err, { position: 'bottom-right' }));
   };
 
   const handleFileChange = (e: any) => {

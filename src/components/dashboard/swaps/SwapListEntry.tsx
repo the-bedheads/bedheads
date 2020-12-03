@@ -81,7 +81,11 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.post('/availability/confirm', { params })
-      .then((result) => (result ? toast.success('Swap approved!') : toast.warn('Problem approving swap!')))
+      .then((result) => (result ? toast.success('Swap approved!', {
+        position: 'bottom-right'
+      }) : toast.warn('Problem approving swap.', {
+        position: 'bottom-right'
+      })))
       .catch((err) => console.warn(err.message));
   };
 
@@ -91,7 +95,11 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.delete('/request/decline', { params })
-      .then((result) => (result ? toast.success('Swap declined!') : toast.warn('Trouble declining swap!')))
+      .then((result) => (result ? toast.success('Swap declined.', {
+        position: 'bottom-right'
+      }) : toast.warn('Trouble declining swap.', {
+        position: 'bottom-right'
+      })))
       .catch((err) => console.warn(err.message));
   };
 

@@ -144,7 +144,9 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         setAuth(true);
       } else {
         setAuth(false);
-        toast.error(parseRes);
+        toast.error(parseRes, {
+          position: 'bottom-right'
+        });
       }
     } catch (err) {
       console.warn(err.message);
