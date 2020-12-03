@@ -1,11 +1,25 @@
 import React, { useEffect, SyntheticEvent, useState } from 'react';
+import clsx from 'clsx';
 import axios from 'axios';
-import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { AppType } from 'goldilocksTypes';
 import { toast } from 'react-toastify';
-import { Typography } from '@material-ui/core';
-import LoginExistingUser from './ts-utils/types';
-import { ReactComponent as Goldilocks } from '../../../assets/purplegoldi.svg';
+import {
+  Grid,
+  Typography,
+  Paper,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  Button,
+} from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import {
+  Email,
+  Lock,
+} from '@material-ui/icons';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import logo from '../../../assets/logo.png';
 import '../../../App.css';
 
 interface AuthProps {
@@ -13,10 +27,65 @@ interface AuthProps {
   setUser: React.Dispatch<React.SetStateAction<AppType>>,
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '40ch',
+    },
+    alignItems: 'center',
+  },
+  paper: {
+    rounded: true,
+    width: '31%',
+    margin: theme.spacing(1),
+    padding: theme.spacing(3),
+    alignItems: 'center',
+    borderRadius: 20,
+    borderColor: '#f8c009',
+    border: '3px solid',
+  },
+  logo: {
+    maxHeight: 75,
+    alignItems: 'center',
+  },
+  component: {
+    backgroundColor: 'white',
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: 100,
+  },
+  container: {
+    margin: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  margin: {
+    margin: theme.spacing(2),
+  },
+  buttonMargin: {
+    margin: theme.spacing(2),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '35ch',
+  },
+}));
+
 const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser }) => {
-  const { errors } = useForm<LoginExistingUser>();
+  const classes = useStyles();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   const loginUser = () => {
     setUser({
@@ -98,58 +167,129 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
 
   return (
     <div className="login-container">
-      <Typography variant="h1">goldilocks</Typography>
-      <div className="row justify-content-center">
-        <form>
-          <div className="form-group">
-            <label htmlFor="email">
-              Email
-              <input
-                className="form-control my-3"
-                type="email"
+      <Typography
+        className="logo-text"
+        variant="h1"
+      >
+        goldilocks
+      </Typography>
+      <Typography
+        className="logo-subtitle"
+        variant="h5"
+      >
+        find a bed that&lsquo;s just right
+      </Typography>
+      <Grid
+        container
+        justify="center"
+        className={classes.margin}
+      >
+        <Paper
+          variant="outlined"
+          className={classes.paper}
+        >
+          <Grid container justify="center" alignItems="center">
+            <Grid item className={classes.margin}>
+              <Typography className="logo-login">
+                <img src={logo} alt="logo" className={classes.logo} />
+              </Typography>
+              <Typography
+                color="primary"
+                variant="h3"
+              >
+                Sign in
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+          >
+            <FormControl className={classes.root} variant="outlined">
+              <InputLabel
+                htmlFor="Email"
+                variant="outlined"
+              >
+                Email
+              </InputLabel>
+              <OutlinedInput
                 name="email"
-                placeholder="name@example.com"
+                type="email"
+                color="secondary"
+                fullWidth
+                startAdornment={(
+                  <InputAdornment position="start">
+                    <Email />
+                  </InputAdornment>
+                )}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                labelWidth={48}
               />
-              {errors.email && <div className="error"> Enter A Valid Email </div>}
-            </label>
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">
-              Enter Password
-              <input
-                className="form-control my-3"
-                type="password"
-                id="password"
+            </FormControl>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+          >
+            <FormControl className={classes.root} variant="outlined">
+              <InputLabel
+                htmlFor="Password"
+              >
+                Password
+              </InputLabel>
+              <OutlinedInput
                 name="password"
-                placeholder="Create Password"
+                type="password"
+                color="secondary"
+                fullWidth
+                startAdornment={(
+                  <InputAdornment position="start">
+                    <Lock />
+                  </InputAdornment>
+                )}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                labelWidth={77}
               />
-              {errors.password && <div className="error">Enter A Valid Password </div>}
-            </label>
-          </div>
-          <div className="button">
-            <button
-              className="btn btn-success btn-block"
+            </FormControl>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+          >
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
               type="submit"
+              color="primary"
+              variant="contained"
               onClick={onLogin}
             >
               Start Swapping
-            </button>
-            <a href="/register">
-              <button
-                className="btn btn-success btn-block"
-                type="button"
-              >
-                Sign Up
-              </button>
-            </a>
-            {/* <a href="/register">Sign Up Here</a> */}
-          </div>
-        </form>
-      </div>
+            </Button>
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
+              type="submit"
+              color="secondary"
+              variant="contained"
+              component={Link}
+              to={
+                {
+                  pathname: '/register',
+                }
+              }
+            >
+              Sign Up
+            </Button>
+            <Typography variant="caption">
+              Not registered? Click to sign up!
+            </Typography>
+          </Grid>
+        </Paper>
+      </Grid>
     </div>
   );
 };

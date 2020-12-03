@@ -5,9 +5,9 @@ const font2 = 'FredokaOne-Regular, Fredoka One';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { 500: '#467fcf' },
+    primary: { 500: '#09c8f8' },
     secondary: {
-      main: '#d5ff2c',
+      main: '#f85109',
     },
     background: {
       default: '#e9f6f9',
@@ -23,6 +23,9 @@ const theme = createMuiTheme({
       lineHeight: 1.65,
     },
     h1: {
+      fontFamily: font2,
+    },
+    h2: {
       fontFamily: font2,
     },
     subtitle1: {

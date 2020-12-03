@@ -2,12 +2,14 @@ import React, { FC } from 'react';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import {
+  Box,
   Button,
   Dialog,
   DialogTitle,
-  Typography,
+  Paper,
   AppBar,
   Grid,
+  Typography,
 } from '@material-ui/core';
 import {
   makeStyles,
@@ -16,6 +18,7 @@ import {
 } from '@material-ui/core/styles';
 import { MyUploadPhotoProps } from 'goldilocksTypes';
 import axios from 'axios';
+import logo from '../../../assets/logo.png';
 
 interface MyProps {
   setProfilePhotoUrl: React.Dispatch<React.SetStateAction<string>>,
@@ -38,6 +41,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   buttonMargin: {
     margin: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    borderRadius: 20,
+    borderColor: '#f8c009',
+    border: '3px solid',
+    margin: theme.spacing(2),
+  },
+  logo: {
+    maxHeight: 45,
+    alignItems: 'center',
   },
 }));
 
@@ -83,37 +98,49 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     <>
       <Dialog open fullWidth>
         <AppBar title="Upload Profile Photo" />
-        <DialogTitle id="form-dialog-title">Step 3: Upload Your Profile Photo</DialogTitle>
-        <Button
-          variant="contained"
-          component="label"
-        >
-          Upload Profile Photo
-          <input
-            type="file"
-            style={{ display: 'none' }}
-            onChange={(e) => handleFileChange(e)}
-          />
-        </Button>
-        <br />
-        <Grid container alignContent="center" justify="center" className={clsx(classes.margin, classes.root)}>
+        <DialogTitle id="form-dialog-title">
+          <Box display="flex" alignItems="center">
+            <Box flexGrow={1}>Step Four: Upload profile photo</Box>
+            <Box>
+              <Typography>
+                <img src={logo} alt="logo" className={classes.logo} />
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <Paper className={classes.paper}>
           <Button
             className={clsx(classes.buttonMargin, classes.root)}
-            onClick={(event) => continueStep(event)}
-            color="primary"
-            variant="outlined"
+            variant="contained"
+            component="label"
           >
-            Continue
+            Choose photo
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange(e)}
+            />
           </Button>
-          <Button
-            className={clsx(classes.buttonMargin, classes.root)}
-            onClick={(event) => backAStep(event)}
-            color="secondary"
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
+          <br />
+          <Grid container alignContent="center" justify="center" className={clsx(classes.margin, classes.root)}>
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
+              onClick={(event) => continueStep(event)}
+              color="primary"
+              variant="contained"
+            >
+              Continue
+            </Button>
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
+              onClick={(event) => backAStep(event)}
+              color="secondary"
+              variant="contained"
+            >
+              Back
+            </Button>
+          </Grid>
+        </Paper>
       </Dialog>
     </>
   );

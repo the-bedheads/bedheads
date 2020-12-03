@@ -14,6 +14,7 @@ import {
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import { TestProps } from 'goldilocksTypes';
+import logo from '../../../assets/logo.png';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -30,10 +31,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    borderRadius: 20,
+    borderColor: '#f8c009',
+    border: '3px solid',
   },
   buttonMargin: {
     margin: theme.spacing(2),
+  },
+  logo: {
+    maxHeight: 45,
+    alignItems: 'center',
   },
 }));
 
@@ -105,6 +112,9 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
         q10,
       };
 
+      const rh = process.env.REACT_APP_HOST;
+      const rp = process.env.REACT_APP_PORT;
+
       const response = await fetch('/auth/register',
         {
           method: 'POST',
@@ -136,8 +146,8 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
   return (
     <>
       <AppBar title="Confirm Details" />
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
+      <Grid container spacing={1} justify="center">
+        <Grid item xs={3}>
           <Paper className={classes.paper}>
             <Typography variant="h5">Confirm Personal Details</Typography>
             <List>
@@ -156,18 +166,16 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
             </List>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Confirm Survey Responses</Typography>
+            <Typography variant="h5">Confirm Survey Responses (1/2)</Typography>
             <br />
             <List>
               <ListItem>
-                <Paper>
-                  <ListItemText
-                    primary="Finish this sentence: Strangers would describe me as ____, but I know that I am ____."
-                    secondary={q1}
-                  />
-                </Paper>
+                <ListItemText
+                  primary="Finish this sentence: Strangers would describe me as ____, but I know that I am ____."
+                  secondary={q1}
+                />
               </ListItem>
               <ListItem>
                 <ListItemText
@@ -193,6 +201,13 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
                   secondary={q5}
                 />
               </ListItem>
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>
+            <Typography variant="h5">Confirm Survey Responses (2/2)</Typography>
+            <List>
               <ListItem>
                 <ListItemText
                   primary="What is your favorite way to spend a Sunday night?"
@@ -228,7 +243,7 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
           <Button
             className={clsx(classes.buttonMargin)}
             color="primary"
-            variant="outlined"
+            variant="contained"
             onClick={(event) => continueStep(event)}
           >
             Submit
@@ -237,7 +252,7 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
             className={clsx(classes.buttonMargin)}
             onClick={(event) => backAStep(event)}
             color="secondary"
-            variant="outlined"
+            variant="contained"
           >
             Back
           </Button>
