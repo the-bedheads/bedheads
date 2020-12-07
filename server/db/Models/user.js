@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       hostRating: DataTypes.FLOAT,
       inviteCount: DataTypes.INTEGER,
       userBio: DataTypes.STRING(1234),
+      hasListing: DataTypes.BOOLEAN,
     },
     { timestamps: false },
   );
