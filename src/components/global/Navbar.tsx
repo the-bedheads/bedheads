@@ -170,46 +170,6 @@ const Navbar: React.FC<AuthProps> = ({
               </MenuItem>
             )}
             <MenuItem
-              component={Link}
-              to="/view-messages"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Messages
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-swaps"
-              color="inherit"
-              onClick={handleClose}
-            >
-              View swaps
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-calendar"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Set availability
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-bulletins"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Bulletin board
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-invites"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Invite friends
-            </MenuItem>
-            <MenuItem
               color="inherit"
               onClick={(e: React.SyntheticEvent<Element, Event>) => {
                 logout(e);

@@ -146,7 +146,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
-        setOpenToast(true);
+        // setOpenToast(true);
         loginUser();
       } else {
         setAuth(false);
@@ -261,22 +261,6 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
             >
               Start Swapping
             </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={openToast}
-              autoHideDuration={6000}
-              onClose={handleCloseToast}
-              action={(
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              )}
-            >
-              <MuiAlert severity="success">Welcome to Goldilocks</MuiAlert>
-            </Snackbar>
             <Button
               className={clsx(classes.buttonMargin, classes.root)}
               type="submit"
