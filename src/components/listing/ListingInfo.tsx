@@ -174,7 +174,6 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
                 {`${listingData.listingAddress}, `}
               </Box>
               <Box
-                // fontWeight="fontWeightBold"
                 textAlign="left"
                 alignContent="center"
                 m={3}
@@ -187,7 +186,6 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
             >
               <Box
                 textAlign="left"
-              // m={3}
               >
                 {listingData.listingDescription}
               </Box>
@@ -202,7 +200,6 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
                 fontWeight="fontWeightBold"
                 borderColor="transparent"
                 textAlign="left"
-                // alignContent="center"
                 m={1}
               >
                 Accommodations
@@ -228,7 +225,7 @@ const ListingInfo: React.FC<ListingProps> = ({ listingId }) => {
                     <TableRow>
                       <Pets />
                       :
-                      {listingData.pets ? ' Pets allowed' : ' No Pets Allowed'}
+                      {listingData.pets ? ' Owner Has Pets' : 'Owner Has No Pets'}
                     </TableRow>
                     <TableRow>
                       <People />

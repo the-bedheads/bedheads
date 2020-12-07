@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import {
   useLocation,
@@ -13,6 +12,7 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  Snackbar,
 } from '@material-ui/core';
 import axios from 'axios';
 import {
@@ -20,7 +20,9 @@ import {
   makeStyles,
   withStyles,
 } from '@material-ui/core/styles';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Rating } from '@material-ui/lab';
 import { AppInterface } from 'goldilocksTypes';
@@ -102,6 +104,15 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const [hostId, setHostId] = useState<number>();
   const [avyId, setAvyId] = useState<number>();
   const [reviewSubmitted, setSubmittedRev] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toast, setToast] = useState<string>('');
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const handleHostReview = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -118,9 +129,9 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   };
 
   const submitReview = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    event: any,
   ) => {
-    e.preventDefault();
+    event.preventDefault();
     const params = {
       guestRating,
       hostRating,
@@ -134,15 +145,17 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
 
     axios.post('reviews/newReview', { params })
       .then((result) => {
+        console.info(result);
         if (result) {
-          toast.success('Review submitted.', {
-            position: 'bottom-right'
-          });
+          setToast('swap completed');
+          setOpenToast(true);
         }
+        event.target.reset();
       })
-      .catch((err) => toast.warn('You must complete a swap to write a review!', {
-        position: 'bottom-right'
-      }));
+      .catch((err) => {
+        setToast('no swap completed');
+        setOpenToast(true);
+      });
   };
 
   return (
@@ -265,7 +278,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                 fullWidth
                 multiline
                 rows={3}
-                onChange={(e) => handleHostReview(e, guestReview)}
+                onChange={(e) => handleGuestReview(e, guestReview)}
                 labelWidth={92}
               />
             </FormControl>
@@ -290,6 +303,45 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
             >
               Return to Swaps
             </Button>
+            {toast === 'swap completed'
+              ? (
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  open={openToast}
+                  autoHideDuration={6000}
+                  onClose={handleCloseToast}
+                  action={(
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  )}
+                >
+                  <MuiAlert severity="success">Review submitted</MuiAlert>
+                </Snackbar>
+              )
+              : (
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  open={openToast}
+                  autoHideDuration={6000}
+                  onClose={handleCloseToast}
+                  action={(
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  )}
+                >
+                  <MuiAlert severity="error">
+                    You must complete a swap with this user before you can write a review
+                  </MuiAlert>
+                </Snackbar>
+              )}
           </div>
         </Grid>
       </Grid>

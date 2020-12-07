@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC } from 'react';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import { SwapListEntryInterface } from 'goldilocksTypes';
 import {
@@ -8,7 +7,11 @@ import {
   makeStyles,
   Button,
   Container,
+  Snackbar,
 } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
 import { flexibleCompare } from '@fullcalendar/react';
 
@@ -72,8 +75,17 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
   const [photo, setPhoto] = useState('');
   const [address, setAddress] = useState('');
   const [userId] = useState(localStorage.userId);
-  const [listingId, setListingId] = useState(0);
-  const [swappeeAvbId, setSwappeeAvbId] = useState(0);
+  const [listingId, setListingId] = useState<number>(0);
+  const [swappeeAvbId, setSwappeeAvbId] = useState<number>(0);
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toast, setToast] = useState<string>('');
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const approveSwap = () => {
     const params = {
@@ -81,11 +93,10 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.post('/availability/confirm', { params })
-      .then((result) => (result ? toast.success('Swap approved!', {
-        position: 'bottom-right'
-      }) : toast.warn('Problem approving swap.', {
-        position: 'bottom-right'
-      })))
+      .then((result) => {
+        setToast('confirm');
+        setOpenToast(true);
+      })
       .catch((err) => console.warn(err.message));
   };
 
@@ -95,11 +106,11 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
       guestId,
     };
     axios.delete('/request/decline', { params })
-      .then((result) => (result ? toast.success('Swap declined.', {
-        position: 'bottom-right'
-      }) : toast.warn('Trouble declining swap.', {
-        position: 'bottom-right'
-      })))
+      .then((result) => {
+        setToast('delete');
+        setOpenToast(true);
+      })
+
       .catch((err) => console.warn(err.message));
   };
 
@@ -184,6 +195,28 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
               >
                 Approve Swap!
               </Button>
+              {
+                toast === 'confirm'
+                  ? (
+                    <Snackbar
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      open={openToast}
+                      autoHideDuration={6000}
+                      onClose={handleCloseToast}
+                      action={(
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                    )}
+                    >
+                      <MuiAlert severity="success">Swap approved</MuiAlert>
+                    </Snackbar>
+                  )
+                  : null
+              }
             </Grid>
             <Grid item xs={4} className={classes.centerStyle}>
               <Button
@@ -211,6 +244,28 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
               >
                 Decline Swap!
               </Button>
+              {
+                toast === 'delete'
+                  ? (
+                    <Snackbar
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      open={openToast}
+                      autoHideDuration={6000}
+                      onClose={handleCloseToast}
+                      action={(
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                          <CloseIcon fontSize="small" />
+                        </IconButton>
+                    )}
+                    >
+                      <MuiAlert severity="success">Swap declined</MuiAlert>
+                    </Snackbar>
+                  )
+                  : null
+              }
             </Grid>
           </Grid>
         </Container>

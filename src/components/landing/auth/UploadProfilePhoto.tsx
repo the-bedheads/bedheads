@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import {
   Box,
@@ -9,6 +8,7 @@ import {
   Paper,
   AppBar,
   Grid,
+  Snackbar,
   Typography,
 } from '@material-ui/core';
 import {
@@ -16,6 +16,9 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import { MyUploadPhotoProps } from 'goldilocksTypes';
 import axios from 'axios';
 import logo from '../../../assets/logo.png';
@@ -64,17 +67,26 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     setProfilePhotoUrl,
   } = Props;
 
+  const rh = process.env.REACT_APP_HOST;
+  const rp = process.env.REACT_APP_PORT;
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
+
   const uploadPhoto = (photoString: any) => {
     axios.post('/image/newPhoto', {
       data: photoString,
     })
       .then(({ data }) => {
         setProfilePhotoUrl(data);
-        toast.success('Photo uploaded.', {
-          position: 'bottom-right'
-        });
+        setOpenToast(true);
       })
-      .catch((err) => toast.warn(err, { position: 'bottom-right' }));
+      .catch((err) => console.error(err));
   };
 
   const handleFileChange = (e: any) => {
@@ -141,6 +153,22 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
             >
               Back
             </Button>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={openToast}
+              autoHideDuration={6000}
+              onClose={handleCloseToast}
+              action={(
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              )}
+            >
+              <MuiAlert severity="success">Photo uploaded successfully</MuiAlert>
+            </Snackbar>
           </Grid>
         </Paper>
       </Dialog>

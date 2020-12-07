@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { toast } from 'react-toastify';
 import { TestProps } from 'goldilocksTypes';
 import logo from '../../../assets/logo.png';
 
@@ -129,13 +128,6 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
-        toast.warn('Successfully registered for Goldilocks!', {
-          position: 'bottom-right'
-        });
-      } else {
-        toast.error(parseRes, {
-          position: 'bottom-right'
-        });
       }
     } catch (err) {
       console.warn(err.message);

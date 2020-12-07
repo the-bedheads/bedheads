@@ -3,7 +3,9 @@ import clsx from 'clsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AppType } from 'goldilocksTypes';
-import { toast } from 'react-toastify';
+import MuiAlert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   Grid,
   Typography,
@@ -12,6 +14,7 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
+  Snackbar,
 } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {
@@ -51,29 +54,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     maxHeight: 75,
     alignItems: 'center',
   },
-  component: {
-    backgroundColor: 'white',
-    margin: 'auto',
-    display: 'flex',
-    justifyContent: 'center',
-    paddingBottom: 100,
-  },
-  container: {
-    margin: 'auto',
-    display: 'flex',
-    justifyContent: 'center',
-  },
   margin: {
     margin: theme.spacing(2),
   },
   buttonMargin: {
     margin: theme.spacing(2),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-  textField: {
-    width: '35ch',
   },
 }));
 
@@ -82,6 +67,14 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -153,20 +146,12 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
       if (parseRes.jwtToken) {
         localStorage.setItem('token', parseRes.jwtToken);
         await getUserProfile();
+        setOpenToast(true);
         loginUser();
-        toast.warn('Welcome to Goldilocks!', {
-          position: 'bottom-right'
-        });
       } else {
         setAuth(false);
-        toast.error(parseRes, {
-          position: 'bottom-right'
-        });
       }
     } catch (err) {
-      toast.error('Invalid credentials entered.', {
-        position: 'bottom-right'
-      });
       console.warn(err.message);
     }
   };
@@ -276,6 +261,22 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
             >
               Start Swapping
             </Button>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={openToast}
+              autoHideDuration={6000}
+              onClose={handleCloseToast}
+              action={(
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              )}
+            >
+              <MuiAlert severity="success">Welcome to Goldilocks</MuiAlert>
+            </Snackbar>
             <Button
               className={clsx(classes.buttonMargin, classes.root)}
               type="submit"

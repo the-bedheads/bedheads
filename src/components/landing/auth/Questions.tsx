@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
   InputLabel,
   OutlinedInput,
   Paper,
+  Snackbar,
 } from '@material-ui/core';
 import {
   makeStyles,
@@ -26,6 +26,9 @@ import Filter2Icon from '@material-ui/icons/Filter2';
 import Filter3Icon from '@material-ui/icons/Filter3';
 import Filter4Icon from '@material-ui/icons/Filter4';
 import Filter5Icon from '@material-ui/icons/Filter5';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import { MyQ1Props } from 'goldilocksTypes';
 import logo from '../../../assets/logo.png';
 
@@ -73,12 +76,19 @@ const Questions: React.FC<MyQ1Props> = (Props: MyQ1Props): JSX.Element => {
   const {
     nextStep, prevStep, handleResponse, q1, q2, q3, q4, q5,
   } = Props;
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const continueStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    return (q1.length && q2.length && q3.length && q4.length && q5.length) ? nextStep() : toast.warn('All questions must have a response.', {
-      position: 'bottom-right',
-    });
+    return (q1.length && q2.length && q3.length && q4.length && q5.length)
+      ? nextStep() : setOpenToast(true);
   };
 
   const backAStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -234,7 +244,23 @@ const Questions: React.FC<MyQ1Props> = (Props: MyQ1Props): JSX.Element => {
             >
               Back
             </Button>
-
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={openToast}
+              autoHideDuration={6000}
+              onClose={handleCloseToast}
+              action={(
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              )}
+            >
+              <MuiAlert severity="error">All questions must have a response</MuiAlert>
+            </Snackbar>
+            ;
           </Paper>
         </Grid>
       </Dialog>

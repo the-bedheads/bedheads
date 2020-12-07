@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import '../../../App.css';
 import axios from 'axios';
 import { Box, Typography } from '@material-ui/core';
@@ -144,9 +143,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         setAuth(true);
       } else {
         setAuth(false);
-        toast.error(parseRes, {
-          position: 'bottom-right'
-        });
       }
     } catch (err) {
       console.warn(err.message);
