@@ -118,11 +118,8 @@ const UserProfileInfo: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
     setTempBio(e.target.value);
   };
 
-  const rh = process.env.REACT_APP_HOST;
-  const rp = process.env.REACT_APP_PORT;
-
   const uploadPhoto = (photoString: any) => {
-    axios.post(`http://${rh}:${rp}/image/addListingPhoto/${localStorage.userId}`, {
+    axios.post(`/image/addListingPhoto/${localStorage.userId}`, {
       data: photoString,
     })
       .then(({ data }) => {

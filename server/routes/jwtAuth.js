@@ -74,7 +74,10 @@ router.post('/register', async (req, res) => {
         q10response: q10,
       });
 
-      await axios.post(`http://${process.env.HOST}:${process.env.PORT}/personality`, {
+      const h = process.env.STATE === 'dev' ? process.env.HOST : process.env.DEP_HOST;
+      const p = process.env.STATE === 'dev' ? 3000 : 8000;
+
+      await axios.post(`http://${h}:${p}/personality`, {
         body: compiledResponse,
       })
         .then(({ data }) => {

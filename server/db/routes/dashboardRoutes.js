@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const axios = require('axios');
 
-const h = process.env.HOST;
-const p = process.env.PORT;
+const h = process.env.STATE === 'dev' ? process.env.HOST : process.env.DEP_HOST;
+const p = process.env.STATE === 'dev' ? 3000 : 8000;
 const dashboardRouter = Router();
 
 dashboardRouter

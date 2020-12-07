@@ -36,11 +36,9 @@ const CreateListing: FC<BioProps> = (Props: BioProps): JSX.Element => {
     setPhotoUrl,
     open,
   } = Props;
-  const rh = process.env.REACT_APP_HOST;
-  const rp = process.env.REACT_APP_PORT;
 
   const uploadPhoto = (photoString: any) => {
-    axios.post(`http://${rh}:${rp}/image/newPhoto`, {
+    axios.post('/image/newPhoto', {
       data: photoString,
     })
       .then(({ data }) => {

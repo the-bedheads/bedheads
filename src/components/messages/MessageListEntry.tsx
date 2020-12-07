@@ -20,20 +20,20 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start',
   },
   senderBubble: {
-    border: '0.5px solid black',
+    border: '1px solid #7ad9ec',
     borderRadius: '10px',
     margin: '5px',
     padding: '10px',
     display: 'inline-block',
-    backgroundColor: '#7ad9ec',
+    // backgroundColor: '#7ad9ec',
   },
   receivedBubble: {
-    border: '0.5px solid black',
+    border: '1px solid #fac94f',
     borderRadius: '10px',
     margin: '5px',
     padding: '10px',
     display: 'inline-block',
-    backgroundColor: '#fac94f',
+    // backgroundColor: '#fac94f',
   },
 });
 
