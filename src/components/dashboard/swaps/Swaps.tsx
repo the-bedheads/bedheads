@@ -1,8 +1,57 @@
 import React, { useState, FC, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Grid, makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import {
+  Container,
+  Grid,
+  makeStyles,
+  AppBar,
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+} from '@material-ui/core';
 import { AppInterface, Availability } from 'goldilocksTypes';
 import SwapList from './SwapList';
+// import { checkPropTypes } from 'prop-types';
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const {
+    children,
+    value,
+    index,
+  } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.defaultProps = {
+  children: PropTypes.string,
+};
+
+function a11yProps(index: any) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 const useStyles = makeStyles({
   main: {
@@ -16,10 +65,15 @@ const useStyles = makeStyles({
 
 const Swaps: FC<AppInterface> = ({ user }) => {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
   const [newUser] = useState(user);
   const [accSwaps, setAccSwaps] = useState<Array<Availability>>([]);
   const [pendingSwaps, setPendingSwaps] = useState<Array<Availability>>([]);
   const [completedSwaps, setCompletedSwaps] = useState<Array<Availability>>([]);
+
+  const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
+    setValue(newValue);
+  };
 
   const getCalendar = async () => {
     const avbId = await axios.get(`listing/user/${user.id}`)
@@ -110,12 +164,32 @@ const Swaps: FC<AppInterface> = ({ user }) => {
     getCalendar();
   }, [newUser]);
 
+  // TODO: STUFF
   return (
     <Container className={classes.main}>
       {`Hello, ${user.firstName}!`}
-      {checkConfirmed()}
-      {checkPending()}
-      {checkReviews()}
+      <AppBar position="static">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="secondary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="Upcoming Trips" />
+          <Tab label="Pending Requests" />
+          <Tab label="Swaps to Review" />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0}>
+        {checkConfirmed()}
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        {checkPending()}
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        {checkReviews()}
+      </TabPanel>
     </Container>
   );
 };
