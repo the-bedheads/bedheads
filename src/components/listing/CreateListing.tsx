@@ -9,10 +9,15 @@ import {
   FormControl,
   FormControlLabel,
   Switch,
+  Typography,
 } from '@material-ui/core';
 import { AppInterface } from 'goldilocksTypes';
 
 const useStyles = makeStyles({
+  main: {
+    backgroundColor: 'white',
+    marginTop: '25px',
+  },
   bottom: {
     marginBottom: '10px',
   },
@@ -46,11 +51,9 @@ const CreateListing: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
   const [roommates, setRoommates] = useState(false);
   const [internet, setInternet] = useState(false);
   const [privateBath, setPrivateBath] = useState(false);
-  const rh = process.env.REACT_APP_HOST;
-  const rp = process.env.REACT_APP_PORT;
 
   const uploadPhoto = (photoString: any) => {
-    axios.post(`http://${rh}:${rp}/image/newPhoto`, {
+    axios.post('/image/newPhoto', {
       data: photoString,
     })
       .then(({ data }) => {
@@ -136,11 +139,13 @@ const CreateListing: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
   };
 
   return (
-    <Container>
-      <Grid>
-        Welcome to Goldilocks!
+    <Container className={classes.main}>
+      <Grid className={classes.bottom}>
+        <Typography variant="h3">
+          {`Welcome to Goldilocks, ${user.firstName}!`}
+        </Typography>
       </Grid>
-      <Grid>
+      <Grid className={classes.bottom}>
         We&apos;re glad you decided to join us. Goldilocks is a room-sharing collective designed to
         help you find a safe place to stay on your journeys, while simultaneously providing a
         like-minded traveller the same courtesy. To accomplish this, we ask that you provide some

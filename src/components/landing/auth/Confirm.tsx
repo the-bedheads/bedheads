@@ -104,10 +104,8 @@ const Confirm: React.FC<TestProps> = (Props): JSX.Element => {
         q9,
         q10,
       };
-      const rh = process.env.REACT_APP_HOST;
-      const rp = process.env.REACT_APP_PORT;
 
-      const response = await fetch(`http://${rh}:${rp}/auth/register`,
+      const response = await fetch('/auth/register',
         {
           method: 'POST',
           headers: {

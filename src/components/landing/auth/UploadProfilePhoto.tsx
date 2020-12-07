@@ -49,11 +49,8 @@ const UploadProfilePhoto: React.FC<MyProps> = (Props: MyProps): JSX.Element => {
     setProfilePhotoUrl,
   } = Props;
 
-  const rh = process.env.REACT_APP_HOST;
-  const rp = process.env.REACT_APP_PORT;
-
   const uploadPhoto = (photoString: any) => {
-    axios.post(`http://${rh}:${rp}/image/newPhoto`, {
+    axios.post('/image/newPhoto', {
       data: photoString,
     })
       .then(({ data }) => {

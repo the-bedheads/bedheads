@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 require('./db/index.js');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.STATE === 'dev' ? 3000 : 8000;
 const { listingRouter } = require('./db/routes/listingRoutes');
 const { userRouter } = require('./db/routes/userRoutes');
 const { availabilityRouter } = require('./db/routes/availabilityRoutes');

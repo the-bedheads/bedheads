@@ -25,11 +25,9 @@ const EditProfilePic: FunctionComponent<BioProps> = (Props: BioProps): JSX.Eleme
     handleClickOff,
     picOpen,
   } = Props;
-  const rh = process.env.REACT_APP_HOST;
-  const rp = process.env.REACT_APP_PORT;
 
   const uploadPhoto = (photoString: any) => {
-    axios.put(`http://${rh}:${rp}/image/editProfilePic/${localStorage.userId}`, {
+    axios.put(`/image/editProfilePic/${localStorage.userId}`, {
       data: photoString,
     })
       .then(({ data }) => {

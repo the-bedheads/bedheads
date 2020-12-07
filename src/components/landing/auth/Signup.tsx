@@ -5,9 +5,6 @@ import axios from 'axios';
 import { Grid, Box } from '@material-ui/core';
 import UserFormFC from './UserFormFC';
 
-const rh = process.env.REACT_APP_HOST;
-const rp = process.env.REACT_APP_PORT;
-
 type RegisterNewUser = {
   firstName: string;
   lastName: string;
@@ -41,7 +38,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   const [q10, setResponse10] = useState('');
 
   const uploadImage = async (encodedImage: any) => {
-    await axios.get(`http://${rh}:${rp}/image/newProfilePicture`, {
+    await axios.get('/image/newProfilePicture', {
       params: {
         image: encodedImage,
       },
@@ -110,7 +107,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         q9,
         q10,
       };
-      const response = await fetch(`http://${rh}:${rp}/auth/register`,
+      const response = await fetch('/auth/register',
         {
           method: 'POST',
           headers: {

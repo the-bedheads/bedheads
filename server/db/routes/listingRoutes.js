@@ -121,8 +121,8 @@ listingRouter
       photoUrl,
     } = req.body;
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
-    const h = process.env.HOST;
-    const p = process.env.PORT;
+    const h = process.env.STATE === 'dev' ? process.env.HOST : process.env.DEP_HOST;
+    const p = process.env.STATE === 'dev' ? 3000 : 8000;
     await axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
       .then(((geocoded) => {
         Listing.create({
