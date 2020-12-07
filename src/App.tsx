@@ -82,7 +82,7 @@ const App: FC = (): JSX.Element => {
       );
     }
     return (
-      <Dashboard handleLogin={[setAuth]} user={user} />
+      <Swaps user={user} />
     );
   };
 
@@ -110,9 +110,8 @@ const App: FC = (): JSX.Element => {
               strict
               path="/"
               render={() => (!isAuth ? (
-                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />
-              ) : (
-                <Redirect to="/dashboard" />
+                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
+                  <Swaps user={user} />
               ))}
             />
             <Route
@@ -127,7 +126,7 @@ const App: FC = (): JSX.Element => {
             <Route
               exact
               strict
-              path="/dashboard"
+              path="/view-swaps"
               render={() => dashboardCheck()}
             />
             <Route

@@ -87,7 +87,7 @@ const Navbar: React.FC<AuthProps> = ({
       <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
           <Goldilocks className={classes.logo} />
-          <Typography component={Link} to="/" color="inherit">
+          <Typography component={Link} to="/view-swaps" color="inherit">
             <img src={logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.grow} />
