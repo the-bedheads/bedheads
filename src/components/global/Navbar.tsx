@@ -14,7 +14,7 @@ import {
 import { toast } from 'react-toastify';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, Redirect } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ReactComponent as Goldilocks } from '../../assets/goldilocks.svg';
 
@@ -40,12 +40,14 @@ const useStyles = makeStyles({
 
 interface AuthProps {
   handleLogin: [React.Dispatch<React.SetStateAction<boolean>>],
-  toggleMode: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  toggleMode: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
+  hasListing: string,
 }
 
 const Navbar: React.FC<AuthProps> = ({
   handleLogin: [setAuth],
   toggleMode: [darkMode, setDarkMode],
+  hasListing,
 }): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -61,7 +63,6 @@ const Navbar: React.FC<AuthProps> = ({
   };
 
   const logout = async (event: SyntheticEvent) => {
-    event.preventDefault();
     try {
       localStorage.clear();
       handleClose();
@@ -110,52 +111,59 @@ const Navbar: React.FC<AuthProps> = ({
               horizontal: 'center',
             }}
           >
+            {hasListing === 'true' && (
+              <MenuItem
+                component={Link}
+                to="/view-messages"
+                color="inherit"
+                onClick={handleClose}
+              >
+                Messages
+              </MenuItem>
+            )}
+            {hasListing === 'true' && (
+              <MenuItem
+                component={Link}
+                to="/view-swaps"
+                color="inherit"
+                onClick={handleClose}
+              >
+                View swaps
+              </MenuItem>
+            )}
+            {hasListing === 'true' && (
+              <MenuItem
+                component={Link}
+                to="/view-calendar"
+                color="inherit"
+                onClick={handleClose}
+              >
+                Set availability
+              </MenuItem>
+            )}
+            {hasListing === 'true' && (
+              <MenuItem
+                component={Link}
+                to="/view-bulletins"
+                color="inherit"
+                onClick={handleClose}
+              >
+                Bulletin board
+              </MenuItem>
+            )}
+            {hasListing === 'true' && (
+              <MenuItem
+                component={Link}
+                to="/view-invites"
+                color="inherit"
+                onClick={handleClose}
+              >
+                Invite friends
+              </MenuItem>
+            )}
             <MenuItem
               component={Link}
-              to="/view-messages"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Messages
-            </MenuItem>
-            {/* <MenuItem>
-              Manage Listing
-            </MenuItem> */}
-            <MenuItem
-              component={Link}
-              to="/view-swaps"
-              color="inherit"
-              onClick={handleClose}
-            >
-              View swaps
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-calendar"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Set availability
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-bulletins"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Bulletin board
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/view-invites"
-              color="inherit"
-              onClick={handleClose}
-            >
-              Invite friends
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/invite"
+              to="/"
               color="inherit"
               onClick={(e: React.SyntheticEvent<Element, Event>) => logout(e)}
             >
