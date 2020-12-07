@@ -30,6 +30,7 @@ import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
 import BulletinBoard from './components/bulletin/BulletinBoard';
 import WriteAReview from './components/listing/WriteAReview';
+import CreateListing from './components/listing/CreateListing';
 
 toast.configure();
 
@@ -52,6 +53,7 @@ const App: FC = (): JSX.Element => {
     extraversion: localStorage.extraversion,
     agreeableness: localStorage.agreeableness,
     neuroticism: localStorage.neuroticism,
+    hasListing: localStorage.hasListing,
   });
   const [darkMode, setDarkMode] = useState(false);
 
@@ -69,6 +71,22 @@ const App: FC = (): JSX.Element => {
     } catch (err) {
       console.warn(err.message);
     }
+  };
+
+  const dashboardCheck = () => {
+    if (!isAuth) {
+      return (
+        <Redirect to="/" />
+      );
+    }
+    if (user.hasListing === 'false') {
+      return (
+        <CreateListing user={user} setUser={setUser} />
+      );
+    }
+    return (
+      <Dashboard handleLogin={[setAuth]} user={user} />
+    );
   };
 
   useEffect(() => {
@@ -90,8 +108,9 @@ const App: FC = (): JSX.Element => {
               strict
               path="/"
               render={() => (!isAuth ? (
-                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
-                  <Redirect to="/dashboard" />
+                <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />
+              ) : (
+                <Redirect to="/dashboard" />
               ))}
             />
             <Route
@@ -107,10 +126,7 @@ const App: FC = (): JSX.Element => {
               exact
               strict
               path="/dashboard"
-              render={() => (isAuth ? (
-                <Dashboard handleLogin={[setAuth]} user={user} />) : (
-                  <Redirect to="/" />
-              ))}
+              render={() => dashboardCheck()}
             />
             <Route
               exact

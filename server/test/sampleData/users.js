@@ -12,6 +12,7 @@ module.exports = [
     hostRating: 1.75,
     inviteCount: 2,
     userBio: 'This is Kyles bio.',
+    hasListing: true,
   },
   {
     firstName: "Katherine",
@@ -26,6 +27,7 @@ module.exports = [
     hostRating: 4.9,
     inviteCount: 18,
     userBio: 'This is Katherines bio.',
+    hasListing: true,
   },
   {
     firstName: "Patty",
@@ -40,6 +42,7 @@ module.exports = [
     hostRating: 4.5,
     inviteCount: 1,
     userBio: 'This is Pattys bio.',
+    hasListing: true,
   },
   {
     firstName: "Shamit",
@@ -54,6 +57,7 @@ module.exports = [
     hostRating: 4.67,
     inviteCount: 2,
     userBio: 'This is Shamits bio.',
+    hasListing: true,
   },
   {
     firstName: "Uday",
@@ -68,5 +72,6 @@ module.exports = [
     hostRating: 0,
     inviteCount: 0,
     userBio: 'This is Udays bio.',
+    hasListing: true,
   },
 ];

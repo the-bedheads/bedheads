@@ -102,7 +102,8 @@ listingRouter.get('/geocode', (req, res) => {
 });
 
 listingRouter
-  .post('/', (req, res) => {
+  .post('/', async (req, res) => {
+    console.log('hit');
     const {
       listingAddress,
       listingCity,
@@ -122,7 +123,7 @@ listingRouter
     const listingLocation = `${listingAddress} ${listingCity} ${listingState}`;
     const h = process.env.HOST;
     const p = process.env.PORT;
-    axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
+    await axios.get(`http://${h}:${p}/map/listing/geocode/${listingLocation}`)
       .then(((geocoded) => {
         Listing.create({
           userId,
@@ -154,6 +155,12 @@ listingRouter
           .catch((err) => res.send(err));
       }))
       .catch((err) => res.send(err));
+    await User.update({ hasListing: true }, {
+      where: {
+        id: userId,
+      },
+    });
+    res.send('success');
   });
 
 module.exports = {

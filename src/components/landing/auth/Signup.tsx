@@ -71,6 +71,7 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         localStorage.setItem('extraversion', personalityScale.extraversion);
         localStorage.setItem('agreeableness', personalityScale.agreeableness);
         localStorage.setItem('neuroticism', personalityScale.neuroticism);
+        localStorage.setItem('hasListing', data.hasListing);
       });
   };
 

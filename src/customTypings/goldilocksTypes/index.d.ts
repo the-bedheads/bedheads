@@ -79,6 +79,7 @@ declare module 'goldilocksTypes' {
     extraversion: localStorage,
     agreeableness: localStorage,
     neuroticism: localStorage,
+    hasListing: localStorage,
   };
 
   interface AppInterface {

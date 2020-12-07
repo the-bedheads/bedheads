@@ -51,6 +51,7 @@ router.post('/register', async (req, res) => {
         password: hashedPassword,
         profilePhoto: pic,
         userBio: 'No bio created yet',
+        hasListing: false,
       });
 
       const user = await User.findOne({

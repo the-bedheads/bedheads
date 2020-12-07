@@ -35,6 +35,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
       extraversion: localStorage.extraversion,
       agreeableness: localStorage.agreeableness,
       neuroticism: localStorage.neuroticism,
+      hasListing: localStorage.hasListing,
     });
     setAuth(true);
   };
@@ -62,6 +63,7 @@ const Login: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth], setUser })
         localStorage.setItem('extraversion', personalityScale.extraversion);
         localStorage.setItem('agreeableness', personalityScale.agreeableness);
         localStorage.setItem('neuroticism', personalityScale.neuroticism);
+        localStorage.setItem('hasListing', data.hasListing);
       });
   };
 

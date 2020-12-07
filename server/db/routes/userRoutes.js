@@ -66,6 +66,7 @@ userRouter
           firstName,
           lastName,
           profilePhoto,
+          hasListing,
         } = dataValues;
         const result = {
           id,
@@ -81,6 +82,7 @@ userRouter
           firstName,
           lastName,
           personalityScale,
+          hasListing,
         };
         res.send(result);
       })
