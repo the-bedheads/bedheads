@@ -11,7 +11,6 @@ import { AppType, UserType } from 'goldilocksTypes';
 // TODO: Theming
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { toast } from 'react-toastify';
 import theme from './theme';
 
 // TODO: Components
@@ -31,8 +30,6 @@ import Invite from './components/global/Invite';
 import BulletinBoard from './components/bulletin/BulletinBoard';
 import WriteAReview from './components/listing/WriteAReview';
 import CreateListing from './components/listing/CreateListing';
-
-toast.configure();
 
 const App: FC = (): JSX.Element => {
   const [isAuth, setAuth] = useState(false);

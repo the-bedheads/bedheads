@@ -1,79 +1,227 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import emailjs from 'emailjs-com';
-import { toast } from 'react-toastify';
 import { Email, EmojiEmotions, PersonPin } from '@material-ui/icons';
+import {
+  Grid,
+  Typography,
+  Paper,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  Button,
+  Snackbar,
+} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import '../../App.css';
-import realisticbed from '../../assets/realisticbed.jpg';
 import generateVerificationCode from '../../invite/verificationCode';
+import logo from '../../assets/logo.png';
 
-// Will need this later for deployment
-// const {
-//   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_USER_ID,
-// } = process.env; // hello
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '40ch',
+    },
+    alignItems: 'center',
+  },
+  paper: {
+    rounded: true,
+    width: '31%',
+    margin: theme.spacing(1),
+    padding: theme.spacing(3),
+    alignItems: 'center',
+    borderRadius: 20,
+    borderColor: '#f8c009',
+    border: '3px solid',
+  },
+  logo: {
+    maxHeight: 75,
+    alignItems: 'center',
+  },
+  margin: {
+    margin: theme.spacing(2),
+  },
+  buttonMargin: {
+    margin: theme.spacing(2),
+  },
+}));
 
-const Invite: React.FC = (props: any): JSX.Element => {
+const Invite: React.FC = (props): JSX.Element => {
+  const classes = useStyles();
   const [friendEmail, setFriendEmail] = useState<string>('');
   const [friendName, setFriendName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [vCode, setVCode] = useState<string>('changed?');
+  const [openToast, setOpenToast] = useState(false);
 
-  const styles = {
-    header: {
-      backgroundImage: `url(${realisticbed})`,
-      height: '100vh',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-    },
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
   };
 
   const sendEmail = (event: any): void => {
     event.preventDefault();
-    emailjs.sendForm('service_53v3f4a', 'template_r379ghv', event.target, 'user_sr6OphdGbk92U9vz6P8xA')
+    emailjs.sendForm(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID, process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      event.target, process.env.REACT_APP_EMAILJS_USER_ID,
+    )
       .then((result) => {
-        toast.success('Invite sent!');
+        setOpenToast(true);
         event.target.reset();
       })
       .catch((err) => {
-        toast.error('There was a problem sending your invite...');
+        console.error(err);
       });
   };
 
   return (
-    <div className="invite-container" justify-content="center" style={styles.header}>
-      <h1 className="text-center my-5">Invite a Friend.</h1>
+    <div className="invite-container">
       <form className="contact-form" onSubmit={sendEmail}>
-        <label htmlFor="name">
-          <EmojiEmotions />
-          Name
-          <input type="text" placeholder="Name" name="user_name" onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setFriendName(ev.target.value)} />
-        </label>
-        <label htmlFor="email">
-          <Email />
-          Email
-          <input
-            type="email"
-            placeholder="Enter your friend's email address"
-            name="user_email"
-            onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
-              setFriendEmail(ev.target.value);
-              setVCode(generateVerificationCode());
-            }}
-          />
-        </label>
-        <label htmlFor="sender-info">
-          <PersonPin />
-          Your Email
-          <input
-            type="email"
-            placeholder="Enter your email address"
-            onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
-              setUserEmail(ev.target.value);
-            }}
-          />
-        </label>
-        <input type="hidden" name="message" value={vCode} />
-        <input type="submit" value="SUBMIT" />
+        <Typography
+          className="invite-header"
+          variant="h1"
+        >
+          Invite A Friend
+        </Typography>
+        <Grid
+          container
+          justify="center"
+          className={classes.margin}
+        >
+          <Paper
+            variant="outlined"
+            className={classes.paper}
+          >
+            <Grid container justify="center" alignItems="center">
+              <Grid item className={classes.margin}>
+                <Typography className="logo-login">
+                  <img src={logo} alt="logo" className={classes.logo} />
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+            >
+              <FormControl className={classes.root} variant="outlined">
+                <InputLabel
+                  htmlFor="Name"
+                  variant="outlined"
+                >
+                  Enter your friend&lsquo;s name
+                </InputLabel>
+                <OutlinedInput
+                  type="text"
+                  name="user_name"
+                  color="secondary"
+                  fullWidth
+                  startAdornment={(
+                    <InputAdornment position="start">
+                      <EmojiEmotions />
+                    </InputAdornment>
+                  )}
+                  onChange={(ev: React.ChangeEvent<HTMLInputElement>):
+                  void => setFriendName(ev.target.value)}
+                  labelWidth={199}
+                />
+              </FormControl>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+            >
+              <FormControl className={classes.root} variant="outlined">
+                <InputLabel
+                  htmlFor="Email"
+                >
+                  Enter your friend&lsquo;s email
+                </InputLabel>
+                <OutlinedInput
+                  type="email"
+                  name="user_email"
+                  color="secondary"
+                  fullWidth
+                  startAdornment={(
+                    <InputAdornment position="start">
+                      <Email />
+                    </InputAdornment>
+                  )}
+                  onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
+                    setFriendEmail(ev.target.value);
+                    setVCode(generateVerificationCode());
+                  }}
+                  labelWidth={197}
+                />
+              </FormControl>
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+            >
+              <FormControl className={classes.root} variant="outlined">
+                <InputLabel
+                  htmlFor="Sender Email"
+                >
+                  Enter your email
+                </InputLabel>
+                <OutlinedInput
+                  type="email"
+                  color="secondary"
+                  fullWidth
+                  startAdornment={(
+                    <InputAdornment position="start">
+                      <PersonPin />
+                    </InputAdornment>
+                  )}
+                  onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => {
+                    setUserEmail(ev.target.value);
+                  }}
+                  labelWidth={136}
+                />
+              </FormControl>
+              <OutlinedInput
+                type="hidden"
+                name="message"
+                value={vCode}
+              />
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+              >
+                <input type="submit" value="SUBMIT" />
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  open={openToast}
+                  autoHideDuration={6000}
+                  onClose={handleCloseToast}
+                  action={(
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  )}
+                >
+                  <MuiAlert severity="success">Invite sent</MuiAlert>
+                </Snackbar>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
       </form>
     </div>
   );

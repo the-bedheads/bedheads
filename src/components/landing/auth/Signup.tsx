@@ -1,8 +1,9 @@
-import React, { useState, SyntheticEvent } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
 import '../../../App.css';
 import axios from 'axios';
-import { Grid, Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import logo from '../../../assets/logo.png';
 import UserFormFC from './UserFormFC';
 
 type RegisterNewUser = {
@@ -12,12 +13,25 @@ type RegisterNewUser = {
   password: string;
   verification_code: number;
 };
+const rh = process.env.REACT_APP_HOST;
+const rp = process.env.REACT_APP_PORT;
 
 interface AuthProps {
   handleLogin: [boolean, React.Dispatch<React.SetStateAction<boolean>>],
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  logo: {
+    maxHeight: 75,
+    alignItems: 'center',
+  },
+  margin: {
+    margin: theme.spacing(2.5),
+  },
+}));
+
 const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
+  const classes = useStyles();
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [pronouns, setPronouns] = useState<string>('');
@@ -36,6 +50,11 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   const [q8, setResponse8] = useState('');
   const [q9, setResponse9] = useState('');
   const [q10, setResponse10] = useState('');
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   const uploadImage = async (encodedImage: any) => {
     await axios.get('/image/newProfilePicture', {
@@ -124,7 +143,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
         setAuth(true);
       } else {
         setAuth(false);
-        toast.error(parseRes);
       }
     } catch (err) {
       console.warn(err.message);
@@ -134,7 +152,10 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
   return (
     <>
       <div className="signup-container">
-        <h1 className="text-center my-5">Register</h1>
+        <Typography className="logo-login" variant="h2">
+          Register
+          <img src={logo} alt="logo" className={classes.logo} />
+        </Typography>
         <div className="row justify-content-center">
           <Box m={2}>
             <UserFormFC
@@ -158,7 +179,6 @@ const SignUp: React.FC<AuthProps> = ({ handleLogin: [isAuth, setAuth] }) => {
               onSubmitForm={onSubmitForm}
             />
           </Box>
-          <a href="/">Already registered? Login here.</a>
         </div>
       </div>
     </>

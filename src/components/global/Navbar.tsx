@@ -7,11 +7,13 @@ import {
   MenuItem,
   Menu,
   Typography,
-  IconButton,
   Avatar,
   Switch,
+  Snackbar,
 } from '@material-ui/core';
-import { toast } from 'react-toastify';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link, NavLink, Redirect } from 'react-router-dom';
@@ -53,6 +55,14 @@ const Navbar: React.FC<AuthProps> = ({
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [pic] = useState(localStorage.profilePhoto);
   const [int] = useState(localStorage.firstName[0]);
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -67,7 +77,6 @@ const Navbar: React.FC<AuthProps> = ({
       localStorage.clear();
       handleClose();
       setAuth(false);
-      toast.success('Successfully logged out!');
     } catch (err) {
       console.warn(err.message);
     }
@@ -81,7 +90,6 @@ const Navbar: React.FC<AuthProps> = ({
           <Typography component={Link} to="/" color="inherit">
             <img src={logo} alt="logo" className={classes.logo} />
           </Typography>
-          {/* <Button component={Link} to="/" color="inherit">Dashboard</Button> */}
           <div className={classes.grow} />
           <IconButton component={Link} to="/view-searches" color="inherit">
             <SearchIcon className="icon" />
@@ -162,10 +170,10 @@ const Navbar: React.FC<AuthProps> = ({
               </MenuItem>
             )}
             <MenuItem
-              component={Link}
-              to="/"
               color="inherit"
-              onClick={(e: React.SyntheticEvent<Element, Event>) => logout(e)}
+              onClick={(e: React.SyntheticEvent<Element, Event>) => {
+                logout(e);
+              }}
             >
               Logout
             </MenuItem>

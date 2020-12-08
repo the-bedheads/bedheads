@@ -12,12 +12,15 @@ import {
   Tab,
   AppBar,
   Box,
+  Button,
 } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { Hotel, Home } from '@material-ui/icons';
+import { Hotel, Home, Create } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import HostReviews from './HostReviews';
 import GuestReviews from './GuestReviews';
+import WriteAReview from './WriteAReview';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -99,6 +102,13 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
             >
               <Tab fullWidth label="Host" icon={<Home />} />
               <Tab fullWidth label="Guest" icon={<Hotel />} />
+              <Tab
+                fullWidth
+                label="Write A Review"
+                icon={<Create />}
+                to="/writeReview"
+                component={Link}
+              />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>

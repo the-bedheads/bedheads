@@ -4,14 +4,16 @@ import {
   Button,
   Container,
   Grid,
+  Snackbar,
 } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import MuiAlert from '@material-ui/lab/Alert';
 import { AppType } from 'goldilocksTypes';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import ListingModal from '../listing/ListingModal';
 
 interface AuthProps {
@@ -98,6 +100,14 @@ const Dashboard: React.FC<AuthProps> = ({
   const [photoUrl, setPhotoUrl] = useState('');
   const [startAvail, setRandomStart] = useState();
   const [endAvail, setRandomEnd] = useState();
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const getRandomAvlb = () => {
     const len = randomListings.length;
@@ -202,7 +212,7 @@ const Dashboard: React.FC<AuthProps> = ({
 
   const getProfile = async () => {
     try {
-      const res = await fetch('http://localhost:3000/dashboard', {
+      const res = await fetch('http://localhost:8000/dashboard', {
         method: 'POST',
         headers: { jwt_token: localStorage.token, email: user.email },
       });
@@ -229,7 +239,22 @@ const Dashboard: React.FC<AuthProps> = ({
     try {
       localStorage.removeItem('token');
       setAuth(false);
-      toast.success('Successfully logged out!');
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={openToast}
+          autoHideDuration={6000}
+          onClose={handleCloseToast}
+          action={(
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+        )}
+        >
+          <MuiAlert severity="success">Logged out</MuiAlert>
+        </Snackbar>;
     } catch (err) {
       console.warn(err.message);
     }

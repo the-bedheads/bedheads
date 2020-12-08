@@ -1,19 +1,30 @@
 import React, { FC, useState, useEffect } from 'react';
+import clsx from 'clsx';
 import axios from 'axios';
 import {
   makeStyles,
   withStyles,
+  Theme,
 } from '@material-ui/core/styles';
 import {
   Button,
   Box,
-  Typography,
   Card,
-  CardMedia,
+  CardActionArea,
   CardActions,
   CardContent,
-  CardActionArea,
+  CardMedia,
+  createStyles,
+  Snackbar,
+  Typography,
 } from '@material-ui/core';
+import {
+  ContactMail,
+} from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
+import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import { Rating } from '@material-ui/lab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link } from 'react-router-dom';
@@ -29,9 +40,21 @@ const StyledRating = withStyles({
   },
 })(Rating);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     maxWidth: 500,
+  },
+  buttonRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '40ch',
+    },
+    alignItems: 'center',
+  },
+  margin: {
+    margin: theme.spacing(2),
   },
   media: {
     height: 140,
@@ -50,7 +73,13 @@ const useStyles = makeStyles({
   button: {
     padding: 1,
   },
-});
+  snackBarProps: {
+    backgroundColor: 'amber',
+  },
+  buttonIcons: {
+    margin: theme.spacing(1),
+  },
+}));
 
 const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
   const classes = useStyles();
@@ -71,6 +100,14 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
   });
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const getHost = () => {
     axios.get(`/user/${hostId}`)
@@ -99,8 +136,11 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
 
   const requestSwap = () => {
     const params = { userId, avbId, dates };
+    setOpenToast(true);
     axios.post('/request/newRequest', { params })
-      .catch((err) => console.warn(err));
+      .catch((err) => {
+        console.warn(err);
+      });
   };
 
   useEffect(() => {
@@ -181,16 +221,6 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button
-            className={classes.button}
-            fullWidth
-            size="small"
-            variant="outlined"
-            color="secondary"
-            onClick={handleOpen}
-          >
-            contact
-          </Button>
           <MessageModal
             handleClose={handleClose}
             handleClickOff={handleClickOff}
@@ -200,15 +230,43 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
             name={hostData.firstName}
           />
           <Button
-            className={classes.button}
-            fullWidth
-            size="small"
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={handleOpen}
+            className={classes.buttonIcons}
+            startIcon={<ContactMail />}
+          >
+            Contact
+          </Button>
+        </CardActions>
+        <CardActions>
+          <Button
             variant="outlined"
             color="secondary"
+            size="large"
+            className={classes.buttonIcons}
+            startIcon={<SyncAltIcon />}
             onClick={requestSwap}
           >
-            request
+            Request
           </Button>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            open={openToast}
+            autoHideDuration={6000}
+            onClose={handleCloseToast}
+            action={(
+              <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          >
+            <MuiAlert severity="success">{`Request to swap with ${hostData.firstName} has been sent`}</MuiAlert>
+          </Snackbar>
         </CardActions>
       </Card>
     </div>

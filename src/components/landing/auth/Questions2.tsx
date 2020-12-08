@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import {
+  Box,
   Button,
   Dialog,
   DialogTitle,
   Typography,
   AppBar,
-  TextField,
-  DialogActions,
+  Paper,
   Grid,
   FormControl,
   InputLabel,
   OutlinedInput,
+  Snackbar,
 } from '@material-ui/core';
 import Filter6Icon from '@material-ui/icons/Filter6';
 import Filter7Icon from '@material-ui/icons/Filter7';
 import Filter8Icon from '@material-ui/icons/Filter8';
 import Filter9Icon from '@material-ui/icons/Filter9';
 import Filter9PlusIcon from '@material-ui/icons/Filter9Plus';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import '../../../App.css';
 import { MyQ2Props } from 'goldilocksTypes';
+import logo from '../../../assets/logo.png';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -37,6 +42,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   buttonMargin: {
     margin: theme.spacing(2),
   },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    borderRadius: 20,
+    borderColor: '#f8c009',
+    border: '3px solid',
+    margin: theme.spacing(2),
+  },
+  logo: {
+    maxHeight: 45,
+    alignItems: 'center',
+  },
 }));
 
 const Questions2: React.FC<MyQ2Props> = (Props: MyQ2Props): JSX.Element => {
@@ -44,10 +61,19 @@ const Questions2: React.FC<MyQ2Props> = (Props: MyQ2Props): JSX.Element => {
   const {
     nextStep, prevStep, handleResponse, q6, q7, q8, q9, q10,
   } = Props;
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
 
   const continueStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    nextStep();
+    return (q6.length && q7.length && q8.length && q9.length && q10.length)
+      ? nextStep() : setOpenToast(true);
   };
 
   const backAStep = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -59,109 +85,161 @@ const Questions2: React.FC<MyQ2Props> = (Props: MyQ2Props): JSX.Element => {
     <>
       <Dialog open fullWidth>
         <AppBar title="New User Questionnaire" />
-        <DialogTitle id="form-dialog-title">Step 3: Fill Out Survey (2/2)</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          <Box display="flex" alignItems="center">
+            <Box flexGrow={1}>Step Three: Complete Questionnaire (2/2)</Box>
+            <Box>
+              <Typography>
+                <img src={logo} alt="logo" className={classes.logo} />
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
         <Grid container alignContent="center" justify="center">
-          <Typography>
-            <Filter6Icon />
-            What is your favorite way to spend a Sunday night?
-          </Typography>
-          <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
-            <InputLabel htmlFor="response1">Question 6</InputLabel>
-            <OutlinedInput
-              type="text"
-              multiline
-              rows={3}
-              fullWidth
+          <Paper className={classes.paper}>
+            <Typography className="signup-questionnaire">
+              <Filter6Icon />
+              What is your favorite way to spend a Sunday night?
+            </Typography>
+            <FormControl
+              className={clsx(classes.margin, classes.root)}
               required
-              defaultValue={q6}
-              labelWidth={80}
-              onChange={(e) => handleResponse(e, 'response6')}
-            />
-          </FormControl>
-          <Typography>
-            <Filter7Icon />
-            How do you think you are as a roommate?
-          </Typography>
-          <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
-            <InputLabel htmlFor="response1">Question 7</InputLabel>
-            <OutlinedInput
-              type="text"
-              multiline
-              rows={3}
-              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="response1">Question 6</InputLabel>
+              <OutlinedInput
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                required
+                color="secondary"
+                defaultValue={q6}
+                labelWidth={89}
+                onChange={(e) => handleResponse(e, 'response6')}
+              />
+            </FormControl>
+            <Typography className="signup-questionnaire">
+              <Filter7Icon />
+              How do you think you are as a roommate?
+            </Typography>
+            <FormControl
+              className={clsx(classes.margin, classes.root)}
               required
-              defaultValue={q7}
-              labelWidth={80}
-              onChange={(e) => handleResponse(e, 'response7')}
-            />
-          </FormControl>
-          <Typography>
-            <Filter8Icon />
-            What do you do for a living?
-          </Typography>
-          <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
-            <InputLabel htmlFor="response1">Question 8</InputLabel>
-            <OutlinedInput
-              type="text"
-              multiline
-              rows={3}
-              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="response1">Question 7</InputLabel>
+              <OutlinedInput
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                required
+                color="secondary"
+                defaultValue={q7}
+                labelWidth={88}
+                onChange={(e) => handleResponse(e, 'response7')}
+              />
+            </FormControl>
+            <Typography className="signup-questionnaire">
+              <Filter8Icon />
+              What do you do for a living?
+            </Typography>
+            <FormControl
+              className={clsx(classes.margin, classes.root)}
               required
-              defaultValue={q8}
-              labelWidth={80}
-              onChange={(e) => handleResponse(e, 'response8')}
-            />
-          </FormControl>
-          <Typography>
-            <Filter9Icon />
-            Describe a typical day in your life.
-          </Typography>
-          <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
-            <InputLabel htmlFor="response1">Question 9</InputLabel>
-            <OutlinedInput
-              type="text"
-              multiline
-              rows={3}
-              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="response1">Question 8</InputLabel>
+              <OutlinedInput
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                required
+                color="secondary"
+                defaultValue={q8}
+                labelWidth={88}
+                onChange={(e) => handleResponse(e, 'response8')}
+              />
+            </FormControl>
+            <Typography className="signup-questionnaire">
+              <Filter9Icon />
+              Describe a typical day in your life.
+            </Typography>
+            <FormControl
+              className={clsx(classes.margin, classes.root)}
               required
-              defaultValue={q9}
-              labelWidth={80}
-              onChange={(e) => handleResponse(e, 'response9')}
-            />
-          </FormControl>
-          <Typography>
-            <Filter9PlusIcon />
-            Do you have any allergies or special food requirements?
-          </Typography>
-          <FormControl className={clsx(classes.margin, classes.root)} variant="outlined">
-            <InputLabel htmlFor="response1">Question 10</InputLabel>
-            <OutlinedInput
-              type="text"
-              multiline
-              rows={3}
-              fullWidth
+              variant="outlined"
+            >
+              <InputLabel htmlFor="response1">Question 9</InputLabel>
+              <OutlinedInput
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                required
+                color="secondary"
+                defaultValue={q9}
+                labelWidth={88}
+                onChange={(e) => handleResponse(e, 'response9')}
+              />
+            </FormControl>
+            <Typography className="signup-questionnaire">
+              <Filter9PlusIcon />
+              Do you have any allergies or special food requirements?
+            </Typography>
+            <FormControl
+              className={clsx(classes.margin, classes.root)}
               required
-              defaultValue={q10}
-              labelWidth={80}
-              onChange={(e) => handleResponse(e, 'response10')}
-            />
-          </FormControl>
-          <Button
-            className={clsx(classes.buttonMargin, classes.root)}
-            onClick={(event) => continueStep(event)}
-            color="primary"
-            variant="outlined"
-          >
-            Continue
-          </Button>
-          <Button
-            className={clsx(classes.buttonMargin, classes.root)}
-            onClick={(event) => backAStep(event)}
-            color="secondary"
-            variant="outlined"
-          >
-            Back
-          </Button>
+              variant="outlined"
+            >
+              <InputLabel htmlFor="response1">Question 10</InputLabel>
+              <OutlinedInput
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                required
+                color="secondary"
+                defaultValue={q10}
+                labelWidth={95}
+                onChange={(e) => handleResponse(e, 'response10')}
+              />
+            </FormControl>
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
+              onClick={(event) => continueStep(event)}
+              color="primary"
+              variant="contained"
+            >
+              Continue
+            </Button>
+            <Button
+              className={clsx(classes.buttonMargin, classes.root)}
+              onClick={(event) => backAStep(event)}
+              color="secondary"
+              variant="contained"
+            >
+              Back
+            </Button>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={openToast}
+              autoHideDuration={6000}
+              onClose={handleCloseToast}
+              action={(
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              )}
+            >
+              <MuiAlert severity="error">All questions must have a response</MuiAlert>
+            </Snackbar>
+          </Paper>
         </Grid>
       </Dialog>
     </>

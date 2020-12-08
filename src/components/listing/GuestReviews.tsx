@@ -23,6 +23,7 @@ interface ReviewInt {
   listingId: number,
   reviewer: any,
 }
+
 const StyledRating = withStyles({
   iconFilled: {
     color: '#ff6d75',
