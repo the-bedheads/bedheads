@@ -100,8 +100,8 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
               textColor="primary"
               centered
             >
-              <Tab fullWidth label="Host" icon={<Home />} />
               <Tab fullWidth label="Guest" icon={<Hotel />} />
+              <Tab fullWidth label="Host" icon={<Home />} />
               <Tab
                 fullWidth
                 label="Write A Review"
@@ -111,11 +111,11 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
               />
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index={0}>
-            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
-          </TabPanel>
           <TabPanel value={value} index={1}>
             <GuestReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
+          </TabPanel>
+          <TabPanel value={value} index={0}>
+            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
           </TabPanel>
         </Paper>
       </Grid>

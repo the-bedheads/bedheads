@@ -98,8 +98,8 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const [guestRating, setGuestRating] = useState<number | null>(3);
   const [hHover, setHostHover] = useState<number>(-1);
   const [gHover, setGuestHover] = useState<number>(-1);
-  const [hostReview, setHReview] = useState<string>('Enter review here');
-  const [guestReview, setGReview] = useState<string>('Enter review here');
+  const [hostReview, setHReview] = useState<string>('No comments');
+  const [guestReview, setGReview] = useState<string>('No comments');
   const [isComplete, setIsComplete] = useState<boolean>(true);
   const [hostId, setHostId] = useState<number>();
   const [avyId, setAvyId] = useState<number>();
@@ -153,8 +153,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
         event.target.reset();
       })
       .catch((err) => {
-        setToast('no swap completed');
-        setOpenToast(true);
+        console.error(err);
       });
   };
 
@@ -179,6 +178,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
             className={classes.root}
             variant="h3"
             align="center"
+            color="primary"
           >
             Tell us about your swap.
           </Typography>
@@ -201,25 +201,25 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
             >
               <Typography>
                 <Box m={3}>
-                  How would you rate your swapmate as a host?
+                  How would you rate your swapmate as a guest?
                   <Box m={2}>
                     <StyledRating
-                      name="host-rating"
+                      name="guest-rating"
                       defaultValue={3}
-                      value={hostRating}
+                      value={guestRating}
                       precision={0.5}
                       icon={<FavoriteIcon fontSize="large" />}
                       onChange={(event, newValue) => {
-                        setHostRating(newValue);
+                        setGuestRating(newValue);
                       }}
                       onChangeActive={(event, newHover) => {
-                        setHostHover(newHover);
+                        setGuestHover(newHover);
                       }}
                     />
-                    {hostRating !== null && (
+                    {guestRating !== null && (
                       <Box ml={2}>
-                        {hLabels[hHover !== -1
-                          ? hHover : hostRating]}
+                        {gLabels[gHover !== -1
+                          ? gHover : guestRating]}
                       </Box>
                     )}
                   </Box>
@@ -236,32 +236,32 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                 fullWidth
                 multiline
                 rows={3}
-                onChange={(e) => handleHostReview(e, hostReview)}
+                onChange={(e) => handleGuestReview(e, hostReview)}
                 labelWidth={92}
               />
             </FormControl>
             <Grid container>
               <Typography>
                 <Box m={3}>
-                  How would you rate your swapmate as a guest?
+                  How would you rate your swapmate as a host?
                   <Box m={2}>
                     <StyledRating
-                      name="guest-rating"
+                      name="host-rating"
                       defaultValue={3}
-                      value={guestRating}
+                      value={hostRating}
                       precision={0.5}
                       icon={<FavoriteIcon fontSize="large" />}
                       onChange={(event, newValue) => {
-                        setGuestRating(newValue);
+                        setHostRating(newValue);
                       }}
                       onChangeActive={(event, hover) => {
-                        setGuestHover(hover);
+                        setHostHover(hover);
                       }}
                     />
-                    {guestRating !== null && (
+                    {hostRating !== null && (
                       <Box ml={2}>
-                        {gLabels[gHover !== -1
-                          ? gHover : guestRating]}
+                        {hLabels[hHover !== -1
+                          ? hHover : hostRating]}
                       </Box>
                     )}
                   </Box>
@@ -278,7 +278,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                 fullWidth
                 multiline
                 rows={3}
-                onChange={(e) => handleGuestReview(e, guestReview)}
+                onChange={(e) => handleHostReview(e, guestReview)}
                 labelWidth={92}
               />
             </FormControl>
