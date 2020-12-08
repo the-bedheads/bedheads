@@ -52,6 +52,47 @@ reviewRouter
   })
 
 // TODO: Write a review
+// reviewRouter
+//   .post('/newReview', async (req, res) => {
+//     let {
+//       guestRating,
+//       hostRating,
+//       guestReview,
+//       hostReview,
+//       isComplete,
+//       userId,
+//       hostId,
+//       avyId,
+//     } = req.body.params;
+//     await Availability.findOne({
+//       where: {
+//         guestId: Number(userId),
+//       },
+//     })
+//       .then(({ dataValues }) => {
+//         hostId = dataValues.hostId;
+//         avyId = dataValues.id;
+
+//         Reviews.create({
+//           guestRating: guestRating,
+//           hostRating: hostRating,
+//           hostComments: hostReview,
+//           guestComments: guestReview,
+//           completed: isComplete,
+//           reviewerId: userId,
+//           revieweeId: hostId,
+//           availabilityId: avyId,
+//         })
+//           .then(() => {
+//             res.status(200).send('Review submitted');
+//           })
+//           .catch(err => {
+//             res.status(401).send('You must complete a swap with this user to leave a review.')
+//           })
+//       })
+//       .catch(err => res.send(err.message));
+
+//   });
 reviewRouter
   .post('/newReview', async (req, res) => {
     let {
@@ -60,16 +101,17 @@ reviewRouter
       guestReview,
       hostReview,
       isComplete,
-      userId,
-      hostId,
+      userId, // TODO: Logged in user (guest)
+      hostId, // TODO: Person user is reviewing
       avyId,
     } = req.body.params;
     await Availability.findOne({
       where: {
-        guestId: Number(userId),
+        hostId: hostId,
       },
     })
       .then(({ dataValues }) => {
+        console.info(dataValues);
         hostId = dataValues.hostId;
         avyId = dataValues.id;
 
@@ -104,6 +146,18 @@ reviewRouter
       },
     })
     res.send(author);
+  })
+
+// TODO: Set user's rating
+reviewRouter
+  .get('/updateRating', async (req, res) => {
+    const { hostRating } = req.body.params;
+    const rating = await User.findAll({
+      where: {
+        hostRating: hostRating,
+      },
+    })
+    res.send(rating);
   })
 
 module.exports = {
