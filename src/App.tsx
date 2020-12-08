@@ -111,7 +111,7 @@ const App: FC = (): JSX.Element => {
               path="/"
               render={() => (!isAuth ? (
                 <Login handleLogin={[isAuth, setAuth]} setUser={setUser} />) : (
-                  <Swaps user={user} />
+                  <Redirect to="/view-swaps" />
               ))}
             />
             <Route
@@ -120,7 +120,7 @@ const App: FC = (): JSX.Element => {
               path="/register"
               render={() => (!isAuth ? (
                 <SignUp handleLogin={[isAuth, setAuth]} />) : (
-                  <Redirect to="/dashboard" />
+                  <Redirect to="/view-swaps" />
               ))}
             />
             <Route

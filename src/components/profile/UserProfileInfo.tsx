@@ -145,7 +145,7 @@ const UserProfileInfo: FC<AppInterface> = ({ user, setUser }): JSX.Element => {
           <Grid className={classes.botMargStyle}>
             It looks like you haven&apos;t made a listing yet.
           </Grid>
-          <Link to="/dashboard">
+          <Link to="/view-swaps">
             <Button
               variant="contained"
               color="primary"
