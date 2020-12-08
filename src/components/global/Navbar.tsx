@@ -132,22 +132,22 @@ const Navbar: React.FC<AuthProps> = ({
             {hasListing === 'true' && (
               <MenuItem
                 component={Link}
-                to="/view-messages"
-                color="inherit"
-                onClick={handleClose}
-              >
-                Messages
-              </MenuItem>
-            )}
-            {hasListing === 'true' && (
-              <MenuItem
-                component={Link}
                 to="/view-calendar"
                 color="inherit"
                 onClick={handleClose}
               >
                 Set availability
               </MenuItem>
+            )}
+            {hasListing === 'true' && (
+            <MenuItem
+              component={Link}
+              to="/view-messages"
+              color="inherit"
+              onClick={handleClose}
+            >
+              Messages
+            </MenuItem>
             )}
             {hasListing === 'true' && (
               <MenuItem
