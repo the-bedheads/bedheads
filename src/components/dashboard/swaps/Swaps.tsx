@@ -164,7 +164,6 @@ const Swaps: FC<AppInterface> = ({ user }) => {
     getCalendar();
   }, [newUser]);
 
-  // TODO: STUFF
   return (
     <Container className={classes.main}>
       {`Hello, ${user.firstName}!`}
