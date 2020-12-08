@@ -87,7 +87,7 @@ const Navbar: React.FC<AuthProps> = ({
       <AppBar className={classes.root} position="static">
         <Toolbar variant="dense">
           <Goldilocks className={classes.logo} />
-          <Typography component={Link} to="/" color="inherit">
+          <Typography component={Link} to="/view-swaps" color="inherit">
             <img src={logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.grow} />
@@ -122,16 +122,6 @@ const Navbar: React.FC<AuthProps> = ({
             {hasListing === 'true' && (
               <MenuItem
                 component={Link}
-                to="/view-messages"
-                color="inherit"
-                onClick={handleClose}
-              >
-                Messages
-              </MenuItem>
-            )}
-            {hasListing === 'true' && (
-              <MenuItem
-                component={Link}
                 to="/view-swaps"
                 color="inherit"
                 onClick={handleClose}
@@ -148,6 +138,16 @@ const Navbar: React.FC<AuthProps> = ({
               >
                 Set availability
               </MenuItem>
+            )}
+            {hasListing === 'true' && (
+            <MenuItem
+              component={Link}
+              to="/view-messages"
+              color="inherit"
+              onClick={handleClose}
+            >
+              Messages
+            </MenuItem>
             )}
             {hasListing === 'true' && (
               <MenuItem

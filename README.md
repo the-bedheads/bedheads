@@ -22,6 +22,7 @@ Styling was done using Material-UI.
 The back end of our project was developed using NodeJS and Express, and we managed our database using PostgresQL and Sequelize.
 ### Deployment
 This project was deployed using AWS.
+
 ----------
 ## How to Use
 ### Getting Started
