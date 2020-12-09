@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, FC, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -166,8 +167,10 @@ const Swaps: FC<AppInterface> = ({ user }) => {
 
   return (
     <Container className={classes.main}>
-      {`Hello, ${user.firstName}!`}
-      <AppBar position="static">
+      <Typography variant="h3">
+        {`Hello, ${user.firstName}!`}
+      </Typography>
+      <AppBar position="static" color="default">
         <Tabs
           value={value}
           onChange={handleChange}
@@ -175,9 +178,9 @@ const Swaps: FC<AppInterface> = ({ user }) => {
           textColor="primary"
           centered
         >
-          <Tab label="Upcoming Trips" />
-          <Tab label="Pending Requests" />
-          <Tab label="Swaps to Review" />
+          <Tab label="Upcoming Trips" {...a11yProps} />
+          <Tab label="Pending Requests" {...a11yProps} />
+          <Tab label="Swaps to Review" {...a11yProps} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
