@@ -8,6 +8,7 @@ const personalityData = require('./sampleData/personalityScales');
 const messageData = require('./sampleData/message');
 const threadData = require('./sampleData/thread');
 const bulletinData = require('./sampleData/bulletin');
+const reviewData = require('./sampleData/reviews');
 
 const {
   User,
@@ -21,6 +22,7 @@ const {
   Message,
   Thread,
   Bulletin,
+  Reviews,
 } = require('../db/index');
 
 const seed = async () => {
@@ -93,7 +95,15 @@ const seed = async () => {
       if (length) {
         console.info(`✅🎃✅ ${length} bulletins successfully added to DB`);
       } else {
-        console.warn('❌☠️❌ BULLETINGS NOT ADDED');
+        console.warn('❌☠️❌ BULLETINS NOT ADDED');
+      }
+    });
+  await Reviews.bulkCreate(reviewData)
+    .then(({ length }) => {
+      if (length) {
+        console.info(`✅🎃✅ ${length} reviews successfully added to DB`);
+      } else {
+        console.warn('❌☠️❌ REVIEWS not added');
       }
     });
 };
