@@ -52,6 +52,10 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
   const classes = useStyles();
 
   const postReviews = () => {
+    // console.info(allReviews);
+    // const reviews = allReviews.map(review => {
+    //   console.info(review);
+    // })
     const reviews = allReviews
       .map((review: {
         createdAt: any;

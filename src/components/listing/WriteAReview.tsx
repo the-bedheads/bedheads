@@ -140,7 +140,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
       isComplete,
       userId: user.id,
       hostId,
-      avyId,
+      // avyId,
     };
 
     axios.post('reviews/newReview', { params })
