@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     guestRating: DataTypes.FLOAT,
     hostRating: DataTypes.FLOAT,
-    guestComments: DataTypes.STRING,
-    hostComments: DataTypes.STRING,
+    guestComments: DataTypes.STRING(1234),
+    hostComments: DataTypes.STRING(1234),
     completed: DataTypes.BOOLEAN,
   });
   Reviews.associate = (models) => {
-    Reviews.belongsTo(models.User, { // Reviewer
+    Reviews.belongsTo(models.User, { // Reviewee
       foreignKey: 'revieweeId',
     });
     Reviews.belongsTo(models.User, { // Reviewer
