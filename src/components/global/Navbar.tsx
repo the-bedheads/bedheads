@@ -16,7 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiAlert from '@material-ui/lab/Alert';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link, NavLink, Redirect } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ReactComponent as Goldilocks } from '../../assets/goldilocks.svg';
 
@@ -52,6 +52,7 @@ const Navbar: React.FC<AuthProps> = ({
   hasListing,
 }): JSX.Element => {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [pic] = useState(localStorage.profilePhoto);
   const [int] = useState(localStorage.firstName[0]);
@@ -80,6 +81,7 @@ const Navbar: React.FC<AuthProps> = ({
     } catch (err) {
       console.warn(err.message);
     }
+    history.push('/');
   };
 
   return (
@@ -91,9 +93,11 @@ const Navbar: React.FC<AuthProps> = ({
             <img src={logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.grow} />
-          <IconButton component={Link} to="/view-searches" color="inherit">
-            <SearchIcon className="icon" />
-          </IconButton>
+          {hasListing === 'true' && (
+            <IconButton component={Link} to="/view-searches" color="inherit">
+              <SearchIcon className="icon" />
+            </IconButton>
+          )}
           <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
@@ -171,9 +175,7 @@ const Navbar: React.FC<AuthProps> = ({
             )}
             <MenuItem
               color="inherit"
-              onClick={(e: React.SyntheticEvent<Element, Event>) => {
-                logout(e);
-              }}
+              onClick={(e: React.SyntheticEvent<Element, Event>) => logout(e)}
             >
               Logout
             </MenuItem>
