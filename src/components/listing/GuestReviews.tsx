@@ -60,63 +60,63 @@ const HostReviews: React.FC<ReviewInt> = ({ allReviews, listingId, reviewer }): 
         user: any;
         hostRating: any;
       }) => (
-          <div className={classes.root}>
-            <Paper
-              className={classes.paper}
-              elevation={0}
-            >
-              <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                  <Avatar
-                    className={classes.large}
-                    src={review.user.profilePhoto}
-                  />
-                </Grid>
-                <Grid item xs>
-                  <Typography
-                    variant="overline"
-                    display="block"
-                    component="legend"
-                  >
-                    <Box
-                      component="fieldset"
-                      fontWeight="fontWeightBold"
-                      borderColor="transparent"
-                      m={1}
-                    >
-                      {review.user.firstName}
-                    </Box>
-                    <Box
-                      component="fieldset"
-                      borderColor="transparent"
-                      m={1}
-                    >
-                      <StyledRating
-                        icon={(
-                          <FavoriteIcon
-                            fontSize="small"
-                          />
-                        )}
-                        name="read-only"
-                        value={review.hostRating}
-                        readOnly
-                      />
-                    </Box>
-                  </Typography>
-                  <Typography>
-                    <Box fontSize={13} m={2}>
-                      {review.hostComments}
-                    </Box>
-                  </Typography>
-                </Grid>
+        <div className={classes.root}>
+          <Paper
+            className={classes.paper}
+            elevation={0}
+          >
+            <Grid container wrap="nowrap" spacing={2}>
+              <Grid item>
+                <Avatar
+                  className={classes.large}
+                  src={review.user.profilePhoto}
+                />
               </Grid>
-            </Paper>
-            <Divider
-              light={false}
-              orientation="horizontal"
-            />
-          </div>
-        ));
+              <Grid item xs>
+                <Typography
+                  variant="overline"
+                  display="block"
+                  component="legend"
+                >
+                  <Box
+                    component="fieldset"
+                    fontWeight="fontWeightBold"
+                    borderColor="transparent"
+                    m={1}
+                  >
+                    {review.user.firstName}
+                  </Box>
+                  <Box
+                    component="fieldset"
+                    borderColor="transparent"
+                    m={1}
+                  >
+                    <StyledRating
+                      icon={(
+                        <FavoriteIcon
+                          fontSize="small"
+                        />
+                        )}
+                      name="read-only"
+                      value={review.hostRating}
+                      readOnly
+                    />
+                  </Box>
+                </Typography>
+                <Typography>
+                  <Box fontSize={13} m={2}>
+                    {review.hostComments}
+                  </Box>
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+          <Divider
+            light={false}
+            orientation="horizontal"
+          />
+        </div>
+      ));
     return reviews;
   };
 
