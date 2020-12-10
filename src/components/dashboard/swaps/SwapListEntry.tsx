@@ -161,7 +161,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
                   component={Link}
                   to={
                     {
-                      pathname: '/writeReview',
+                      pathname: `/view-listing/${swap.guestId}/${swappeeAvbId}`,
                       state: {
                         availabilityId: swap.id,
                         reviewerId: userId,
@@ -210,7 +210,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
                         <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
                           <CloseIcon fontSize="small" />
                         </IconButton>
-                    )}
+                      )}
                     >
                       <MuiAlert severity="success">Swap approved</MuiAlert>
                     </Snackbar>
@@ -259,7 +259,7 @@ const SwapListEntry: FC<SwapListEntryInterface> = ({ swap, guestId, type }) => {
                         <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
                           <CloseIcon fontSize="small" />
                         </IconButton>
-                    )}
+                      )}
                     >
                       <MuiAlert severity="success">Swap declined</MuiAlert>
                     </Snackbar>
