@@ -28,7 +28,7 @@ import Profile from './components/profile/Profile';
 import Swaps from './components/dashboard/swaps/Swaps';
 import Invite from './components/global/Invite';
 import BulletinBoard from './components/bulletin/BulletinBoard';
-import WriteAReview from './components/listing/WriteAReview';
+import WW2 from './components/listing/WW2';
 import CreateListing from './components/listing/CreateListing';
 
 const App: FC = (): JSX.Element => {
@@ -176,11 +176,11 @@ const App: FC = (): JSX.Element => {
               path="/view-bulletins"
               component={BulletinBoard}
             />
-            <Route
+            {/* <Route
               exact
               path="/writeReview"
-              component={() => <WriteAReview user={user} />}
-            />
+              component={() => <WW2 />}
+            /> */}
           </Switch>
         </BrowserRouter>
       </div>

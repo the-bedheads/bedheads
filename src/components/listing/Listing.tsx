@@ -54,6 +54,7 @@ const Listing: React.FC<AppInterface> = ({ user }): JSX.Element => {
             </Paper>
             <UserReviews
               listingId={id}
+              user={userId}
             />
           </Grid>
           <Grid item xs={12} sm={2}>

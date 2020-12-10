@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import {
   useLocation,
@@ -13,6 +13,7 @@ import {
   InputLabel,
   OutlinedInput,
   Snackbar,
+  TextField,
 } from '@material-ui/core';
 import axios from 'axios';
 import {
@@ -25,8 +26,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import MuiAlert from '@material-ui/lab/Alert';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Rating } from '@material-ui/lab';
-import { AppInterface } from 'goldilocksTypes';
+import { CalendarInterface } from 'goldilocksTypes';
 
+interface ReviewInt {
+  allReviews: any,
+  listingId: number,
+  reviewer: any,
+  user: any,
+}
 const StyledRating = withStyles({
   iconFilled: {
     color: '#ff6d75',
@@ -91,9 +98,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
+const WW2: React.FC<ReviewInt> = ({ listingId, user }): JSX.Element => {
   const classes = useStyles();
-  const location = useLocation();
   const [hostRating, setHostRating] = useState<number | null>(3);
   const [guestRating, setGuestRating] = useState<number | null>(3);
   const [hHover, setHostHover] = useState<number>(-1);
@@ -102,8 +108,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const [guestReview, setGReview] = useState<string>('No comments');
   const [isComplete, setIsComplete] = useState<boolean>(true);
   const [hostId, setHostId] = useState<number>();
-  const [avyId, setAvyId] = useState<number>();
-  const [reviewSubmitted, setSubmittedRev] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [toast, setToast] = useState<string>('');
 
@@ -131,26 +135,25 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   const submitReview = (
     event: any,
   ) => {
-    event.preventDefault();
+    console.info('user', user, 'listingProfileId', listingId);
     const params = {
       guestRating,
       hostRating,
       hostReview,
       guestReview,
       isComplete,
-      userId: user.id,
+      userId: user,
       hostId,
-      // avyId,
+      listingProfileId: listingId,
     };
 
-    axios.post('reviews/newReview', { params })
+    axios.post('/reviews/newReview', { params })
       .then((result) => {
         console.info(result);
         if (result) {
           setToast('swap completed');
           setOpenToast(true);
         }
-        event.target.reset();
       })
       .catch((err) => {
         console.error(err);
@@ -158,51 +161,42 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
   };
 
   return (
-    <div className="write-review-container">
-      <Grid
-        container
-        spacing={10}
-        direction="row"
-        alignContent="center"
-        alignItems="center"
-        justify="center"
-        item
-        xl={9}
-      >
+    <div className="ww2">
+      <div className="comments">
+
         <Grid
-          item
-          justify="center"
-          alignItems="center"
-        >
-          <Typography
-            className={classes.root}
-            variant="h3"
-            align="center"
-            color="primary"
-          >
-            Tell us about your swap.
-          </Typography>
-        </Grid>
-        <br />
-        <br />
-        <Grid
-          item
-          className={classes.root}
-          justify="center"
-          alignItems="center"
+          container
           alignContent="center"
+          justify="center"
+          alignItems="center"
         >
-          <div className="comments">
-            <Grid
-              item
-              alignContent="center"
-              justify="center"
-              alignItems="center"
-            >
-              <Typography>
-                <Box m={3}>
-                  How would you rate your swapmate as a guest?
-                  <Box m={2}>
+
+          <Grid
+            item
+            alignItems="center"
+            justify="center"
+          >
+            <Typography>
+              <Box
+                m={1}
+                display="flex"
+                justifyContent="center"
+              >
+                <Box m={2}>
+                  How would you rate your swapmate as a
+                  {' '}
+                  {' '}
+                  <Box
+                    display="inline"
+                    fontWeight="fontWeightBold"
+                  >
+                    host
+                  </Box>
+                  ?
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                  >
                     <StyledRating
                       name="guest-rating"
                       defaultValue={3}
@@ -216,16 +210,21 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                         setGuestHover(newHover);
                       }}
                     />
-                    {guestRating !== null && (
-                      <Box ml={2}>
-                        {gLabels[gHover !== -1
-                          ? gHover : guestRating]}
-                      </Box>
-                    )}
                   </Box>
+                  {guestRating !== null && (
+                    <Box
+                      ml={2}
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      {gLabels[gHover !== -1
+                        ? gHover : guestRating]}
+                    </Box>
+                  )}
                 </Box>
-              </Typography>
-            </Grid>
+
+              </Box>
+            </Typography>
             <FormControl className={clsx(classes.margin, classes.form)} variant="outlined">
               <InputLabel htmlFor="host-comments">
                 Comments?
@@ -240,11 +239,29 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                 labelWidth={92}
               />
             </FormControl>
-            <Grid container>
-              <Typography>
-                <Box m={3}>
-                  How would you rate your swapmate as a host?
-                  <Box m={2}>
+          </Grid>
+          <Grid item alignItems="center" justify="center">
+            <Typography>
+              <Box
+                m={1}
+                display="flex"
+                justifyContent="center"
+              >
+                <Box m={2}>
+                  How would you rate your swapmate as a
+                  {' '}
+                  {' '}
+                  <Box
+                    display="inline"
+                    fontWeight="fontWeightBold"
+                  >
+                    guest
+                  </Box>
+                  ?
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                  >
                     <StyledRating
                       name="host-rating"
                       defaultValue={3}
@@ -258,16 +275,20 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                         setHostHover(hover);
                       }}
                     />
-                    {hostRating !== null && (
-                      <Box ml={2}>
-                        {hLabels[hHover !== -1
-                          ? hHover : hostRating]}
-                      </Box>
-                    )}
                   </Box>
+                  {hostRating !== null && (
+                    <Box
+                      ml={2}
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      {hLabels[hHover !== -1
+                        ? hHover : hostRating]}
+                    </Box>
+                  )}
                 </Box>
-              </Typography>
-            </Grid>
+              </Box>
+            </Typography>
             <FormControl className={clsx(classes.margin, classes.form)} variant="outlined">
               <InputLabel htmlFor="guest-comments">
                 Comments?
@@ -275,7 +296,7 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
               <OutlinedInput
                 name="guestReview"
                 type="text"
-                fullWidth
+                // fullWidth
                 multiline
                 rows={3}
                 onChange={(e) => handleHostReview(e, guestReview)}
@@ -290,18 +311,6 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
               onClick={submitReview}
             >
               Submit Review
-            </Button>
-            <Button
-              type="button"
-              component={Link}
-              to={
-                {
-                  pathname: '/view-swaps',
-                }
-              }
-              fullWidth
-            >
-              Return to Swaps
             </Button>
             {toast === 'swap completed'
               ? (
@@ -342,11 +351,11 @@ const WriteAReview: React.FC<AppInterface> = ({ user }): JSX.Element => {
                   </MuiAlert>
                 </Snackbar>
               )}
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </div>
   );
 };
 
-export default WriteAReview;
+export default WW2;

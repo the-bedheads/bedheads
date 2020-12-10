@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import HostReviews from './HostReviews';
 import GuestReviews from './GuestReviews';
-import WriteAReview from './WriteAReview';
+import WW2 from './WW2';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,7 +29,8 @@ interface TabPanelProps {
 }
 
 interface ListingProps {
-  listingId: number
+  listingId: number,
+  user: number,
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
+const UserReviews: FC<ListingProps> = ({ listingId, user }): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [allReviews, setAllReviews] = useState([]);
@@ -77,11 +78,14 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
   };
 
   const renderReviews = () => {
+    console.info(listingId, user);
     axios.get(`/reviews/getReviews/${listingId}`)
-      .then((reviewInfo) => {
-        setAllReviews(reviewInfo.data);
+      .then((reviews) => {
+        console.info(reviews);
+        setAllReviews(reviews.data);
+        console.info(allReviews);
       })
-      .catch((err) => err.message);
+      .catch((err) => console.error(err.message));
   };
 
   useEffect(() => {
@@ -100,22 +104,19 @@ const UserReviews: FC<ListingProps> = ({ listingId }): JSX.Element => {
               textColor="primary"
               centered
             >
-              <Tab fullWidth label="Guest" icon={<Hotel />} />
               <Tab fullWidth label="Host" icon={<Home />} />
-              <Tab
-                fullWidth
-                label="Write A Review"
-                icon={<Create />}
-                to="/writeReview"
-                component={Link}
-              />
+              <Tab fullWidth label="Guest" icon={<Hotel />} />
+              <Tab fullWidth label="Write A Review" icon={<Create />} />
             </Tabs>
           </AppBar>
+          <TabPanel value={value} index={0}>
+            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
+          </TabPanel>
           <TabPanel value={value} index={1}>
             <GuestReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
           </TabPanel>
-          <TabPanel value={value} index={0}>
-            <HostReviews listingId={listingId} allReviews={allReviews} reviewer={reviewer} />
+          <TabPanel value={value} index={2}>
+            <WW2 listingId={listingId} allReviews={allReviews} reviewer={reviewer} user={user} />
           </TabPanel>
         </Paper>
       </Grid>
