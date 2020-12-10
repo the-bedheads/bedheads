@@ -8,6 +8,7 @@ module.exports = [
     revieweeId: 2, // person being judged
     reviewerId: 3, // person leaving review
     availabilityId: 1,
+    listingId: 2,
   },
   {
     guestRating: 4.5,
@@ -18,6 +19,7 @@ module.exports = [
     revieweeId: 3, // person being judged
     reviewerId: 2, // person leaving review
     availabilityId: 2,
+    listingId: 3
   },
   {
     guestRating: 5,
@@ -28,6 +30,7 @@ module.exports = [
     revieweeId: 4, // person being judged
     reviewerId: 1, // person leaving review
     availabilityId: 3,
+    listingId: 4,
   },
   {
     guestRating: 3,
@@ -38,6 +41,7 @@ module.exports = [
     revieweeId: 1, // person being judged
     reviewerId: 4, // person leaving review
     availabilityId: 4,
+    listingId: 1,
   },
   {
     guestRating: 5,
@@ -48,6 +52,7 @@ module.exports = [
     revieweeId: 2, // person being judged
     reviewerId: 5, // person leaving review
     availabilityId: 5,
+    listingId: 2,
   },
   {
     guestRating: 4.5,
@@ -58,6 +63,7 @@ module.exports = [
     revieweeId: 5, // person being judged
     reviewerId: 2, // person leaving review
     availabilityId: 6,
+    listingId: 5,
   },
   {
     guestRating: 5,
@@ -68,6 +74,7 @@ module.exports = [
     revieweeId: 2, // person being judged
     reviewerId: 4, // person leaving review
     availabilityId: 7,
+    listingId: 2,
   },
   {
     guestRating: 5,
@@ -78,5 +85,6 @@ module.exports = [
     revieweeId: 4, // person being judged
     reviewerId: 2, // person leaving review
     availabilityId: 8,
+    listingId: 4,
   },
 ];

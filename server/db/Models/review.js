@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     Reviews.belongsTo(models.Availability, { // The swapped room
       foreignKey: 'availabilityId',
     });
+    Reviews.belongsTo(models.Listing, { // The listing profile id
+      foreignKey: 'listingId',
+    })
   };
   return Reviews;
 };

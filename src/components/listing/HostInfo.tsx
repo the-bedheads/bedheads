@@ -98,9 +98,10 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
     profilePhoto: '',
     userBio: '',
   });
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [openToast, setOpenToast] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toast, setToast] = useState<string>('');
 
   const handleCloseToast = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -136,6 +137,7 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
 
   const requestSwap = () => {
     const params = { userId, avbId, dates };
+    setToast('request');
     setOpenToast(true);
     axios.post('/request/newRequest', { params })
       .catch((err) => {
@@ -167,6 +169,8 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
       params.activeThread = threadId;
       await axios.post('/message/newMessage', { params });
       setMessage('');
+      setToast('message');
+      setOpenToast(true);
     }
     setOpen(false);
   };
@@ -251,22 +255,43 @@ const HostInfo: FC<HostInfoInterface> = (props): JSX.Element => {
           >
             Request
           </Button>
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            open={openToast}
-            autoHideDuration={6000}
-            onClose={handleCloseToast}
-            action={(
-              <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
+          {toast === 'request'
+            ? (
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                open={openToast}
+                autoHideDuration={6000}
+                onClose={handleCloseToast}
+                action={(
+                  <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                )}
+              >
+                <MuiAlert severity="success">Request sent</MuiAlert>
+              </Snackbar>
+            )
+            : (
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                open={openToast}
+                autoHideDuration={6000}
+                onClose={handleCloseToast}
+                action={(
+                  <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseToast}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                )}
+              >
+                <MuiAlert severity="success">Message sent</MuiAlert>
+              </Snackbar>
             )}
-          >
-            <MuiAlert severity="success">{`Request to swap with ${hostData.firstName} has been sent`}</MuiAlert>
-          </Snackbar>
         </CardActions>
       </Card>
     </div>

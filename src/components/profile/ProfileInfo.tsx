@@ -56,19 +56,12 @@ const ProfileInfo: FC<ProfileInfoInterface> = ({ host }): JSX.Element => {
         <Grid container justify="center" item xs={12}>
           <img
             src={listingPic}
-            alt="This person hasn't uploaded any pics of their place yet!"
+            alt="Nothing listing pic has been uploaded yet"
             className={classes.imgStyle}
           />
         </Grid>
         <Grid item xs={12}>
-          <Box className={classes.buttonStyle}>
-            {/* <Button
-              variant="contained"
-              color="primary"
-            >
-              Availability
-            </Button> */}
-          </Box>
+          <Box className={classes.buttonStyle} />
         </Grid>
         <Grid item xs={12}>
           <Container className={classes.infoStyle}>
